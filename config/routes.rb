@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+  get '/about', :to => 'pages#about'
+  get '/applicants', :to => 'pages#applicants'
+  get '/candidate', :to => 'pages#candidate'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

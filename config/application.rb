@@ -21,6 +21,11 @@ module GarenaAts
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
+    config.assets.enable = true
     config.active_record.raise_in_transactional_callbacks = true
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
+    config.assets.precompile += ['jquery/dist/jquery.js']
+    config.assets.precompile += ['semantic/dist/*']
+    config.assets.precompile += %w( semantic/dist/semantic.css semantic/dist/semantic.js )
   end
 end
