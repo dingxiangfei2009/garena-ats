@@ -5,4 +5,6 @@ class PagesController < ApplicationController
   end
   def candidate
   end
+  def question
+  end
 end
