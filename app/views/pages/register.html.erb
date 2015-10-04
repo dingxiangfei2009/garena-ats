@@ -1,0 +1,95 @@
+<div class="ui container grid">
+  <div class="one column row">
+  </div>
+  <div class="one column row">
+    <div class="column">
+      <h1 class="ui header">Welcome to Recruitment</h1>
+    </div>
+  </div>
+  <div class="ui divider"></div>
+  <div class="one column row">
+    <form class="ui form" style="width: 100%;">
+      <h2 class="ui dividing header">Registration</h2>
+      <div class="field">
+        <label>Name</label>
+        <div class="two fields">
+          <div class="field">
+            <input type="text" name="first-name" placeholder="First Name">
+          </div>
+          <div class="field">
+            <input type="text" name="last-name" placeholder="Last Name">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Contact Details</label>
+        <div class="two fields">
+          <div class="field">
+            <input type="text" name="mobile-number" placeholder="Handphone Number">
+          </div>
+          <div class="field">
+            <input type="text" name="email" placeholder="Email ID">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Position Interested In</label>
+        <div class="twelve wide field">
+          <div class='ui selection dropdown'>
+            <i class='dropdown icon'></i>
+            <div class='default text'>Select Topic</div>
+            <div class='menu'>
+              <div class='item' data-value='ADS'>Algorithm and Data Structures</div>
+              <div class='item' data-value='AND'>Android</div>
+              <div class='item' data-value='IOS'>iOS</div>
+              <div class='item' data-value='NET'>Networks</div>
+              <div class='item' data-value='OPS'>Operating Systems</div>
+              <div class='item' data-value='SEC'>Security</div>
+              <div class='item' data-value='WEB'>Web Development</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Relevant Skills</label>
+        <div class="twelve wide field">
+          <select class="ui fluid search dropdown" multiple="">
+            <option value="">Skills</option>
+            <option value="AND">Android Development</option>
+            <option value="IOS">iOS Development</option>
+            <option value="JAV">Java</option>
+            <option value="WEB">Web Development</option>
+            <option value="ROR">Ruby-on-Rails</option>
+            <option value="DJA">Django</option>
+            <option value="FLS">Full-Stack</option>
+            <option value="DBA">Database</option>
+            <option value="DAN">Data Analysis</option>
+            <option value="SEC">Security</option>
+            <option value="SER">Server Admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Credentials</label>
+        <div class="two fields">
+          <div class="ui left icon input field">
+            <input type="text" name="github-id" placeholder="GitHub ID">
+            <i class="github icon"></i>
+          </div>
+          <div class="ui left icon input field">
+            <input type="text" name="stackoverflow-id" placeholder="Stack Overflow ID">
+            <i class="stack overflow icon"></i>
+          </div>
+        </div>
+      </div>
+      <button class='ui primary button'>
+        Register
+      </button>
+    </form>
+  </div>
+</div>
+<script type='text/javascript'>
+  $('.ui.dropdown')
+    .dropdown()
+  ;
+</script>
