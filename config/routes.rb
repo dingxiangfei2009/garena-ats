@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/candidate', :to => 'pages#candidate'
   get '/question', :to => 'pages#question'
   get '/test', :to => 'pages#test'
+  get '/tests', :to => 'pages#tests'
   get '/register', :to => 'pages#register'
   get '/login', :to => 'pages#login'
   get '/available', :to => 'pages#available'
