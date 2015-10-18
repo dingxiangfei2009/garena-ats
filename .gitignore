@@ -20,4 +20,3 @@ Gemfile.lock
 /node_modules
 /db/*
 !/db/migrate
-/config/database.yml

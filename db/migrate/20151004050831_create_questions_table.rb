@@ -7,6 +7,8 @@ class CreateQuestionsTable < ActiveRecord::Migration
     	t.text :description
         t.text :config
     	t.integer :difficulty
+        t.references :field, null: false, index: true
+        t.references :question_type, null: false, index: true
     end
     add_foreign_key :questions, :fields
     add_foreign_key :questions, :question_types
