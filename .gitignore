@@ -13,7 +13,6 @@
 /tmp
 Gemfile.lock
 /public/semantic/
-bower.json
 /vendor/
 /public/assets
 /public/index.html
@@ -21,3 +20,4 @@ bower.json
 /node_modules
 /db/*
 !/db/migrate
+/config/database.yml
