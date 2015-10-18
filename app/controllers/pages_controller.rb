@@ -7,4 +7,6 @@ class PagesController < ApplicationController
   end
   def question
   end
+  def test
+  end
 end

@@ -17,3 +17,9 @@
 /tmp
 Gemfile.lock
 /public/semantic/
+bower.json
+/vendor/
+/public/assets
+/public/index.html
+/public/semantic.json
+/node_modules

@@ -1,0 +1,125 @@
+<div class="ui left visible sidebar inverted vertical menu">
+  <a class="item">
+    Candidates
+  </a>
+  <a class="item">
+    Jobs
+  </a>
+  <a class="item">
+    Tests
+  </a>
+</div>
+<div class="pusher">
+  <div class="ui two column container grid">
+    <div class="two column row"></div>
+    <div class="two column row">
+      <div class="column">
+        <h1 class="ui header">MCQ Test</h1>
+      </div> 
+    </div>
+    <div class="ui divider"></div>
+    <div class="two column row">
+      <div class="column">
+        <h2 class="ui header">Question 1</h2>
+        <div class="ui divider"></div>
+        <div class="ui raised segment">
+          This is question 1. Choose A for this question.
+        </div>
+        <div class="ui form">
+          <div class="grouped fields">
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>A: A</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>B: No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>C: No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>D: Nyet</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="two column row">
+      <div class="column">
+        <h2 class="ui header">Question 2</h2>
+        <div class="ui divider"></div>
+        <div class="ui raised segment">
+          This is question 2. Choose A for this question.
+        </div>
+        <div class="ui form">
+          <div class="grouped fields">
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>A: A</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>B: No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>C: No</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="answers[0]">
+                <label>D: Nyet</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="two column row">
+      <button class="ui primary button">
+        Submit your answers
+      </button>
+      <button class="ui secondary button">
+        Reset
+      </button>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+
+    $('.ui.accordion').accordion();
+});
+
+$('.ui.rating')
+  .rating({
+    initialRating: 3,
+    maxRating: 5,
+    interactive: false
+  })
+;
+</script>
