@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/candidate', :to => 'pages#candidate'
   get '/question', :to => 'pages#question'
   get '/test', :to => 'pages#test'
+  get '/register', :to => 'pages#register'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
