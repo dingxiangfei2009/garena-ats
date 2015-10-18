@@ -20,4 +20,4 @@ bower.json
 /public/semantic.json
 /node_modules
 /db/*
-!/db/migrate/*
+!/db/migrate

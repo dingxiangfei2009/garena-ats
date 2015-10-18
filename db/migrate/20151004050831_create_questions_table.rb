@@ -1,7 +1,7 @@
 class CreateQuestionsTable < ActiveRecord::Migration
   def change
     create_table :question_types do |t|
-        t.string :name
+        t.string :name, unique: true
     end
     create_table :questions do |t|
     	t.text :description
