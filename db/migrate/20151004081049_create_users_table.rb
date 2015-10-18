@@ -4,6 +4,7 @@ class CreateUsersTable < ActiveRecord::Migration
     	t.string :email
     	t.string :password
     	t.boolean :isAdmin
+    	t.references :user, null: false
     end
     add_index :users, :email, :unique => true
   end

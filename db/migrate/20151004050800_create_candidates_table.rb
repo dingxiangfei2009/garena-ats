@@ -3,9 +3,8 @@ class CreateCandidatesTable < ActiveRecord::Migration
     create_table :candidates do |t|
     	t.string :name
     	t.string :cvName
-    	t.string :email
+    	t.string :email, unique: true
     	t.timestamps null: false
     end
-    add_index :candidates, :email, unique: true
   end
 end
