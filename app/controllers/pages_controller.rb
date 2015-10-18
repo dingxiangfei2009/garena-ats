@@ -1,5 +1,7 @@
 class PagesController < ApplicationController
-  def about
+  def jobs
+  end
+  def job
   end
   def applicants
   end
@@ -12,5 +14,7 @@ class PagesController < ApplicationController
   def register
   end
   def login
+  end
+  def available
   end
 end

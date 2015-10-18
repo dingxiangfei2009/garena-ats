@@ -25,6 +25,15 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'json'
 
+gem 'angular-rails-templates'
+
+gem 'sprockets'
+
+# Semantic UI assets
+
+# gem 'less-rails-semantic_ui', '~> x.x.x'
+# gem 'autoprefixer-rails', '~> x.x.x'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -46,4 +55,3 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-

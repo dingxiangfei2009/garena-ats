@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
   <title>GarenaAts</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -8,6 +8,7 @@
 </head>
 <body>
 
+<%= render partial: 'layouts/sidebar' %>
 <%= yield %>
 
 </body>

@@ -12,7 +12,14 @@
 //
 //= require jquery/dist/jquery
 //= require jquery_ujs
+//= require angular/angular
+//= require angular-rails-templates
 //= require turbolinks
 //= require_tree .
 //= require semantic/dist/semantic
 //= require_tree ../../../vendor/assets/components/semantic/dist
+//= require textAngular/dist/textAngular-rangy.min
+//= require textAngular/dist/textAngular-sanitize.min
+//= require textAngular/dist/textAngular.min
+//= require ace-builds/src-min-noconflict/ace
+//= require angular-ui-ace/ui-ace
