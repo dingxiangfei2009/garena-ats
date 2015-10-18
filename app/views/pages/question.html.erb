@@ -33,6 +33,18 @@
               </div>
             </div>
           </div>
+          <div class='eight wide field'>
+            <label>Difficulty Level</label>
+            <div class='ui selection dropdown'>
+              <i class='dropdown icon'></i>
+              <div class='default text'>Select Difficulty Level</div>
+              <div class='menu'>
+                  <div ng-repeat="difficulty in difficulties" class='item' value='{{difficulty.value}}'>
+                    {{difficulty.name}}
+                  </div>
+              </div>
+            </div>
+          </div>
           <label>Question</label>
           <div class='fields'>
             <div class='twelve wide field'>

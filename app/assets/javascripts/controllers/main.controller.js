@@ -74,6 +74,21 @@ app.controller('QuestionController', function($scope) {
       }
     ];
 
+    $scope.difficulties = [
+      {
+        name: 'Easy',
+        value: '1'
+      },
+      {
+        name: 'Medium',
+        value: '2'
+      },
+      {
+        name: 'Difficult',
+        value: '3'
+      }
+    ];
+
     $scope.toggleState = function() {
         $scope.state = !$scope.state;
     };
