@@ -21,6 +21,9 @@
     "ace-builds": "*",
     "angular-ui-ace": "*",
     "semantic": "*",
-    "semantic-ui": "*"
+    "semantic-ui": "*",
+    "humanize-duration": "*",
+    "momentjs": "*",
+    "angular-timer": "*"
   }
 }

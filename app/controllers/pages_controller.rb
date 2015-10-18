@@ -17,4 +17,6 @@ class PagesController < ApplicationController
   end
   def available
   end
+  def tests
+  end
 end

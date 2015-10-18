@@ -1,0 +1,42 @@
+<div class='pusher' ng-controller='TestsController' style="width: 80%;">
+  <div class='ui container grid'>
+    <div class='one column row'>
+    </div>
+    <div class='two column centered row'>
+      <div class="left floated eight wide column">
+        <div class="eight wide field">
+          <div class="ui fluid icon input">
+            <input type="text" placeholder="Filter by position, candidate name...">
+            <i class="search icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="right floated seven wide column">
+        <button class="ui right floated labeled icon green button">
+          <i class="plus icon"></i>
+          New Test
+        </button>
+      </div>
+    </div>
+    <div class='one column centered row'>
+      <div class='column'>
+        <table class="ui very padded large table">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Candidate Name</th>
+              <th>Completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat='test in tests'>
+              <td>{{test.position}}</td>
+              <td>{{test.candidate}}</td>
+              <td>{{test.complete}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

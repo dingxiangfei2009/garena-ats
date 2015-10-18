@@ -23,3 +23,7 @@
 //= require textAngular/dist/textAngular.min
 //= require ace-builds/src-min-noconflict/ace
 //= require angular-ui-ace/ui-ace
+//= require momentjs/min/moment.min.js
+//= require momentjs/min/locales.min.js
+//= require humanize-duration/humanize-duration.js
+//= require angular-timer/dist/angular-timer.js

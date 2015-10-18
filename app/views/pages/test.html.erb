@@ -1,103 +1,141 @@
-<div class="ui left visible sidebar inverted vertical menu">
-  <a class="item">
-    Candidates
-  </a>
-  <a class="item">
-    Jobs
-  </a>
-  <a class="item">
-    Tests
-  </a>
-</div>
-<div class="pusher">
-  <div class="ui two column container grid">
+<div class="pusher" ng-controller='TestController'>
+  <div>
+    <div class="ui black inverted segment sticky">
+      <div class='row'>
+        <h1 class="ui inverted header left floated">{{testName}}</h1>
+        <h1 class="ui inverted header right floated">
+          <timer interval="1000"  countdown="1800">
+            {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}
+          </timer>
+        </h1>
+      </div>
+      <div class="ui teal inverted indicating progress" id="attempt">
+        <div class="bar" style="transition-duration: 300ms; height: 100%;">
+          <div class='progress'></div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--
+  <div class="ui inverted menu">
+    <a class="down item">
+      <h1 class="ui header">{{testName}}</h1>
+    </a>
+    <a class="down item">
+      Messages
+    </a>
+    <a class="down item">
+      Friends
+    </a>
+  </div> -->
+  <div class="ui two column container grid" id='context'>
     <div class="two column row"></div>
-    <div class="two column row">
+    <!-- <div class="two column row">
       <div class="column">
-        <h1 class="ui header">MCQ Test</h1>
-      </div> 
+        <h1 class="ui header">{{testName}}</h1>
+      </div>
     </div>
-    <div class="ui divider"></div>
-    <div class="two column row">
+    <div class="ui divider"></div>-->
+    <div class="two column row" id='testbox' ng-repeat='question in questions'>
       <div class="column">
-        <h2 class="ui header">Question 1</h2>
+        <h2 class="ui header">Question {{$index + 1}}</h2>
         <div class="ui divider"></div>
         <div class="ui raised segment">
-          This is question 1. Choose A for this question.
+          {{question.statement}}
         </div>
-        <div class="ui form">
-          <div class="grouped fields">
+        <div class="ui form" ng-switch on='question.type'>
+          <div class="grouped fields" ng-switch-when='MCQ'>
             <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>A: A</label>
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]" ng-click="$parent.check()">
+                <label>A: {{question.optionA}}</label>
               </div>
             </div>
 
             <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>B: No</label>
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]">
+                <label>B: {{question.optionB}}</label>
               </div>
             </div>
 
             <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>C: No</label>
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]">
+                <label>C: {{question.optionC}}</label>
               </div>
             </div>
 
             <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>D: Nyet</label>
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]">
+                <label>D: {{question.optionD}}</label>
+              </div>
+            </div>
+            <script type='text/javascript'>
+
+              $('.ui.checkbox')
+                .checkbox()
+              ;
+            </script>
+
+          </div>
+          <div class="grouped fields" ng-switch-when='MAT'>
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]">
+                <label>A: {{question.optionA}}</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]">
+                <label>B: {{question.optionB}}</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]">
+                <label>C: {{question.optionC}}</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$index}}]">
+                <label>D: {{question.optionD}}</label>
+              </div>
+            </div>
+            <script type='text/javascript'>
+
+              $('.ui.checkbox')
+                .checkbox()
+              ;
+            </script>
+          </div>
+          <div ng-switch-when='SBT'>
+            <div class='twelve wide field'>
+              <textarea name='reference-answer' placeholder=''>
+              </textarea>
+            </div>
+          </div>
+          <div ng-switch-when='SBC'>
+            <div>
+              <style>
+                  .ace_editor { height: 200px;}
+              </style>
+              <div class='twelve wide field'>
+                <div ui-ace>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="two column row">
-      <div class="column">
-        <h2 class="ui header">Question 2</h2>
-        <div class="ui divider"></div>
-        <div class="ui raised segment">
-          This is question 2. Choose A for this question.
-        </div>
-        <div class="ui form">
-          <div class="grouped fields">
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>A: A</label>
-              </div>
-            </div>
 
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>B: No</label>
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>C: No</label>
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="answers[0]">
-                <label>D: Nyet</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="ui divider"></div>
     <div class="two column row">
       <button class="ui primary button">
@@ -109,17 +147,19 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-$(document).ready(function () {
 
-    $('.ui.accordion').accordion();
-});
+<script type='text/javascript'>
+  $('.ui.sticky')
+    .sticky({
+      context: '#context'
+    })
+  ;
 
-$('.ui.rating')
-  .rating({
-    initialRating: 3,
-    maxRating: 5,
-    interactive: false
-  })
-;
+  $('#attempt').progress({
+    value: 1,
+    total: 4,
+    text: {
+      ratio: '{value} of {total}'
+    }
+  });
 </script>

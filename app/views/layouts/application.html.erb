@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<%= render partial: 'layouts/sidebar' %>
+<%= render partial: 'layouts/sidebar' unless params[:action] == "test" %>
 <%= yield %>
 
 </body>
