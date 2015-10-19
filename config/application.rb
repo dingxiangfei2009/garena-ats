@@ -27,5 +27,6 @@ module GarenaAts
     config.assets.precompile += ['jquery/dist/jquery.js']
     config.assets.precompile += ['semantic/dist/*']
     config.assets.precompile += %w( semantic/dist/semantic.css semantic/dist/semantic.js )
+    config.active_record.schema_format = :ruby
   end
 end
