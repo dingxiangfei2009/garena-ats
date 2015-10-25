@@ -11,7 +11,12 @@
       </div>
       <div class="ui teal inverted indicating progress" id="attempt">
         <div class="bar" style="transition-duration: 300ms; height: 100%;">
-          <div class='progress'></div>
+          <div class="ui right aligned container">
+            <div class='right floated right aligned column black'>
+              <h3 class="ui header">25%</h3>
+              <!-- <div class='right floated right aligned label' style='width: 100%;'>25%</div> -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -46,8 +51,8 @@
         <div class="ui form" ng-switch on='question.type'>
           <div class="grouped fields" ng-switch-when='MCQ'>
             <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]" ng-click="$parent.check()">
+              <div class="ui checkbox" ng-click="check()">
+                <input type="checkbox" name="answers[{{$index}}]">
                 <label>A: {{question.optionA}}</label>
               </div>
             </div>
@@ -117,7 +122,7 @@
           </div>
           <div ng-switch-when='SBT'>
             <div class='twelve wide field'>
-              <textarea name='reference-answer' placeholder=''>
+              <textarea name='reference-answer' name="answers[{{$index}}]" placeholder=''>
               </textarea>
             </div>
           </div>
@@ -127,7 +132,15 @@
                   .ace_editor { height: 200px;}
               </style>
               <div class='twelve wide field'>
-                <div ui-ace>
+                <div ui-ace="{
+                    useWrapMode : true,
+                    showGutter: false,
+                    theme:'twilight',
+                    mode: 'xml',
+                    firstLineNumber: 5,
+                    onLoad: aceLoaded,
+                    onChange: aceChanged
+                  }">
                 </div>
               </div>
             </div>
@@ -155,11 +168,5 @@
     })
   ;
 
-  $('#attempt').progress({
-    value: 1,
-    total: 4,
-    text: {
-      ratio: '{value} of {total}'
-    }
-  });
+
 </script>

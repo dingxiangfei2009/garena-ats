@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require angular/angular
 //= require angular-rails-templates
-//= require turbolinks
 //= require_tree .
 //= require semantic/dist/semantic
 //= require_tree ../../../vendor/assets/components/semantic/dist
@@ -22,8 +21,10 @@
 //= require textAngular/dist/textAngular-sanitize.min
 //= require textAngular/dist/textAngular.min
 //= require ace-builds/src-min-noconflict/ace
+//= require_tree ../../../vendor/assets/components/ace-builds/src
 //= require angular-ui-ace/ui-ace
 //= require momentjs/min/moment.min.js
 //= require momentjs/min/locales.min.js
 //= require humanize-duration/humanize-duration.js
 //= require angular-timer/dist/angular-timer.js
+//= require jquery.turbolinks

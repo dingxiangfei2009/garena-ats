@@ -4,7 +4,12 @@
   </style>
   <label>Reference Code</label>
   <div class='twelve wide field'>
-    <div ui-ace>
+    <div ui-ace="{
+      useWrapMode : true,
+      showGutter: true,
+      theme:'twilight',
+      mode: 'markdown'
+    }" ng-model='data.value'>
     </div>
   </div>
 </div>

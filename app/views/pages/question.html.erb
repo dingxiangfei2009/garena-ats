@@ -9,15 +9,17 @@
     </div>
     <div class='ui divider'></div>
     <div class='one column row'>
-      <form class='ui form' style='width: 100%;'>
+      <form class='ui form' style='width: 100%;' ng-repeat="question in questions">
         <div class='fluid field'>
           <div class='eight wide field'>
             <label>Topic</label>
             <div class='ui selection dropdown'>
               <i class='dropdown icon'></i>
-              <div class='default text'>Select Topic</div>
+              <div class='default text'>{{question.topic.name}}</div>
               <div class='menu'>
-                  <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}'>{{topic.name}}</div>
+                  <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}' ng-click='topicChange(topic, $parent.$index)'>
+                    {{topic.name}}
+                  </div>
               </div>
             </div>
           </div>
@@ -25,9 +27,9 @@
             <label>Question Type</label>
             <div class='ui selection dropdown'>
               <i class='dropdown icon'></i>
-              <div class='default text'>Select Question Type</div>
+              <div class='default text'>{{question.type.name}}</div>
               <div class='menu'>
-                  <div ng-repeat="type in types" class='item' ng-click='typeChange(type.value)' value='{{type.value}}'>
+                  <div ng-repeat="type in types" class='item' ng-click='typeChange(type, $parent.$index)' value='{{type.value}}'>
                     {{type.name}}
                   </div>
               </div>
@@ -37,10 +39,10 @@
             <label>Difficulty Level</label>
             <div class='ui selection dropdown'>
               <i class='dropdown icon'></i>
-              <div class='default text'>Select Difficulty Level</div>
+              <div class='default text'>{{question.difficulty.name}}</div>
               <div class='menu'>
-                  <div ng-repeat="difficulty in difficulties" class='item' value='{{difficulty.value}}'>
-                    {{difficulty.name}}
+                  <div ng-repeat="diff in difficulties" class='item' ng-click='difficultyChange(diff, $parent.$index)' value='{{diff.value}}'>
+                    {{diff.name}}
                   </div>
               </div>
             </div>
@@ -48,29 +50,41 @@
           <label>Question</label>
           <div class='fields'>
             <div class='twelve wide field'>
-              <div text-angular ng-model='htmlVariable'></div>
+              <div text-angular ng-model='question.questionText'></div>
             </div>
           </div>
-          <div class='answers'ng-switch on='typeState'>
-            <div ng-switch-when='MCQ'>
-              <multiple-choice></multiple-choice>
+          <div class='answers'ng-switch on='question.type.value'>
+            <div ng-switch-when='1'>
+              <multiple-choice data='question.answer'
+              ng-init="question.answer = [{value: '', isCorrect: false}, {value: '', isCorrect: false}, {value: '', isCorrect: false},
+              {value: '', isCorrect: false}]"></multiple-choice>
             </div>
-            <div ng-switch-when='MAS'>
-              <multiple-answer></multiple-answer>
+            <div ng-switch-when='2'>
+              <multiple-answer data='question.answer' ng-init="question.answer = [{value: '', isCorrect: false}, {value: '', isCorrect: false},
+              {value: '', isCorrect: false}, {value: '', isCorrect: false}]" display='display'></multiple-answer>
             </div>
-            <div ng-switch-when='SBT'>
-              <subjective-text></subjective-text>
+            <div ng-switch-when='3'>
+              <subjective-text data='question.answer' ng-init="question.answer = {value: ''}"></subjective-text>
             </div>
-            <div ng-switch-when='SBC'>
-              <subjective-code></subjective-code>
+            <div ng-switch-when='4'>
+              <subjective-code data='question.answer' ng-init="question.answer = {value: ''}"></subjective-code>
             </div>
           </div>
         </div>
         <div class='one column row'>
           <br>
         </div>
+        <button class='ui red button' ng-click='remove($index)'>
+          Remove Question
+        </button>
+        <script type='text/javascript'>
+          $('.ui.dropdown')
+            .dropdown()
+          ;
+        </script>
+        <div class='ui divider'></div>
       </form>
-      <button type='button' class='ui icon button'>
+      <button type='button' class='ui icon button' ng-click="addQuestion()">
         <i class='plus icon'></i>
       </button>
 
@@ -87,79 +101,79 @@ $('.ui.dropdown')
   .dropdown()
 ;
 
-
-$('.ui.icon.button').on('click', function(){
-  var str = "<div class='ui divider'></div>" +
-  "<div class='fluid field'>" +
-    "<div class='eight wide field'>" +
-      "<label>Topic</label>" +
-      "<div class='ui selection dropdown'>" +
-        "<i class='dropdown icon'></i>" +
-        "<div class='default text'>Select Topic</div>" +
-        "<div class='menu'>" +
-          "<div class='item' data-value='ADS'>Algorithm and Data Structures</div>" +
-          "<div class='item' data-value='AND'>Android</div>" +
-          "<div class='item' data-value='IOS'>iOS</div>" +
-          "<div class='item' data-value='NET'>Networks</div>" +
-          "<div class='item' data-value='OPS'>Operating Systems</div>" +
-          "<div class='item' data-value='SEC'>Security</div>" +
-          "<div class='item' data-value='WEB'>Web Development</div>" +
-        "</div>" +
-      "</div>" +
-    "</div>" +
-    "<label>Question</label>" +
-    "<div class='fields'>" +
-      "<div class='twelve wide field'>" +
-        "<textarea rows='2'></textarea>" +
-      "</div>" +
-    "</div>" +
-    "<div class='inline one fields'>" +
-      "<label>Option A</label>" +
-      "<div class='six wide field'>" +
-        "<input type='text' name='option-a' placeholder=''>" +
-        "<div class='ui slider checkbox'>" +
-          "<input type='radio' name='answer' checked='checked'>" +
-        "</div>" +
-      "</div>" +
-    "</div>" +
-    "<div class='inline one fields'>" +
-      "<label>Option B</label>" +
-      "<div class='six wide field'>" +
-        "<input type='text' name='option-b' placeholder=''>" +
-        "<div class='ui slider checkbox'>" +
-          "<input type='radio' name='answer'>" +
-        "</div>" +
-      "</div>" +
-    "</div>" +
-    "<div class='inline one fields'>" +
-      "<label>Option C</label>" +
-      "<div class='six wide field'>" +
-        "<input type='text' name='option-c' placeholder=''>" +
-        "<div class='ui slider checkbox'>" +
-          "<input type='radio' name='answer'>" +
-        "</div>" +
-      "</div>" +
-    "</div>" +
-    "<div class='inline one fields'>" +
-      "<label>Option D</label>" +
-      "<div class='six wide field'>" +
-        "<input type='text' name='option-d' placeholder=''>" +
-        "<div class='ui slider checkbox'>" +
-          "<input type='radio' name='answer'>" +
-        "</div>" +
-      "</div>" +
-    "</div>" +
-  "</div>" +
-  "<div class='one column row'>" +
-    "<br>" +
-  "</div>";
-  $('.ui.form').append(str);
-  $('.ui.dropdown')
-    .dropdown()
-  ;
-  $('.ui.slider.checkbox')
-    .checkbox()
-  ;
-});
+//
+// $('.ui.icon.button').on('click', function(){
+//   var str = "<div class='ui divider'></div>" +
+//   "<div class='fluid field'>" +
+//     "<div class='eight wide field'>" +
+//       "<label>Topic</label>" +
+//       "<div class='ui selection dropdown'>" +
+//         "<i class='dropdown icon'></i>" +
+//         "<div class='default text'>Select Topic</div>" +
+//         "<div class='menu'>" +
+//           "<div class='item' data-value='ADS'>Algorithm and Data Structures</div>" +
+//           "<div class='item' data-value='AND'>Android</div>" +
+//           "<div class='item' data-value='IOS'>iOS</div>" +
+//           "<div class='item' data-value='NET'>Networks</div>" +
+//           "<div class='item' data-value='OPS'>Operating Systems</div>" +
+//           "<div class='item' data-value='SEC'>Security</div>" +
+//           "<div class='item' data-value='WEB'>Web Development</div>" +
+//         "</div>" +
+//       "</div>" +
+//     "</div>" +
+//     "<label>Question</label>" +
+//     "<div class='fields'>" +
+//       "<div class='twelve wide field'>" +
+//         "<textarea rows='2'></textarea>" +
+//       "</div>" +
+//     "</div>" +
+//     "<div class='inline one fields'>" +
+//       "<label>Option A</label>" +
+//       "<div class='six wide field'>" +
+//         "<input type='text' name='option-a' placeholder=''>" +
+//         "<div class='ui slider checkbox'>" +
+//           "<input type='radio' name='answer' checked='checked'>" +
+//         "</div>" +
+//       "</div>" +
+//     "</div>" +
+//     "<div class='inline one fields'>" +
+//       "<label>Option B</label>" +
+//       "<div class='six wide field'>" +
+//         "<input type='text' name='option-b' placeholder=''>" +
+//         "<div class='ui slider checkbox'>" +
+//           "<input type='radio' name='answer'>" +
+//         "</div>" +
+//       "</div>" +
+//     "</div>" +
+//     "<div class='inline one fields'>" +
+//       "<label>Option C</label>" +
+//       "<div class='six wide field'>" +
+//         "<input type='text' name='option-c' placeholder=''>" +
+//         "<div class='ui slider checkbox'>" +
+//           "<input type='radio' name='answer'>" +
+//         "</div>" +
+//       "</div>" +
+//     "</div>" +
+//     "<div class='inline one fields'>" +
+//       "<label>Option D</label>" +
+//       "<div class='six wide field'>" +
+//         "<input type='text' name='option-d' placeholder=''>" +
+//         "<div class='ui slider checkbox'>" +
+//           "<input type='radio' name='answer'>" +
+//         "</div>" +
+//       "</div>" +
+//     "</div>" +
+//   "</div>" +
+//   "<div class='one column row'>" +
+//     "<br>" +
+//   "</div>";
+  // $('.ui.form').append(str);
+//   $('.ui.dropdown')
+//     .dropdown()
+//   ;
+//   $('.ui.slider.checkbox')
+//     .checkbox()
+//   ;
+// });
 
 </script>

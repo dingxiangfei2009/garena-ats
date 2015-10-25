@@ -1,44 +1,23 @@
 <div>
-  <div class='inline one fields'>
-    <label>Option A</label>
-    <div class='six wide field'>
-      <input type='text' name='option-a' placeholder=''>
-      <div class='ui slider checkbox'>
-        <input type='checkbox' name='answer' checked='checked'>
+  <div class='inline one fields' ng-repeat='ans in data'>
+    <label>Option {{$index + 1}}</label>
+    <div class='ten wide field'>
+      <textarea rows='2' class='six wide field' placeholder='' ng-model='data[$index].value'></textarea>
+      <div class='ui checkbox' ng-click='data[$index].isCorrect = !data[$index].isCorrect' ng-model='data[$index].isCorrect' >
+        <input type='checkbox'>
       </div>
+      <button class='ui red button' ng-click='data.splice($index, 1)'>
+        Remove
+      </button>
+      <button class='ui green button' ng-if='$index == (data.length - 1)' ng-click="data.push({value: '', isCorrect: false})">
+        Add Option
+      </button>
     </div>
-  </div>
-  <div class='inline one fields'>
-    <label>Option B</label>
-    <div class='six wide field'>
-      <input type='text' name='option-b' placeholder=''>
-      <div class='ui slider checkbox'>
-        <input type='checkbox' name='answer'>
-      </div>
-    </div>
-  </div>
-  <div class='inline one fields'>
-    <label>Option C</label>
-    <div class='six wide field'>
-      <input type='text' name='option-c' placeholder=''>
-      <div class='ui slider checkbox'>
-        <input type='checkbox' name='answer'>
-      </div>
-    </div>
-  </div>
-  <div class='inline one fields'>
-    <label>Option D</label>
-    <div class='six wide field'>
-      <input type='text' name='option-d' placeholder=''>
-      <div class='ui slider checkbox'>
-        <input type='checkbox' name='answer'>
-      </div>
-    </div>
-  </div>
-  <script type='text/javascript'>
+    <script type='text/javascript'>
 
-    $('.ui.slider.checkbox')
-      .checkbox()
-    ;
-  </script>
+      $('.ui.checkbox')
+        .checkbox()
+      ;
+    </script>
+  </div>
 </div>

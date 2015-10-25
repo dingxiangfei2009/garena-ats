@@ -1,37 +1,37 @@
 <div ng-controller="SidebarController" class='ui left visible sidebar inverted vertical menu'>
 
-  <h2 class='ui grey header'>Tests</h2>
-  <a class='item' id="all-test" ng-click="clickAlert('all-test')">
+  <h2 class='ui grey header item'>Tests</h2>
+  <a class='item' id="all-test" ng-click="clickAlert('all-test')" ng-href="/tests">
     <h3 class='ui grey header'>View All Tests</h3>
   </a>
-  <a class='item' id="add-question" ng-click="clickAlert('add-question')">
+  <a class='item' id="add-question" ng-click="clickAlert('add-question')" ng-href="/question">
     <h3 class='ui grey header'>Add Questions</h3>
   </a>
-  <a class='item' id="preview-test" ng-click="clickAlert('preview-test')">
+  <a class='item' id="preview-test" ng-click="clickAlert('preview-test')" ng-href="/test">
     <h3 class='ui grey header'>Preview Test</h3>
   </a>
 
-  <h2 class='ui grey header'>Interviews</h2>
+  <!-- <h2 class='ui grey header item'>Interviews</h2>
   <a class='item' id="all-interviews" ng-click="clickAlert('all-interviews')">
     <h3 class='ui grey header'>View All Interviews</h3>
   </a>
   <a class='item' id="add-interview-question" ng-click="clickAlert('add-interview-question')">
     <h3 class='ui grey header'>Add Questions</h3>
-  </a>
+  </a> -->
 
-  <h2 class='ui grey header'>Jobs</h2>
-  <a class='item' id="all-positions" ng-click="clickAlert('all-positions')">
+  <h2 class='ui grey header item'>Jobs</h2>
+  <a class='item' id="all-positions" ng-click="clickAlert('all-positions')" ng-href="/jobs">
     <h3 class='ui grey header'>View All Positions</h3>
   </a>
-  <a class='item' id="add-position" ng-click="clickAlert('add-position')">
+  <a class='item' id="add-position" ng-click="clickAlert('add-position')" ng-href="/job">
     <h3 class='ui grey header'>Add Position</h3>
   </a>
 
-  <div class='ui grid' style='width: 100%;'>
-    <div class="row"></div>
-    <div class="centered row">
+  <div class='ui three column grid' style='width: 100%;'>
+    <div class="column"></div>
+    <div class="centered column">
         <button class="ui red button centered">Logout</button>
     </div>
-    <div class="row"></div>
+    <div class="column"></div>
   </div>
 </div>
