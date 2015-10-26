@@ -12,9 +12,7 @@
  *
  *= require_tree .
  *= require_self
- *= require bootstrap-css-only/css/bootstrap
  *= require semantic/dist/semantic
  *= require_tree ../../../vendor/assets/components/semantic/dist
- *= require textAngular/dist/textAngular
  *= require font-awesome/css/font-awesome
  */

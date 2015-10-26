@@ -1,6 +1,6 @@
 // (function() {
 /* global angular */
-var app = angular.module('app', ['textAngular', 'templates', 'ui.ace', 'timer']);
+var app = angular.module('app', ['templates', 'ui.ace', 'timer']);
 
 app.controller('SidebarController', function($scope) {
 
@@ -133,6 +133,10 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
     $scope.topicChange = function(topic, index) {
       $scope.questions[index].topic = topic;
     }
+    $scope.useRichText = function(index) {
+      $('.richtext').hide();
+      CKEDITOR.replace('editor' + index);
+    }
     $scope.addQuestion = function() {
       // alert("Current length is " + $scope.questionList.length + " new length is " + ($scope.questionList.length + 1));
       // $scope.questionList.push($scope.questionList.length + 1);
@@ -184,9 +188,13 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
         }).then(function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
+            // $('.ui.positive.message').removeClass('hidden').addClass('visible');
+            $('.ui.dimmer').removeClass('disabled').addClass('active');
           }, function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
+            // $('.ui.positive.message').removeClass('hidden').addClass('visible');
+            $('.ui.dimmer').removeClass('disabled').addClass('active');
           });
       }
     }

@@ -9,6 +9,19 @@
     </div>
     <div class='ui divider'></div>
     <div class='one column row'>
+      <div class="ui page disabled dimmer">
+        <div class="content">
+          <div class="center">Your questions have been successfully submitted!</div>
+        </div>
+      </div>
+      <div class="ui positive floating hidden message">
+        <i class="close icon"></i>
+        <div class="header">
+          Your questions have been successfully submitted!
+        </div>
+      </div>
+    </div>
+    <div class='one column row'>
       <form class='ui form' style='width: 100%;' ng-repeat="question in questions">
         <div class='fluid field'>
           <div class='eight wide field'>
@@ -48,9 +61,20 @@
             </div>
           </div>
           <label>Question</label>
+          <button class='ui basic button richtext' ng-click='useRichText($index)'>
+            Rich Text
+          </button>
+          <br>
           <div class='fields'>
             <div class='twelve wide field'>
-              <div text-angular ng-model='question.questionText'></div>
+              <textarea id='editor{{$index}}' ng-model='question.questionText' >
+              </textarea>
+              <script>
+                // window.onload = function() {
+                  // CKEDITOR.replaceAll('ckeditors');
+                // }
+
+              </script>
             </div>
           </div>
           <div class='answers'ng-switch on='question.type.value'>
@@ -88,7 +112,7 @@
         <i class='plus icon'></i>
       </button>
 
-      <button class='ui primary button'>
+      <button class='ui primary button' ng-click='submit()'>
         Submit
       </button>
     </div>
@@ -99,6 +123,14 @@
 
 $('.ui.dropdown')
   .dropdown()
+;
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
 ;
 
 //

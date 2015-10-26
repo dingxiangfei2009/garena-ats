@@ -12,14 +12,12 @@
 //
 //= require jquery/dist/jquery
 //= require jquery_ujs
+//= require ckeditor/init
 //= require angular/angular
 //= require angular-rails-templates
-//= require_tree .
+//= require_tree ./controllers
 //= require semantic/dist/semantic
 //= require_tree ../../../vendor/assets/components/semantic/dist
-//= require textAngular/dist/textAngular-rangy.min
-//= require textAngular/dist/textAngular-sanitize.min
-//= require textAngular/dist/textAngular.min
 //= require ace-builds/src-min-noconflict/ace
 //= require_tree ../../../vendor/assets/components/ace-builds/src
 //= require angular-ui-ace/ui-ace

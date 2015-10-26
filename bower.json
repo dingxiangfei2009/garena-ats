@@ -16,7 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap-css-only": "*" ,
+    "bootstrap-css-only": "*",
     "textAngular": "*",
     "ace-builds": "*",
     "angular-ui-ace": "*",
