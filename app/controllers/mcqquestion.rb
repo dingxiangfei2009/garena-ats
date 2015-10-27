@@ -1,5 +1,6 @@
 require 'models/question'
 require 'models/question_statistic'
+require 'json'
 
 class MCQQuestion {
 	self.token = 'mcq'
@@ -27,6 +28,7 @@ class MCQQuestion {
 		statistics = question.question_statistic
 		if !statistics
 			statistics = QuestionStatistic.new
+			statistics.question_id = question.id
 		end
 		# we only count backward to a given timespan
 		options[:timespan] = options[:timespan] or DateTime.now
@@ -45,5 +47,7 @@ class MCQQuestion {
 				end
 			end
 		end
+		statistics.data = JSON.generate counts
+		statistics.save
 	end
 }
