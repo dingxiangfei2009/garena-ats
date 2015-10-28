@@ -1,10 +1,8 @@
-require
-
 namespace :db do
 	desc "populate data"
 	task :populate => :environment do
-		require 'models/question_type'
-		require 'models/field'
+		require "#{Rails.root}/app/models/question_type.rb"
+		require "#{Rails.root}/app/models/field"
 		# INSERT INTO `garena_ats_development`.`question_types` (`id`, `name`) VALUES ('1', 'mas');
 		# INSERT INTO `garena_ats_development`.`question_types` (`id`, `name`) VALUES ('2', 'sbc');
 		# INSERT INTO `garena_ats_development`.`question_types` (`id`, `name`) VALUES ('3', 'sbt');
