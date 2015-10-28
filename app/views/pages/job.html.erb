@@ -1,4 +1,4 @@
-<div class='pusher'>
+<div class='pusher' ng-controller='JobController'>
   <div class='ui container grid'>
     <div class='one column row'>
     </div>
@@ -14,7 +14,7 @@
           <div class='eight wide field'>
             <label>Position</label>
             <div class="field">
-              <input type="text" name="position-name" placeholder="Postion Title">
+              <input type="text" name="position-name" placeholder="Position Title">
             </div>
             <div class="field">
               <label>Skills Required</label>
@@ -66,89 +66,67 @@
             </div> -->
 
           </div>
-          <div class='inline fields'>
-            <label>Topic 1</label>
-            <div class='twelve wide field'>
-              <div class='ui selection dropdown'>
-                <i class='dropdown icon'></i>
-                <div class='default text'>Select Topic</div>
-                <div class='menu'>
-                  <div class='item' data-value='ADS'>Algorithm and Data Structures</div>
-                  <div class='item' data-value='AND'>Android</div>
-                  <div class='item' data-value='IOS'>iOS</div>
-                  <div class='item' data-value='NET'>Networks</div>
-                  <div class='item' data-value='OPS'>Operating Systems</div>
-                  <div class='item' data-value='SEC'>Security</div>
-                  <div class='item' data-value='WEB'>Web Development</div>
-                </div>
-              </div>
-              <div class='two wide field'>
-                <input class='' type='number'></input>
-              </div>
-            </div>
-          </div>
-          <div class='inline fields'>
-            <label>Topic 2</label>
-            <div class='twelve wide field'>
-              <div class='ui selection dropdown'>
-                <i class='dropdown icon'></i>
-                <div class='default text'>Select Topic</div>
-                <div class='menu'>
-                  <div class='item' data-value='ADS'>Algorithm and Data Structures</div>
-                  <div class='item' data-value='AND'>Android</div>
-                  <div class='item' data-value='IOS'>iOS</div>
-                  <div class='item' data-value='NET'>Networks</div>
-                  <div class='item' data-value='OPS'>Operating Systems</div>
-                  <div class='item' data-value='SEC'>Security</div>
-                  <div class='item' data-value='WEB'>Web Development</div>
-                </div>
-              </div>
-              <div class='two wide field'>
-                <input class='' type='number'></input>
-              </div>
-            </div>
-          </div>
-          <div class='inline fields'>
-            <label>Topic 3</label>
-            <div class='twelve wide field'>
-              <div class='ui selection dropdown'>
-                <i class='dropdown icon'></i>
-                <div class='default text'>Select Topic</div>
-                <div class='menu'>
-                  <div class='item' data-value='ADS'>Algorithm and Data Structures</div>
-                  <div class='item' data-value='AND'>Android</div>
-                  <div class='item' data-value='IOS'>iOS</div>
-                  <div class='item' data-value='NET'>Networks</div>
-                  <div class='item' data-value='OPS'>Operating Systems</div>
-                  <div class='item' data-value='SEC'>Security</div>
-                  <div class='item' data-value='WEB'>Web Development</div>
-                </div>
-              </div>
-              <div class='two wide field'>
-                <input class='' type='number'></input>
-              </div>
-            </div>
-          </div>
-          <div class='inline fields'>
-            <label>Topic 4</label>
-            <div class='twelve wide field'>
-              <div class='ui selection dropdown'>
-                <i class='dropdown icon'></i>
-                <div class='default text'>Select Topic</div>
-                <div class='menu'>
-                  <div class='item' data-value='ADS'>Algorithm and Data Structures</div>
-                  <div class='item' data-value='AND'>Android</div>
-                  <div class='item' data-value='IOS'>iOS</div>
-                  <div class='item' data-value='NET'>Networks</div>
-                  <div class='item' data-value='OPS'>Operating Systems</div>
-                  <div class='item' data-value='SEC'>Security</div>
-                  <div class='item' data-value='WEB'>Web Development</div>
-                </div>
-              </div>
-              <div class='two wide field'>
-                <input class='' type='number'></input>
-              </div>
-            </div>
+          <label>Test Parameters for Job Position</label>
+          <div class='twelve wide field'>
+            <table class="ui very padded table">
+              <thead>
+                <tr>
+                  <th>Topic</th>
+                  <th>Number of Questions</th>
+                  <th>Difficulty</th>
+                  <th>Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat='jobTopic in jobTopics track by $index'>
+                  <td>
+                    <div class='ui selection dropdown'>
+                      <i class='dropdown icon'></i>
+                      <div class='default text'>Select Topic</div>
+                      <div class='menu'>
+                          <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}'>
+                            {{topic.name}}
+                          </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <input class='' type='number' min='1' placeholder='Number of Questions'></input>
+                  </td>
+                  <td>
+                    <div class='ui selection dropdown'>
+                      <i class='dropdown icon'></i>
+                      <div class='default text'>Select Difficulty Level</div>
+                      <div class='menu'>
+                          <div ng-repeat="diff in difficulties" class='item' value='{{diff.value}}'>
+                            {{diff.name}}
+                          </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <button class='ui red button' ng-click='jobTopics.splice($index, 1)'>
+                      Remove
+                    </button>
+                  </td>
+                  <script type='text/javascript'>
+                    $('.ui.dropdown')
+                      .dropdown()
+                    ;
+                  </script>
+                </tr>
+                <tfoot class="full-width">
+                  <tr>
+                    <th></th>
+                    <th colspan="4">
+                      <div class="ui right floated green labeled icon button" ng-click='jobTopics.push(jobTopics.length + 1)'>
+                        <i class="plus icon"></i> Add Topic
+                      </div>
+                    </th>
+                  </tr>
+                </tfoot>
+              </tbody>
+            </table>
           </div>
         </div>
         <div class='one column row'>

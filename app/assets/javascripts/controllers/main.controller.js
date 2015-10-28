@@ -50,54 +50,50 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
     $scope.topics = [
       {
         name: 'Algorithm and Data Structures',
-        value: '1'
+        value: 'adt'
       },
       {
         name: 'Android',
-        value: '2'
+        value: 'and'
       },
       {
         name: 'iOS',
-        value: '3'
+        value: 'ios'
       },
       {
         name: 'Networks',
-        value: '4'
+        value: 'net'
       },
       {
         name: 'Operating Systems',
-        value: '5'
+        value: 'ops'
       },
       {
         name: 'Security',
-        value: '6'
+        value: 'sec'
       },
       {
         name: 'Web Development',
-        value: '7'
+        value: 'web'
       }
     ];
 
     $scope.types = [
       {
-        name: 'Multiple Choice',
-        value: '1'
-      },
-      {
         name: 'Multiple Answer',
-        value: '2'
+        value: 'mas'
       },
       {
         name: 'Subjective Text',
-        value: '3'
+        value: 'sbt'
       },
       {
         name: 'Subjective Code',
-        value: '4'
+        value: 'sbc'
       },
       {
         name: 'Fill in the Blanks',
-        value: '5'
+        value: 'fib'
       }
     ];
 
@@ -133,6 +129,9 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
     $scope.topicChange = function(topic, index) {
       $scope.questions[index].topic = topic;
     }
+    $scope.markChange = function(mark, index) {
+      $scope.questions[index].mark = mark;
+    }
     $scope.useRichText = function(index) {
       $('.richtext').hide();
       CKEDITOR.replace('editor' + index);
@@ -150,6 +149,7 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
           name: 'Select Question Type',
           value: '0'
         },
+        mark: 0,
         questionText: '',
         difficulty: {
           name: 'Select Difficulty Level',
@@ -171,33 +171,109 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
       $scope.questions.splice(index, 1);
     }
     $scope.submit = function() {
-      for(question in $scope.questions){
-        alert(JSON.stringify(question));
-        $http({
-          method: 'POST',
-          url: '/question/new',
-          data: {
-            type: question.type,
-            topic: question.topic,
-            difficulty: question.difficulty,
-            configuration: {
-              questionText: question.questionText,
-              answer: question.answer
-            }
-          }
-        }).then(function successCallback(response) {
-            // this callback will be called asynchronously
-            // when the response is available
-            // $('.ui.positive.message').removeClass('hidden').addClass('visible');
-            $('.ui.dimmer').removeClass('disabled').addClass('active');
-          }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            // $('.ui.positive.message').removeClass('hidden').addClass('visible');
-            $('.ui.dimmer').removeClass('disabled').addClass('active');
+      alert(angular.toJson($scope.questions));
+      for(var x = 0; x < $scope.questions.length; x++){
+        var question = $scope.questions[x];
+
+        question.questionText = CKEDITOR.instances['editor' + x].getData();
+
+        var configuration = angular.toJson({
+          description: question.questionText,
+          answer: question.answer
+        });
+
+        var dataToSend = {
+          type: question.type.value,
+          topic: question.topic.value,
+          mark: question.mark,
+          difficulty: question.difficulty.value,
+          configuration: configuration
+        };
+
+        alert(angular.toJson(dataToSend));
+
+        // $http({
+        //   method: 'POST',
+        //   url: '/question',
+        //   data: dataToSend
+        // }).then(function successCallback(response) {
+        //     // this callback will be called asynchronously
+        //     // when the response is available
+        //     // $('.ui.positive.message').removeClass('hidden').addClass('visible');
+        //     $('.ui.modal')
+        //       .modal('show')
+        //     ;
+        //   }, function errorCallback(response) {
+        //     // called asynchronously if an error occurs
+        //     // or server returns response with an error status.
+        //     // $('.ui.positive.message').removeClass('hidden').addClass('visible');
+        //     $('.ui.modal')
+        //       .modal('show')
+        //     ;
+        //   });
+
+          $.ajax({
+            method: "POST",
+            url: "/question",
+            data: dataToSend
+          })
+          .success(function(data) {
+            console.log(data);
           });
       }
     }
+
+}]);
+
+app.controller('JobController', ['$scope', '$http', function($scope, $http) {
+
+  $scope.jobTopics = [1];
+
+  $scope.topics = [
+    {
+      name: 'Algorithm and Data Structures',
+      value: '1'
+    },
+    {
+      name: 'Android',
+      value: '2'
+    },
+    {
+      name: 'iOS',
+      value: '3'
+    },
+    {
+      name: 'Networks',
+      value: '4'
+    },
+    {
+      name: 'Operating Systems',
+      value: '5'
+    },
+    {
+      name: 'Security',
+      value: '6'
+    },
+    {
+      name: 'Web Development',
+      value: '7'
+    }
+  ];
+
+  $scope.difficulties = [
+    {
+      name: 'Easy',
+      value: '1'
+    },
+    {
+      name: 'Medium',
+      value: '2'
+    },
+    {
+      name: 'Difficult',
+      value: '3'
+    }
+  ];
 
 }]);
 
