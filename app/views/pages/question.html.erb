@@ -9,19 +9,6 @@
     </div>
     <div class='ui divider'></div>
     <div class='one column row'>
-      <div class="ui page disabled dimmer">
-        <div class="content">
-          <div class="center">Your questions have been successfully submitted!</div>
-        </div>
-      </div>
-      <div class="ui positive floating hidden message">
-        <i class="close icon"></i>
-        <div class="header">
-          Your questions have been successfully submitted!
-        </div>
-      </div>
-    </div>
-    <div class='one column row'>
       <form class='ui form' style='width: 100%;' ng-repeat="question in questions">
         <div class='fluid field'>
           <div class='eight wide field'>
@@ -48,16 +35,22 @@
               </div>
             </div>
           </div>
-          <div class='eight wide field'>
-            <label>Difficulty Level</label>
-            <div class='ui selection dropdown'>
-              <i class='dropdown icon'></i>
-              <div class='default text'>{{question.difficulty.name}}</div>
-              <div class='menu'>
-                  <div ng-repeat="diff in difficulties" class='item' ng-click='difficultyChange(diff, $parent.$index)' value='{{diff.value}}'>
-                    {{diff.name}}
-                  </div>
+          <div class = "two column row">
+            <div class='six wide field'>
+              <label>Difficulty Level</label>
+              <div class='ui selection dropdown'>
+                <i class='dropdown icon'></i>
+                <div class='default text'>{{question.difficulty.name}}</div>
+                <div class='menu'>
+                    <div ng-repeat="diff in difficulties" class='item' ng-click='difficultyChange(diff, $parent.$index)' value='{{diff.value}}'>
+                      {{diff.name}}
+                    </div>
+                </div>
               </div>
+            </div>
+            <div class='six wide field'>
+              <label>Marks for this Question</label>
+                <input class='' type='number' min='1' ng-model='question.mark'></input>
             </div>
           </div>
           <label>Question</label>
@@ -78,20 +71,15 @@
             </div>
           </div>
           <div class='answers'ng-switch on='question.type.value'>
-            <div ng-switch-when='1'>
-              <multiple-choice data='question.answer'
-              ng-init="question.answer = [{value: '', isCorrect: false}, {value: '', isCorrect: false}, {value: '', isCorrect: false},
-              {value: '', isCorrect: false}]"></multiple-choice>
+            <div ng-switch-when='mas'>
+              <multiple-answer data='question.answer' ng-init="question.answer = [{description: '', correct: false}, {description: '', correct: false},
+              {description: '', correct: false}, {description: '', correct: false}]" display='display'></multiple-answer>
             </div>
-            <div ng-switch-when='2'>
-              <multiple-answer data='question.answer' ng-init="question.answer = [{value: '', isCorrect: false}, {value: '', isCorrect: false},
-              {value: '', isCorrect: false}, {value: '', isCorrect: false}]" display='display'></multiple-answer>
+            <div ng-switch-when='sbt'>
+              <subjective-text data='question.answer' ng-init="question.answer = {description: ''}"></subjective-text>
             </div>
-            <div ng-switch-when='3'>
-              <subjective-text data='question.answer' ng-init="question.answer = {value: ''}"></subjective-text>
-            </div>
-            <div ng-switch-when='4'>
-              <subjective-code data='question.answer' ng-init="question.answer = {value: ''}"></subjective-code>
+            <div ng-switch-when='sbc'>
+              <subjective-code data='question.answer' ng-init="question.answer = {description: ''}"></subjective-code>
             </div>
           </div>
         </div>
@@ -119,6 +107,17 @@
   </div>
 </div>
 
+<div class="ui modal" ng-controller='QuestionController'>
+  <i class="close icon"></i>
+  <div class="header">
+    Questions Added Successfully!
+  </div>
+  <div class="actions">
+    <div class="ui yellow button">Add More Questions</div>
+    <div class="ui blue button">View All Questions</div>
+  </div>
+</div>
+
 <script type='text/javascript'>
 
 $('.ui.dropdown')
@@ -132,80 +131,4 @@ $('.message .close')
     ;
   })
 ;
-
-//
-// $('.ui.icon.button').on('click', function(){
-//   var str = "<div class='ui divider'></div>" +
-//   "<div class='fluid field'>" +
-//     "<div class='eight wide field'>" +
-//       "<label>Topic</label>" +
-//       "<div class='ui selection dropdown'>" +
-//         "<i class='dropdown icon'></i>" +
-//         "<div class='default text'>Select Topic</div>" +
-//         "<div class='menu'>" +
-//           "<div class='item' data-value='ADS'>Algorithm and Data Structures</div>" +
-//           "<div class='item' data-value='AND'>Android</div>" +
-//           "<div class='item' data-value='IOS'>iOS</div>" +
-//           "<div class='item' data-value='NET'>Networks</div>" +
-//           "<div class='item' data-value='OPS'>Operating Systems</div>" +
-//           "<div class='item' data-value='SEC'>Security</div>" +
-//           "<div class='item' data-value='WEB'>Web Development</div>" +
-//         "</div>" +
-//       "</div>" +
-//     "</div>" +
-//     "<label>Question</label>" +
-//     "<div class='fields'>" +
-//       "<div class='twelve wide field'>" +
-//         "<textarea rows='2'></textarea>" +
-//       "</div>" +
-//     "</div>" +
-//     "<div class='inline one fields'>" +
-//       "<label>Option A</label>" +
-//       "<div class='six wide field'>" +
-//         "<input type='text' name='option-a' placeholder=''>" +
-//         "<div class='ui slider checkbox'>" +
-//           "<input type='radio' name='answer' checked='checked'>" +
-//         "</div>" +
-//       "</div>" +
-//     "</div>" +
-//     "<div class='inline one fields'>" +
-//       "<label>Option B</label>" +
-//       "<div class='six wide field'>" +
-//         "<input type='text' name='option-b' placeholder=''>" +
-//         "<div class='ui slider checkbox'>" +
-//           "<input type='radio' name='answer'>" +
-//         "</div>" +
-//       "</div>" +
-//     "</div>" +
-//     "<div class='inline one fields'>" +
-//       "<label>Option C</label>" +
-//       "<div class='six wide field'>" +
-//         "<input type='text' name='option-c' placeholder=''>" +
-//         "<div class='ui slider checkbox'>" +
-//           "<input type='radio' name='answer'>" +
-//         "</div>" +
-//       "</div>" +
-//     "</div>" +
-//     "<div class='inline one fields'>" +
-//       "<label>Option D</label>" +
-//       "<div class='six wide field'>" +
-//         "<input type='text' name='option-d' placeholder=''>" +
-//         "<div class='ui slider checkbox'>" +
-//           "<input type='radio' name='answer'>" +
-//         "</div>" +
-//       "</div>" +
-//     "</div>" +
-//   "</div>" +
-//   "<div class='one column row'>" +
-//     "<br>" +
-//   "</div>";
-  // $('.ui.form').append(str);
-//   $('.ui.dropdown')
-//     .dropdown()
-//   ;
-//   $('.ui.slider.checkbox')
-//     .checkbox()
-//   ;
-// });
-
 </script>

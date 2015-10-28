@@ -2,7 +2,7 @@ class CreateTestResponsesTable < ActiveRecord::Migration
   def change
     create_table :test_responses do |t|
     	t.text :answer
-    	t.text :configuration
+    	t.text :config
     	t.float :mark
     	t.timestamps null: false
         t.references :test, null: false
