@@ -7,10 +7,10 @@ namespace :db do
 		# INSERT INTO `garena_ats_development`.`question_types` (`id`, `name`) VALUES ('2', 'sbc');
 		# INSERT INTO `garena_ats_development`.`question_types` (`id`, `name`) VALUES ('3', 'sbt');
 		# INSERT INTO `garena_ats_development`.`question_types` (`id`, `name`) VALUES ('4', 'fib');
-		QuestionType.create name: mas
-		QuestionType.create name: sbc
-		QuestionType.create name: sbt
-		QuestionType.create name: fib
+		QuestionType.create name: 'mas'
+		QuestionType.create name: 'sbc'
+		QuestionType.create name: 'sbt'
+		QuestionType.create name: 'fib'
 		# INSERT INTO `garena_ats_development`.`fields` (`id`, `name`, `token`) VALUES ('1', 'Android', 'and');
 		# INSERT INTO `garena_ats_development`.`fields` (`id`, `name`, `token`) VALUES ('2', 'Algorithms and Data Structures', 'adt');
 		# INSERT INTO `garena_ats_development`.`fields` (`id`, `name`, `token`) VALUES ('3', 'iOS', 'ios');
