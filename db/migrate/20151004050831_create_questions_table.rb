@@ -7,6 +7,7 @@ class CreateQuestionsTable < ActiveRecord::Migration
     	t.text :description
         t.text :config
     	t.integer :difficulty
+        t.integer :mark
         t.references :field, null: false, index: true
         t.references :question_type, null: false, index: true
     end

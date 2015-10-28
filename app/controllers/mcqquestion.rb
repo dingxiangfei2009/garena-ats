@@ -4,10 +4,13 @@ require 'json'
 
 class MCQQuestion {
 	self.token = 'mcq'
-	def initialize(config)
+	def initialize(question)
+		config = JSON.parse question.config
 		@description = config['description']
 		@choices = config['choices']
 		@mark_scheme = config['mark_scheme']
+		@mark_scheme = []	# TODO flexible marking scheme
+		@mark = question.mark
 	end
 	# render the question
 	def render(question_config)
@@ -21,7 +24,11 @@ class MCQQuestion {
 				count += 1
 			end
 		end
-		@mark_scheme[answer_options.length][count]	# return
+		correct_total = @choices.count { |choice| choice['correct'] }
+		# TODO flexible marking scheme
+		@mark_scheme[correct_total] = Array.new(answer_options) {|i| 0};
+		@mark_scheme[correct_total][correct_total] = mark;
+		@mark_scheme[correct_total][count]	# return
 	end
 	def get_statistics(question, options)
 		counts = Hash.new
@@ -49,5 +56,6 @@ class MCQQuestion {
 		end
 		statistics.data = JSON.generate counts
 		statistics.save
+		statistics
 	end
 }
