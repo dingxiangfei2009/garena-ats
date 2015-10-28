@@ -4,7 +4,7 @@ class CreateQuestionStatistics < ActiveRecord::Migration
       t.references :question, null: false
       t.text :data
       t.string :tag
-      t.double :value
+      t.float :value
       t.datetime :latest, null: false
       t.timestamps null: false
     end
