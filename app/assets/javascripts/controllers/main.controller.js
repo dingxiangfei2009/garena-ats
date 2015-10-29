@@ -175,7 +175,10 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
       for(var x = 0; x < $scope.questions.length; x++){
         var question = $scope.questions[x];
 
-        question.questionText = CKEDITOR.instances['editor' + x].getData();
+        var editor = CKEDITOR.instances['editor' + x];
+        if (editor) {
+          question.questionText = CKEDITOR.instances['editor' + x].getData();
+        }
 
         var configuration = angular.toJson({
           description: question.questionText,
@@ -219,6 +222,7 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
           })
           .success(function(data) {
             console.log(data);
+            $('.ui.modal').modal('show');
           });
       }
     }

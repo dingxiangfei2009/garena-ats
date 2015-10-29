@@ -19,7 +19,7 @@
 //= require semantic/dist/semantic
 //= require_tree ../../../vendor/assets/components/semantic/dist
 //= require ace-builds/src-min-noconflict/ace
-//= require_tree ../../../vendor/assets/components/ace-builds/src
+//= require ace-builds/src-min-noconflict/theme-twilight
 //= require angular-ui-ace/ui-ace
 //= require momentjs/min/moment.min.js
 //= require momentjs/min/locales.min.js
