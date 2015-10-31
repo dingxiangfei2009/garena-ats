@@ -26,6 +26,11 @@ class TestController < ApplicationController
 		ids
 	end
 	###############
+	# new
+	# POST
+	# job [integer]: job id
+	# email [string]: email address
+	# duration [integer]: duration of test, unit is second
 	def new
 		job_id = params[:job]
 		email = params[:email]
@@ -85,6 +90,7 @@ class TestController < ApplicationController
 
 			test = Test.new
 			test.application_id = application.id
+			test.duration = params[:duration]
 			test.save
 
 			question_set.shuffle!	# shuffle
@@ -100,7 +106,18 @@ class TestController < ApplicationController
 		end
 	end
 	def get
-		#
+		id = params[:id]
+		test = Test.find id
+		test_info = Hash.new
+		test_info[:info] = test
+		test_info[:questions] = []
+		test.test_responses.each do |test_response|
+			question_info = Hash.new
+			question_info[:config] = test_response
+			question_info[:info] = test_response.question
+			test_info[:question_info] << question_info
+		end
+		render :json => test_info
 	end
 	def save
 		#
