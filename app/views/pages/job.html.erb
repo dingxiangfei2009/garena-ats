@@ -14,57 +14,40 @@
           <div class='eight wide field'>
             <label>Position</label>
             <div class="field">
-              <input type="text" name="position-name" placeholder="Position Title">
+              <input type="text" name="position-name" placeholder="Position Title" ng-model='job.pos'>
+            </div>
+            <div class='sixteen wide field'>
+              <label>Description</label>
+              <textarea placeholder="Enter job description here" ng-model='job.desc'></textarea>
             </div>
             <div class="field">
               <label>Skills Required</label>
               <div class="twelve wide field">
-                <select class="ui fluid search dropdown" multiple="">
-                  <option value="">Skills</option>
-                  <option value="AND">Android Development</option>
-                  <option value="IOS">iOS Development</option>
-                  <option value="JAV">Java</option>
-                  <option value="WEB">Web Development</option>
-                  <option value="ROR">Ruby-on-Rails</option>
-                  <option value="DJA">Django</option>
-                  <option value="FLS">Full-Stack</option>
-                  <option value="DBA">Database</option>
-                  <option value="DAN">Data Analysis</option>
-                  <option value="SEC">Security</option>
-                  <option value="SER">Server Admin</option>
-                </select>
+                <div class="ui fluid multiple search normal selection dropdown">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">Skills</div>
+                  <div class="menu">
+                    <div ng-repeat='topic in topics' class="item" data-value="{{topic.value}}">{{topic.name}}</div>
+                  </div>
+                </div>
               </div>
             </div>
+
           </div>
           <div class='sixteen wide field'>
             <label>Experience Level</label>
             <div class="eight wide field">
-              <select class='ui dropdown'>
-                <option value="">Experience</option>
-                <option value="none">Entry Level</option>
-                <option value="two">2 Years Experience</option>
-                <option value="five">5 Years Experience</option>
-                <option value="ten">10 Years Experience</option>
-              </select>
-            </div>
-            <!-- <div class='inline three fields'>
-              <div class='four wide field'>
-                <button type='button' class='ui icon button'>
-                  <i class='minus icon'></i>
-                </button>
-              </div>
-              <div class='field'>
-                <div class='ui blue progress'>
-                  <div class='bar' style='transition-duration: 300ms;width: 64%;'></div>
+              <div class='ui selection dropdown'>
+                <i class='dropdown icon'></i>
+                <div class='default text'>Select Experience</div>
+                <div class='menu'>
+                    <div ng-repeat="exp in experiences" class='item' data-value='{{exp.value}}'
+                    ng-click='expChange(exp, $index)'>
+                      {{exp.name}}
+                    </div>
                 </div>
               </div>
-              <div class='four wide field'>
-                <button type='button' class='ui icon button'>
-                  <i class='plus icon'></i>
-                </button>
-              </div>
-            </div> -->
-
+            </div>
           </div>
           <label>Test Parameters for Job Position</label>
           <div class='twelve wide field'>
@@ -78,34 +61,38 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat='jobTopic in jobTopics track by $index'>
+                <tr ng-repeat='testParameter in job.testParameters'>
                   <td>
                     <div class='ui selection dropdown'>
                       <i class='dropdown icon'></i>
-                      <div class='default text'>Select Topic</div>
+                      <div class='default text'>{{job.testParameters[$index].topic.name}}</div>
                       <div class='menu'>
-                          <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}'>
+                          <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}'
+                          ng-click='topicChange(topic, $parent.$index)'>
                             {{topic.name}}
                           </div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <input class='' type='number' min='1' placeholder='Number of Questions'></input>
+                    <input class='' type='number' min='1' placeholder='Number of Questions'
+                    ng-model='testParameter.no'>
+                  </input>
                   </td>
                   <td>
                     <div class='ui selection dropdown'>
                       <i class='dropdown icon'></i>
-                      <div class='default text'>Select Difficulty Level</div>
+                      <div class='default text'>{{job.testParameters[$index].diff.name}}</div>
                       <div class='menu'>
-                          <div ng-repeat="diff in difficulties" class='item' value='{{diff.value}}'>
+                          <div ng-repeat="diff in difficulties" class='item' value='{{diff.value}}'
+                          ng-click='diffChange(diff, $parent.$index)'>
                             {{diff.name}}
                           </div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <button class='ui red button' ng-click='jobTopics.splice($index, 1)'>
+                    <button class='ui red button' ng-click='job.testParameters.splice($index, 1)'>
                       Remove
                     </button>
                   </td>
@@ -119,7 +106,18 @@
                   <tr>
                     <th></th>
                     <th colspan="4">
-                      <div class="ui right floated green labeled icon button" ng-click='jobTopics.push(jobTopics.length + 1)'>
+                      <div class="ui right floated green labeled icon button"
+                      ng-click="job.testParameters.push({
+                        topic: {
+                          name: 'Select Topic',
+                          value: 'def'
+                        },
+                        no: 1,
+                        diff: {
+                          name: 'Select Difficulty',
+                          value: '0'
+                        }
+                      })">
                         <i class="plus icon"></i> Add Topic
                       </div>
                     </th>
@@ -133,10 +131,21 @@
           <br>
         </div>
       </form>
-      <button class='ui primary button'>
+      <button class='ui primary button' ng-click='submit()'>
         Submit
       </button>
     </div>
+  </div>
+</div>
+
+<div class="ui modal" ng-controller='JobController'>
+  <i class="close icon"></i>
+  <div class="header">
+    Job Position Added Successfully!
+  </div>
+  <div class="actions">
+    <div class="ui yellow button" href='job'>Add Another Job</div>
+    <div class="ui blue button" href='jobs'>View All Jobs</div>
   </div>
 </div>
 

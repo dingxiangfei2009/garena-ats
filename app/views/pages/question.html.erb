@@ -17,7 +17,8 @@
               <i class='dropdown icon'></i>
               <div class='default text'>{{question.topic.name}}</div>
               <div class='menu'>
-                  <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}' ng-click='topicChange(topic, $parent.$index)'>
+                  <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}'
+                  ng-click='topicChange(topic, $parent.$index)'>
                     {{topic.name}}
                   </div>
               </div>
@@ -29,7 +30,8 @@
               <i class='dropdown icon'></i>
               <div class='default text'>{{question.type.name}}</div>
               <div class='menu'>
-                  <div ng-repeat="type in types" class='item' ng-click='typeChange(type, $parent.$index)' value='{{type.value}}'>
+                  <div ng-repeat="type in types" class='item'
+                  ng-click='typeChange(type, $parent.$index)' value='{{type.value}}'>
                     {{type.name}}
                   </div>
               </div>
@@ -42,7 +44,8 @@
                 <i class='dropdown icon'></i>
                 <div class='default text'>{{question.difficulty.name}}</div>
                 <div class='menu'>
-                    <div ng-repeat="diff in difficulties" class='item' ng-click='difficultyChange(diff, $parent.$index)' value='{{diff.value}}'>
+                    <div ng-repeat="diff in difficulties" class='item'
+                    ng-click='difficultyChange(diff, $parent.$index)' value='{{diff.value}}'>
                       {{diff.name}}
                     </div>
                 </div>
@@ -72,7 +75,8 @@
           </div>
           <div class='answers'ng-switch on='question.type.value'>
             <div ng-switch-when='mas'>
-              <multiple-answer data='question.answer' ng-init="question.answer = [{description: '', correct: false}, {description: '', correct: false},
+              <multiple-answer data='question.answer'
+              ng-init="question.answer = [{description: '', correct: false}, {description: '', correct: false},
               {description: '', correct: false}, {description: '', correct: false}]" display='display'></multiple-answer>
             </div>
             <div ng-switch-when='sbt'>
