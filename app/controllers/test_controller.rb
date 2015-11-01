@@ -3,6 +3,7 @@ require 'application'
 require 'test'
 require 'field'
 require 'question'
+require 'mcqquestion'
 
 class TestController < ApplicationController
 	# random_pick_questions
@@ -112,7 +113,11 @@ class TestController < ApplicationController
 	end
 	def get
 		id = params[:id]
-		test = Test.find id
+		test = Test.find! id
+		if (!test.start_time)
+			test.start_time = Time.now
+			test.save
+		end
 		test_info = Hash.new
 		test_info[:info] = test
 		test_info[:questions] = []
@@ -125,6 +130,26 @@ class TestController < ApplicationController
 		render :json => test_info
 	end
 	def save
-		#
+		id = params[:id]
+		test = Test.where('start_time + seconds(duration) >= now()').where(id: id).first
+		if test
+			responses = JSON.parse params[:answers]
+			responses.each do |response|
+				test_response = TestResponse.find! response['id']
+				test_response.answer = response['answer']
+				test_response.save
+			end
+			test.test_response.each do |response|
+				question = response.question
+				question_type = question.question_type
+				case question_type.name
+				when 'mas'
+					marker = MCQQuestion.new question
+					response.mark = marker.mark response
+					response.save
+				end
+			end
+			render :json => {status: success}
+		end
 	end
 end

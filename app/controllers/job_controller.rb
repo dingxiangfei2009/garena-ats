@@ -21,7 +21,7 @@ class JobController < ApplicationController
 		test_parameter = Hash.new
 		test_parameter[:topics] = []
 		byebug
-		job_test_info['topics'].each do |field_info|
+		job_test_info.each do |field_info|
 			field = Field.find_by! token: field_info['topic']
 			JobField.create job_id: job.id, field_id: field.id
 

@@ -1,13 +1,13 @@
-require 'models/question'
-require 'models/question_statistic'
+require 'question'
+require 'question_statistic'
 require 'json'
 
-class MCQQuestion {
-	self.token = 'mcq'
+class MCQQuestion
+	@@token = 'mcq'
 	def initialize(question)
 		config = JSON.parse question.config
 		@id = question.id
-		@description = config['description']
+		@description = question.description
 		@choices = config['answer']
 		@mark_scheme = config['mark_scheme']
 		@mark_scheme = []	# TODO flexible marking scheme
@@ -28,7 +28,7 @@ class MCQQuestion {
 			if @choices[answer_option]['correct']
 				count += 1
 			end
-			question_statistic_tag = 'mcq:' + answer_option + ':chosen'
+			question_statistic_tag = 'mas:' + answer_option + ':chosen'
 			question_statistic =
 				QuestionStatistic.find_by(
 					question_id: @id,
@@ -54,10 +54,10 @@ class MCQQuestion {
 		@choices.each do |choice, key|
 			count = QuestionStatistic.where(
 				question_id: @id,
-				tag: 'mcq:' + choice + ':chosen')
+				tag: 'mas:' + choice + ':chosen')
 				.sum(:value)
 			counts[key] = count
 		end
 		counts
 	end
-}
+end
