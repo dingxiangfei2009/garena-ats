@@ -1,172 +1,135 @@
-<div class="pusher" ng-controller='TestController'>
-  <div>
-    <div class="ui black inverted segment sticky">
-      <div class='row'>
-        <h1 class="ui inverted header left floated">{{testName}}</h1>
-        <h1 class="ui inverted header right floated">
-          <timer interval="1000"  countdown="1800">
-            {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}
-          </timer>
-        </h1>
-      </div>
-      <div class="ui teal inverted indicating progress" id="attempt">
-        <div class="bar" style="transition-duration: 300ms; height: 100%;">
-          <div class="ui right aligned container">
-            <div class='right floated right aligned column black'>
-              <h3 class="ui header">25%</h3>
-              <!-- <div class='right floated right aligned label' style='width: 100%;'>25%</div> -->
-            </div>
+<div ng-controller="TestController" >
+  <div class='ui left visible sidebar inverted vertical menu'>
+
+    <h2 class='ui grey header item'>{{testName}}</h2>
+
+    <h2 class='ui grey header item'>
+      <timer interval="1000"  countdown="1800">
+        {{minutes}} : {{seconds}}
+      </timer>
+    </h2>
+
+    <div class="ui vertical steps">
+      <div ng-repeat='question in questions'>
+        <div class="step" ng-class="{'completed': $parent.attempt[$index]!=null}">
+          <i class="red warning icon"></i>
+          <div class="content">
+            <div class="title">Q{{$index + 1}}</div>
           </div>
         </div>
       </div>
     </div>
+
   </div>
-<!--
-  <div class="ui inverted menu">
-    <a class="down item">
-      <h1 class="ui header">{{testName}}</h1>
-    </a>
-    <a class="down item">
-      Messages
-    </a>
-    <a class="down item">
-      Friends
-    </a>
-  </div> -->
-  <div class="ui two column container grid" id='context'>
-    <div class="two column row"></div>
-    <!-- <div class="two column row">
-      <div class="column">
-        <h1 class="ui header">{{testName}}</h1>
-      </div>
-    </div>
-    <div class="ui divider"></div>-->
-    <div class="two column row" id='testbox' ng-repeat='question in questions'>
-      <div class="column">
-        <h2 class="ui header">Question {{$index + 1}}</h2>
-        <div class="ui divider"></div>
-        <div class="ui raised segment">
-          {{question.statement}}
+
+  <div class="pusher">
+    <!-- <div>
+      <div class="ui black inverted segment sticky">
+
+        <div class="ui teal inverted indicating progress" id="attempt">
+          <div class="bar" style="transition-duration: 300ms; height: 50%;">
+            <div class="ui right aligned container">
+              <div class='right floated right aligned column black'>
+                <h3 class="ui header">25%</h3>
+                <div class='right floated right aligned label' style='width: 100%;'>25%</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="ui form" ng-switch on='question.type'>
-          <div class="grouped fields" ng-switch-when='MCQ'>
-            <div class="field">
-              <div class="ui checkbox" ng-click="check()">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>A: {{question.optionA}}</label>
-              </div>
-            </div>
 
-            <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>B: {{question.optionB}}</label>
-              </div>
-            </div>
+      </div>
+    </div> -->
+  <!--
+    <div class="ui inverted menu">
+      <a class="down item">
+        <h1 class="ui header">{{testName}}</h1>
+      </a>
+      <a class="down item">
+        Messages
+      </a>
+      <a class="down item">
+        Friends
+      </a>
+    </div> -->
+    <div class="ui two column container grid" id='context'>
+      <div class="two column row"></div>
 
-            <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>C: {{question.optionC}}</label>
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>D: {{question.optionD}}</label>
-              </div>
-            </div>
-            <script type='text/javascript'>
-
-              $('.ui.checkbox')
-                .checkbox()
-              ;
-            </script>
-
+      <!-- <div class="two column row">
+        <div class="column">
+          <h1 class="ui header">{{testName}}</h1>
+        </div>
+      </div>
+      <div class="ui divider"></div>-->
+      <div class="row" id='testbox' ng-repeat='question in questions'>
+        <div class="column">
+          <h2 class="ui header">Question {{$index + 1}}</h2>
+          <div class="ui divider"></div>
+          <div class="ui raised segment">
+            {{question.statement}}
           </div>
-          <div class="grouped fields" ng-switch-when='MAT'>
-            <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>A: {{question.optionA}}</label>
+          <div class="ui form" ng-switch on='question.type'>
+            <div class="grouped fields" ng-switch-when='mas'>
+              <div class="field" ng-repeat='ans in question.answers'>
+                <div class="ui checkbox" ng-click='attempted($parent.$index)'>
+                  <input type="checkbox" name="answers[{{$parent.$index}}]" ng-change='attempted($parent.$index)'
+                  ng-model='answer[$parent.$index]'>
+                  <label>{{$index + 1}}: {{ans.description}}</label>
+                </div>
               </div>
-            </div>
+              <script type='text/javascript'>
 
-            <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>B: {{question.optionB}}</label>
-              </div>
+                $('.ui.checkbox')
+                  .checkbox()
+                ;
+              </script>
             </div>
-
-            <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>C: {{question.optionC}}</label>
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="ui checkbox">
-                <input type="checkbox" name="answers[{{$index}}]">
-                <label>D: {{question.optionD}}</label>
-              </div>
-            </div>
-            <script type='text/javascript'>
-
-              $('.ui.checkbox')
-                .checkbox()
-              ;
-            </script>
-          </div>
-          <div ng-switch-when='SBT'>
-            <div class='twelve wide field'>
-              <textarea name='reference-answer' name="answers[{{$index}}]" placeholder=''>
-              </textarea>
-            </div>
-          </div>
-          <div ng-switch-when='SBC'>
-            <div>
-              <style>
-                  .ace_editor { height: 200px;}
-              </style>
+            <div ng-switch-when='sbt'>
               <div class='twelve wide field'>
-                <div ui-ace="{
-                    useWrapMode : true,
-                    showGutter: false,
-                    theme:'twilight',
-                    mode: 'xml',
-                    firstLineNumber: 5,
-                    onLoad: aceLoaded,
-                    onChange: aceChanged
-                  }">
+                <textarea name='reference-answer' name="answers[{{$index}}]" placeholder='' ng-change='attempted($index)'
+                ng-model='answer[$index]'>
+                </textarea>
+              </div>
+            </div>
+            <div ng-switch-when='sbc'>
+              <div>
+                <style>
+                    .ace_editor { height: 200px;}
+                </style>
+                <div class='twelve wide field'>
+                  <div ui-ace="{
+                      useWrapMode : true,
+                      showGutter: false,
+                      theme:'twilight',
+                      onLoad: aceLoaded,
+                      onChange: aceChanged
+                    }" ng-change='attempted($index)'  ng-model='answer[$index]'>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="ui divider"></div>
-    <div class="two column row">
-      <button class="ui primary button">
-        Submit your answers
-      </button>
-      <button class="ui secondary button">
-        Reset
-      </button>
+      <div class="ui divider"></div>
+      <div class="two column row">
+        <button class="ui primary button">
+          Submit your answers
+        </button>
+        <button class="ui secondary button">
+          Reset
+        </button>
+      </div>
     </div>
   </div>
+
+  <script type='text/javascript'>
+    $('.ui.sticky')
+      .sticky({
+        context: '#context'
+      })
+    ;
+
+
+  </script>
 </div>
-
-<script type='text/javascript'>
-  $('.ui.sticky')
-    .sticky({
-      context: '#context'
-    })
-  ;
-
-
-</script>
