@@ -12,16 +12,16 @@ class JobController < ApplicationController
 	#     each element [string]: field token
 	def new
 		job = Job.new
-		job_info = JSON.parse params[:data]
-		job.title = job_info['title']
-		job.description = job_info['description']
-		job.experience = job_info['experience']
+		job_test_info = JSON.parse params[:test_parameter]
+		job.title = params[:title]
+		job.description = params[:description]
+		job.experience = params[:experience]
 		job.save
 
 		test_parameter = Hash.new
 		test_parameter[:topics] = []
 		byebug
-		job_info['topics'].each do |field_info|
+		job_test_info['topics'].each do |field_info|
 			field = Field.find_by! token: field_info['topic']
 			JobField.create job_id: job.id, field_id: field.id
 
