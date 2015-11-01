@@ -7,6 +7,7 @@ class QuestionController < ApplicationController
 			field = Field.find_by! token: params[:topic]
 			question = Question.new
 			question.config = params[:configuration]
+			question.description = params[:description]
 			question.difficulty = params[:difficulty]
 			question.mark = params[:mark]
 			question.question_type_id = question_type.id	# link to question type

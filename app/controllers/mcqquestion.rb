@@ -18,13 +18,16 @@ class MCQQuestion
 		question_options = question_config['options']
 	end
 	def mark(test_response)
+		byebug
 		count = 0;
+		return 0 if test_response.answer === nil
 		answer = JSON.parse test_response.answer
 		answer_choices = answer['choices']
 		QuestionStatistic.destroy_all(
 			question_id: @id,
 			test_response_id: test_response.id)
 		answer_choices.each do |answer_option|
+			next if !@choices[answer_option]
 			if @choices[answer_option]['correct']
 				count += 1
 			end
@@ -46,7 +49,7 @@ class MCQQuestion
 		end
 		correct_total = @choices.count { |choice| choice['correct'] }
 		# TODO flexible marking scheme
-		@mark_scheme[correct_total] = Array.new(answer_choices) {|i| 0};
+		@mark_scheme[correct_total] = Array.new(@choices.length + 1, 0)
 		@mark_scheme[correct_total][correct_total] = @mark;
 		@mark_scheme[correct_total][count] || 0	# return
 	end
