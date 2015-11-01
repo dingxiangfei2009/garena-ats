@@ -59,30 +59,5 @@ class MCQQuestion {
 			counts[key] = count
 		end
 		counts
-		# statistics = question.question_statistic
-		# if !statistics
-		# 	statistics = QuestionStatistic.new
-		# 	statistics.question_id = question.id
-		# end
-		# we only count backward to a given timespan
-		# options[:timespan] = options[:timespan] or DateTime.now
-		# responses = Question.joins(:test_responses).select('answer').where(
-		# 	test_responses: {
-		# 		id: question.id
-		# 		})
-		# 	.where('test_responses.updated_at > ?', options[:timespan]);
-		# responses.each do |response|
-		# 	answer = JSON.parse response.answer
-		# 	answer.each do |answer_option|
-		# 		if counts[answer_option]
-		# 			counts[answer_option] += 1
-		# 		else
-		# 			counts[answer_option] = 1
-		# 		end
-		# 	end
-		# end
-		# statistics.data = JSON.generate counts
-		# statistics.save
-		# statistics
 	end
 }

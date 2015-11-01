@@ -14,14 +14,20 @@ class TestController < ApplicationController
 			:difficulty => var[:difficulty])
 			.count
 		i = 0
-		while i < count do
+		retry_count = 0
+		while i < count && retry_count < 100 do
 			question = Question.where(
 				:field_id => var[:topic],
 				:difficulty => var[:difficulty]
 				).where.not(id: ids)
 				.offset(rand(count - i)).first
-			ids << question.id if question
-			i += 1
+			if question
+				ids << question.id
+				i += 1
+				retry_count = 0
+			else
+				retry_count += 1
+			end
 		end
 		ids
 	end
@@ -35,7 +41,6 @@ class TestController < ApplicationController
 		job_id = params[:job]
 		email = params[:email]
 		begin
-			byebug
 			candidate = Candidate.find_by! email: email
 			application =
 				Application.find_by! ({

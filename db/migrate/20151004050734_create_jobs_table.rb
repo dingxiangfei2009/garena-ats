@@ -4,6 +4,7 @@ class CreateJobsTable < ActiveRecord::Migration
     	t.string :title
     	t.string :department
     	t.text :description
+    	t.integer :experience
     end
   end
 end
