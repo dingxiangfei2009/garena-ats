@@ -52,6 +52,8 @@ gem 'sprockets'
 
 gem 'ckeditor'
 
+gem 'byebug'
+
 # Semantic UI assets
 
 # gem 'less-rails-semantic_ui', '~> x.x.x'
