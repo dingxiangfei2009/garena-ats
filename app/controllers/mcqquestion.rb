@@ -3,7 +3,7 @@ require 'question_statistic'
 require 'json'
 
 class MCQQuestion
-	@@token = 'mcq'
+	@@token = 'mas'
 	def initialize(question)
 		config = JSON.parse question.config
 		@id = question.id
@@ -20,15 +20,15 @@ class MCQQuestion
 	def mark(test_response)
 		count = 0;
 		answer = JSON.parse test_response.answer
-		answer_options = answer['options']
+		answer_choices = answer['choices']
 		QuestionStatistic.destroy_all(
 			question_id: @id,
 			test_response_id: test_response.id)
-		answer_options.each do |answer_option|
+		answer_choices.each do |answer_option|
 			if @choices[answer_option]['correct']
 				count += 1
 			end
-			question_statistic_tag = 'mas:' + answer_option + ':chosen'
+			question_statistic_tag = "mas:#{answer_option}:chosen"
 			question_statistic =
 				QuestionStatistic.find_by(
 					question_id: @id,
@@ -41,20 +41,21 @@ class MCQQuestion
 				question_statistic.tag = question_statistic_tag
 			end
 			question_statistic.value = 1
+			question_statistic.latest = Time.now
 			question_statistic.save
 		end
 		correct_total = @choices.count { |choice| choice['correct'] }
 		# TODO flexible marking scheme
-		@mark_scheme[correct_total] = Array.new(answer_options) {|i| 0};
-		@mark_scheme[correct_total][correct_total] = mark;
-		@mark_scheme[correct_total][count]	# return
+		@mark_scheme[correct_total] = Array.new(answer_choices) {|i| 0};
+		@mark_scheme[correct_total][correct_total] = @mark;
+		@mark_scheme[correct_total][count] || 0	# return
 	end
 	def statistics(question, options)
 		counts = Hash.new
 		@choices.each do |choice, key|
 			count = QuestionStatistic.where(
 				question_id: @id,
-				tag: 'mas:' + choice + ':chosen')
+				tag: "mas:#{choice}:chosen")
 				.sum(:value)
 			counts[key] = count
 		end

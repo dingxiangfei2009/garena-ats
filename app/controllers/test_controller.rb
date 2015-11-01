@@ -54,7 +54,7 @@ class TestController < ApplicationController
 				JSON.parse test_parameter.descriptor
 			question_set = []
 			options['topics'].each do |topic|
-				field = Field.find_by! token: topic['token']
+				field = Field.find_by! token: topic['topic']
 				# count = Question.where(field_id: field).count
 				question_set +=
 					random_pick_questions ({
@@ -96,6 +96,7 @@ class TestController < ApplicationController
 
 			test = Test.new
 			test.application_id = application.id
+			byebug
 			test.duration = params[:duration]
 			test.save
 
@@ -113,7 +114,7 @@ class TestController < ApplicationController
 	end
 	def get
 		id = params[:id]
-		test = Test.find! id
+		test = Test.find id
 		if (!test.start_time)
 			test.start_time = Time.now
 			test.save
@@ -125,31 +126,30 @@ class TestController < ApplicationController
 			question_info = Hash.new
 			question_info[:config] = test_response
 			question_info[:info] = test_response.question
-			test_info[:question_info] << question_info
+			test_info[:questions] << question_info
 		end
 		render :json => test_info
 	end
 	def save
 		id = params[:id]
-		test = Test.where('start_time + seconds(duration) >= now()').where(id: id).first
-		if test
-			responses = JSON.parse params[:answers]
-			responses.each do |response|
-				test_response = TestResponse.find! response['id']
-				test_response.answer = response['answer']
-				test_response.save
-			end
-			test.test_response.each do |response|
-				question = response.question
-				question_type = question.question_type
-				case question_type.name
-				when 'mas'
-					marker = MCQQuestion.new question
-					response.mark = marker.mark response
-					response.save
-				end
-			end
-			render :json => {status: success}
+		test = Test.where('date_add(start_time, interval duration second) >= now()').where(id: id).first
+		byebug
+		responses = JSON.parse params[:answer]
+		responses.each do |response|
+			test_response = TestResponse.find response['id']
+			test_response.answer = response['answer']
+			test_response.save
 		end
+		test.test_responses.each do |response|
+			question = response.question
+			question_type = question.question_type
+			case question_type.name
+			when 'mas'
+				marker = MCQQuestion.new question
+				response.mark = marker.mark response
+				response.save
+			end
+		end
+		render :json => {status: 'success'}
 	end
 end
