@@ -112,6 +112,13 @@ class TestController < ApplicationController
 			render :json => e
 		end
 	end
+	def render_question(question)
+		case question.question_type.name
+		when 'mas'
+			renderer = MCQQuestion.new question
+			return renderer.render nil
+		end
+	end
 	def get
 		id = params[:id]
 		test = Test.find id
@@ -123,9 +130,17 @@ class TestController < ApplicationController
 		test_info[:info] = test
 		test_info[:questions] = []
 		test.test_responses.each do |test_response|
+			question = test_response.question
 			question_info = Hash.new
-			question_info[:config] = test_response
-			question_info[:info] = test_response.question
+			question_info[:config] = {
+				:id => test_response.id,
+				:answer => test_response.answer
+			}
+			question_info[:info] = {
+				:description => question.description,
+				:question_type => question.question_type.name,
+				:config => render_question(question)
+			}
 			test_info[:questions] << question_info
 		end
 		render :json => test_info

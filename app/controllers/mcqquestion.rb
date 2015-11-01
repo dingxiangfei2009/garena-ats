@@ -15,7 +15,12 @@ class MCQQuestion
 	end
 	# render the question
 	def render(question_config)
-		question_options = question_config['options']
+		render_config = Hash.new
+		render_config[:answer] = []
+		@choices.each do |choice|
+			render_config[:answer] << {:description => choice['description']}
+		end
+		JSON.generate render_config
 	end
 	def mark(test_response)
 		byebug
