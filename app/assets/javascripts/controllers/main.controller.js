@@ -112,6 +112,7 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
       }
     ];
 
+
     $scope.toggleState = function() {
         $scope.state = !$scope.state;
     };
@@ -413,52 +414,96 @@ app.controller('TestsController', function($scope) {
 
 });
 
-app.controller('TestController', function($scope) {
+app.controller('TestController', ['$scope', '$http', function($scope, $http) {
   $scope.testName = 'Garena Android Developer Test';
 
-  $scope.questions = [
-    {
-      type: 'MCQ',
-      statement: 'Which of the following are true?',
-      optionA: 'The Void class extends the Class class.',
-      optionB: 'The Float class extends the Double class.',
-      optionC: 'The System class extends the Runtime class',
-      optionD: 'The Integer class extends the Number class.'
-    },
-    {
-      type: 'MAT',
-      statement: 'Which of the following is true?',
-      optionA: 'The Class class is the superclass of the Object class.',
-      optionB: 'The Object class is final.',
-      optionC: 'The Class objects are constructed by the JVM as classes are loaded by an instance of java.lang.ClassLoader',
-      optionD: 'None of the above.'
-    },
-    {
-      type: 'SBT',
-      statement: 'Describe briefly how over-riding is different from over-loading',
-    },
-    {
-      type: 'SBC',
-      statement: 'Write a function to perform bubble-sort. The function takes in an array of 10 numbers as parameter.',
-    }
-  ];
+  $scope.attempt = [];
+  $scope.answer = [];
+
+  $scope.aceEditor = {};
+
+  $scope.questions = [];
+  //   {
+  //     type: 'mas',
+  //     statement: 'Which of the following are true?',
+  //     optionA: 'The Void class extends the Class class.',
+  //     optionB: 'The Float class extends the Double class.',
+  //     optionC: 'The System class extends the Runtime class',
+  //     optionD: 'The Integer class extends the Number class.'
+  //   },
+  //   {
+  //     type: 'mas',
+  //     statement: 'Which of the following is true?',
+  //     optionA: 'The Class class is the superclass of the Object class.',
+  //     optionB: 'The Object class is final.',
+  //     optionC: 'The Class objects are constructed by the JVM as classes are loaded by an instance of java.lang.ClassLoader',
+  //     optionD: 'None of the above.'
+  //   },
+  //   {
+  //     type: 'sbt',
+  //     statement: 'Describe briefly how over-riding is different from over-loading',
+  //   },
+  //   {
+  //     type: 'sbc',
+  //     statement: 'Write a function to perform bubble-sort. The function takes in an array of 10 numbers as parameter.',
+  //   }
+  // ];
+
+  $scope.types = ['mas', 'sbt', 'sbc'];
 
   $scope.aceLoaded = function(_editor) {
     // Options
-
+    $scope.aceEditor = _editor;
   };
 
   $scope.aceChanged = function(e) {
     //
     console.log('Ace editor changed');
     // Get Current Value
-    var currentValue = _editor.getSession().getValue();
+    var currentValue = $scope.aceEditor.getSession().getValue();
     console.log(currentValue);
   };
 
   $scope.check = function() {
     // alert("you checked me out");
   };
+
+
+  // $scope.getQuestions = function() {
+    // $.getJSON('test/1', function (data) {
+    //   alert(angular.toJson(data));
+    //   for (var x = 0; x < data.length; x++) {
+    //     $scope.questions.push({
+    //       type: $scope.types[data.questions[x].info.question_type_id],
+    //       statement: $scope.types[data.questions[x].info.description],
+    //       answers: angular.fromJson(data.questions[x].info.config)
+    //     });
+    //   }
+    // });
+
+    $http.get("test/1")
+    .success(function(result) {
+      var data = angular.fromJson(result);
+      alert(angular.toJson(data));
+      alert(data.questions.length + " " + result.questions.length);
+      for (var x = 0; x < data.questions.length; x++) {
+        $scope.questions.push({
+          type: data.questions[x].info.question_type,
+          statement: data.questions[x].info.description,
+          answers: angular.fromJson(data.questions[x].info.config).answer
+        });
+      }
+    });
+  // }
+
+  $scope.attempted = function(index){
+    console.log(index);
+    $scope.attempt[index] = true;
+  };
+
+  // $scope.$watch('$viewContentLoaded', function() {
+  //   $scope.getQuestions();
+  // });
 
   $('#attempt').progress({
     value: 1,
@@ -468,7 +513,7 @@ app.controller('TestController', function($scope) {
     }
   });
 
-});
+}]);
 
 app.directive('multipleChoice', function() {
   return {
