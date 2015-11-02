@@ -70,17 +70,16 @@
           <div class="ui form" ng-switch on='question.type'>
             <div class="grouped fields" ng-switch-when='mas'>
               <div class="field" ng-repeat='ans in question.answers'>
-                <div class="ui checkbox" ng-click='attempted($parent.$index)'>
+                <div class="ui checkbox" ng-click='attempted($parent.$index, $element)'>
                   <input type="checkbox" name="answers[{{$parent.$index}}]" ng-change='attempted($parent.$index)'
                   ng-model='answer[$parent.$index]'>
                   <label>{{$index + 1}}: {{ans.description}}</label>
                 </div>
               </div>
               <script type='text/javascript'>
-
-                $('.ui.checkbox')
-                  .checkbox()
-                ;
+                requestAnimationFrame(function () {
+                  $('.ui.checkbox').checkbox();
+                });
               </script>
             </div>
             <div ng-switch-when='sbt'>
