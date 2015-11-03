@@ -215,7 +215,7 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
       $scope.questions.splice(index, 1);
     }
     $scope.submit = function() {
-      alert(angular.toJson($scope.questions));
+      // alert(angular.toJson($scope.questions));
       for(var x = 0; x < $scope.questions.length; x++){
         var question = $scope.questions[x];
 
@@ -237,7 +237,7 @@ app.controller('QuestionController', ['$scope', '$http', function($scope, $http)
           configuration: configuration
         };
 
-        alert(angular.toJson(dataToSend));
+        // alert(angular.toJson(dataToSend));
 
         // $http({
         //   method: 'POST',
@@ -391,7 +391,7 @@ app.controller('JobController', ['$scope', '$http', function($scope, $http) {
         experience: $scope.job.exp,
         test_parameter: angular.toJson(testParams)
     };
-    alert(angular.toJson(dataToSend));
+    // alert(angular.toJson(dataToSend));
     $.ajax({
       method: "POST",
       url: "/job",
@@ -406,22 +406,39 @@ app.controller('JobController', ['$scope', '$http', function($scope, $http) {
 }]);
 
 app.controller('TestsController', function($scope) {
+  $scope.searchText = '';
+
+  $scope.newCandidate = {
+    position: '',
+    name: '',
+    email: ''
+  };
+
   $scope.tests = [
     {
       position: 'Android Developer',
       candidate: 'Ding Xiangfei',
-      complete: 'Evaluate'
+      complete: 'Evaluate',
+      score: '-'
     },
     {
       position: 'Web Developer',
       candidate: 'Qunfeng Ye',
-      complete: 'Not Completed'
+      complete: 'Not Completed',
+      score: '-'
     },
     {
       position: 'Security Engineer',
       candidate: 'Anand Sundaram',
-      complete: 'View Score'
+      complete: 'View Report',
+      score: '17/20'
     },
+    {
+      position: 'Data Scientist',
+      candidate: 'Zhao Cong',
+      complete: 'View Report',
+      score: '9/10'
+    }
   ];
 
   $scope.positions = [
@@ -430,7 +447,7 @@ app.controller('TestsController', function($scope) {
       value: 'AND'
     },
     {
-      name: 'Database Scientist',
+      name: 'Data Scientist',
       value: 'DAT'
     },
     {
@@ -447,12 +464,29 @@ app.controller('TestsController', function($scope) {
     }
   ];
 
+  $scope.setNewPosition = function (pos) {
+    $scope.newCandidate.pos = pos.name;
+  };
+
+  $scope.submit = function () {
+    $scope.tests.push({
+      position: $scope.newCandidate.pos,
+      candidate: $scope.newCandidate.name,
+      complete: 'Not Completed',
+      score: '-'
+    });
+  };
+
+  setTimeout(function(){
+    $('.ui.modal')
+      .modal('attach events', '.green.button', 'show')
+    ;
+  }, 0);
+
   $('.ui.selection.dropdown')
     .dropdown()
   ;
-  $('.ui.modal')
-    .modal('attach events', '.green.button', 'show')
-  ;
+
 
 
 });
@@ -527,8 +561,8 @@ app.controller('TestController', ['$scope', '$http', function($scope, $http) {
   $http.get("test/1") // TODO
     .success(function(result) {
       var data = angular.fromJson(result);
-      alert(angular.toJson(data));
-      alert(data.questions.length + " " + result.questions.length);
+      // alert(angular.toJson(data));
+      // alert(data.questions.length + " " + result.questions.length);
       for (var x = 0; x < data.questions.length; x++) {
         $scope.questions.push({
           type: data.questions[x].info.question_type,

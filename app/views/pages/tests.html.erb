@@ -6,7 +6,7 @@
       <div class="left floated eight wide column">
         <div class="eight wide field">
           <div class="ui fluid icon input">
-            <input type="text" placeholder="Filter by position, candidate name...">
+            <input type="text" placeholder="Filter by position, candidate name..." ng-model='searchText'>
             <i class="search icon"></i>
           </div>
         </div>
@@ -26,10 +26,11 @@
               <th>Position</th>
               <th>Candidate Name</th>
               <th>Completed</th>
+              <th>Score</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat='test in tests'>
+            <tr ng-repeat="test in tests | filter:searchText | orderBy:'-score'">
               <td>{{test.position}}</td>
               <td>{{test.candidate}}</td>
               <td ng-switch on='test.complete'>
@@ -39,60 +40,63 @@
                     Evaluate
                   </button>
                 </div>
-                <div ng-switch-when='View Score'>
+                <div ng-switch-when='View Report'>
                   <button class="ui blue button">
                     <i class="bar chart icon"></i>
-                    View Score
+                    View Report
                   </button>
                 </div>
                 <div ng-switch-when='Not Completed'>
                   Not Completed
                 </div>
               </td>
+              <td>{{test.score}}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-</div>
-
-<div class="ui small modal" ng-controller='TestsController'>
-  <i class="close icon"></i>
-  <div class="header">
-    Create New Test
-  </div>
-  <div class="content">
-    <form class='ui form' style='width: 100%;'>
-      <div class='eight wide field'>
-        <label>Position</label>
-        <div class='ui selection dropdown'>
-          <i class='dropdown icon'></i>
-          <div class='default text'>Select Position</div>
-          <div class='menu'>
-              <div ng-repeat="pos in positions" class='item' data-value='{{pos.value}}'>{{pos.name}}</div>
+  <div class="ui small modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Create New Test
+    </div>
+    <div class="content">
+      <form class='ui form' style='width: 100%;'>
+        <div class='eight wide field'>
+          <label>Position</label>
+          <div class='ui selection dropdown'>
+            <i class='dropdown icon'></i>
+            <div class='default text'>Select Position</div>
+            <div class='menu'>
+                <div ng-repeat="pos in positions" class='item' data-value='{{pos.value}}'
+                  ng-click='setNewPosition(pos)'>
+                  {{pos.name}}
+                </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class='eight wide field'>
-        <label>Candidate Name</label>
-        <div class='twelve wide field'>
-          <input type='text' name='candidate-name' placeholder=''>
+        <div class='eight wide field'>
+          <label>Candidate Name</label>
+          <div class='twelve wide field'>
+            <input type='text' name='candidate-name' placeholder='' ng-model='newCandidate.name'>
+          </div>
         </div>
-      </div>
-      <div class='eight wide field'>
-        <label>Candidate Email</label>
-        <div class='twelve wide field'>
-          <input type='text' name='candidate-email' placeholder=''>
+        <div class='eight wide field'>
+          <label>Candidate Email</label>
+          <div class='twelve wide field'>
+            <input type='text' name='candidate-email' placeholder='' ng-model='newCandidate.email'>
+          </div>
         </div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">Cancel</div>
+      <div class="ui positive right labeled icon button" ng-click='submit()'>
+        Invite Candidate
+        <i class="checkmark icon"></i>
       </div>
-    </form>
-  </div>
-  <div class="actions">
-    <div class="ui black deny button">Cancel</div>
-    <div class="ui positive right labeled icon button">
-      Invite Candidate
-      <i class="checkmark icon"></i>
     </div>
   </div>
 </div>
