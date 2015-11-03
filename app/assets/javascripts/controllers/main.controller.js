@@ -544,11 +544,6 @@ app.controller('TestController', ['$scope', '$http', function($scope, $http) {
   $http.get("test/1") // TODO
     .success(function(result) {
       var data = angular.fromJson(result);
-<<<<<<< HEAD
-      // alert(angular.toJson(data));
-      // alert(data.questions.length + " " + result.questions.length);
-=======
->>>>>>> cb3f33d... minor change
       for (var x = 0; x < data.questions.length; x++) {
         $scope.questions.push({
           type: data.questions[x].info.question_type,
