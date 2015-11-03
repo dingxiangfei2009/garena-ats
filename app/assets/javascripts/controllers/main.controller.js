@@ -541,28 +541,14 @@ app.controller('TestController', ['$scope', '$http', function($scope, $http) {
     console.log(currentValue);
   };
 
-  $scope.check = function() {
-    // alert("you checked me out");
-  };
-
-
-  // $scope.getQuestions = function() {
-    // $.getJSON('test/1', function (data) {
-    //   alert(angular.toJson(data));
-    //   for (var x = 0; x < data.length; x++) {
-    //     $scope.questions.push({
-    //       type: $scope.types[data.questions[x].info.question_type_id],
-    //       statement: $scope.types[data.questions[x].info.description],
-    //       answers: angular.fromJson(data.questions[x].info.config)
-    //     });
-    //   }
-    // });
-
   $http.get("test/1") // TODO
     .success(function(result) {
       var data = angular.fromJson(result);
+<<<<<<< HEAD
       // alert(angular.toJson(data));
       // alert(data.questions.length + " " + result.questions.length);
+=======
+>>>>>>> cb3f33d... minor change
       for (var x = 0; x < data.questions.length; x++) {
         $scope.questions.push({
           type: data.questions[x].info.question_type,
@@ -583,6 +569,8 @@ app.controller('TestController', ['$scope', '$http', function($scope, $http) {
       ratio: '{value} of {total}'
     }
   });
+
+  $scope.submit_answer = function() {};
 
 }]);
 
