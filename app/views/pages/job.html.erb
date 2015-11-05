@@ -56,6 +56,7 @@
                 <tr>
                   <th>Topic</th>
                   <th>Number of Questions</th>
+                  <th>Question Type</th>
                   <th>Difficulty</th>
                   <th>Remove</th>
                 </tr>
@@ -78,6 +79,18 @@
                     <input class='' type='number' min='1' placeholder='Number of Questions'
                     ng-model='testParameter.no'>
                   </input>
+                  </td>
+                  <td>
+                    <div class='ui selection dropdown'>
+                      <i class='dropdown icon'></i>
+                      <div class='default text'>{{job.testParameters[$index].type.name}}</div>
+                      <div class='menu'>
+                          <div ng-repeat="type in types" class='item' data-value='{{type.value}}'
+                          ng-click='typeChange(type, $parent.$index)'>
+                            {{type.name}}
+                          </div>
+                      </div>
+                    </div>
                   </td>
                   <td>
                     <div class='ui selection dropdown'>
