@@ -28,6 +28,7 @@ class JobController < ApplicationController
 			field_test_parameter[:topic] = field_info['topic']
 			field_test_parameter[:count] = field_info['count']
 			field_test_parameter[:difficulty] = field_info['difficulty']
+			field_test_parameter[:type] = field_info['type']
 			test_parameter[:topics] << field_test_parameter
 		end
 

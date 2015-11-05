@@ -10,23 +10,23 @@ class TestController < ApplicationController
 	# select :count questions of :topic at :difficulty level
 	def random_pick_questions(var)
 		ids = []
-		count = Question.where(
+		count = Question.where({
 			:field_id => var[:topic],
 			:difficulty => var[:difficulty],
 			:question_type_id => var[:question_type],
 			:enabled => true
-			).count
+			}).count
 		if count < var[:count] then
 			raise "no enought questions"
 		end
 		i = 0
 		while i < count do
-			question = Question.where(
+			question = Question.where({
 				:field_id => var[:topic],
 				:difficulty => var[:difficulty],
 				:question_type_id => var[:question_type],
 				:enabled => true
-				).where.not(id: ids)
+				}).where.not(id: ids)
 				.offset(rand(count - i)).first
 			if question
 				ids << question.id
@@ -44,47 +44,43 @@ class TestController < ApplicationController
 	def new
 		job_id = params[:job]
 		email = params[:email]
-		begin
-			candidate = Candidate.find_by! email: email
-			application =
-				Application.find_by! ({
-					candidate_id: candidate.id,
-					job_id: job_id
+		candidate = Candidate.find_by! email: email
+		application =
+			Application.find_by! ({
+				candidate_id: candidate.id,
+				job_id: job_id
+			})
+		# test generator
+		test_parameter = JobTestParameter.find_by! job_id: job_id
+		options =
+			JSON.parse test_parameter.descriptor
+		question_set = []
+		options['topics'].each do |topic|
+			field = Field.find_by! token: topic['topic']
+			question_type = QuestionType.find_by! name: topic['type']
+			question_set +=
+				random_pick_questions ({
+					:count => topic['count'],
+					:topic => field.id,
+					:question_type => question_type.id,
+					:difficulty => topic['difficulty']
 				})
-			# test generator
-			test_parameter = JobTestParameter.find_by! job_id: job_id
-			options =
-				JSON.parse test_parameter.descriptor
-			question_set = []
-			options['topics'].each do |topic|
-				field = Field.find_by! token: topic['topic']
-				question_type = QuestionType.find_by! name: topic['type']
-				question_set +=
-					random_pick_questions (
-						:count => topic['count'],
-						:topic => field.id,
-						:question_type => question_type.id
-						:difficulty => topic['difficulty']
-					)
-			end
-
-			test = Test.new
-			test.application_id = application.id
-			byebug
-			test.duration = params[:duration]
-			test.save
-
-			question_set.shuffle!	# shuffle
-			question_set.each do |question_id|
-				test_response = TestResponse.new
-				test_response.question_id = question_id
-				test_response.test_id = test.id
-				test_response.save
-			end
-			render :json => {:id => test.id}
-		rescue Exception => e
-			render :json => e
 		end
+
+		test = Test.new
+		test.application_id = application.id
+		byebug
+		test.duration = params[:duration]
+		test.save
+
+		question_set.shuffle!	# shuffle
+		question_set.each do |question_id|
+			test_response = TestResponse.new
+			test_response.question_id = question_id
+			test_response.test_id = test.id
+			test_response.save
+		end
+		render :json => {:id => test.id}
 	end
 	def render_question(question)
 		case question.question_type.name
@@ -96,7 +92,7 @@ class TestController < ApplicationController
 	def get
 		id = params[:id]
 		test = Test.find id
-		if (!test.start_time)
+		if !test.start_time then
 			test.start_time = Time.now
 			test.save
 		end
