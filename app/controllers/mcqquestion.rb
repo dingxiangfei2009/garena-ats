@@ -23,8 +23,7 @@ class MCQQuestion
 		JSON.generate render_config
 	end
 	def mark(test_response)
-		byebug
-		count = 0;
+		correct_count = wrong_count = 0;
 		return 0 if test_response.answer === nil
 		answer = JSON.parse test_response.answer
 		answer_choices = answer['choices']
@@ -34,7 +33,9 @@ class MCQQuestion
 		answer_choices.each do |answer_option|
 			next if !@choices[answer_option]
 			if @choices[answer_option]['correct']
-				count += 1
+				correct_count += 1
+			else
+				wrong_count += 1
 			end
 			question_statistic_tag = "mas:#{answer_option}:chosen"
 			question_statistic =
@@ -54,10 +55,39 @@ class MCQQuestion
 		end
 		correct_total = @choices.count { |choice| choice['correct'] }
 		# TODO flexible marking scheme
-		@mark_scheme[correct_total] = Array.new(@choices.length + 1, 0)
-		@mark_scheme[correct_total][correct_total] = @mark;
-		@mark_scheme[correct_total][count] || 0	# return
+		if wrong_count then
+			mark = 0
+		else if correct_total == correct_count then
+			mark = @mark
+		else if correct_total - 1 == correct_count then
+			mark = @mark - 1
+		else
+			mark = 0
+		end
+		QuestionStatistic.create(
+			question_id: @id,
+			test_response_id: test_response.id,
+			tag: "mas:mark",
+			value: mark)
+		mark
 	end
+	def evaluate(test_response, mark)
+		question_statistic = QuestionStatistic.find(
+			question_id: @id,
+			test_response_id: test_response.id,
+			tag: "mas:mark")
+		if question_statistic then
+			question_statistic.value = mark
+		else
+			QuestionStatistic.create(
+				question_id: @id,
+				test_response_id: test_response.id,
+				tag: "mas:mark",
+				value: mark)
+		end
+		mark
+	end
+
 	def statistics(question, options)
 		counts = Hash.new
 		@choices.each do |choice, key|

@@ -12,22 +12,25 @@ class TestController < ApplicationController
 		ids = []
 		count = Question.where(
 			:field_id => var[:topic],
-			:difficulty => var[:difficulty])
-			.count
+			:difficulty => var[:difficulty],
+			:question_type_id => var[:question_type],
+			:enabled => true
+			).count
+		if count < var[:count] then
+			raise "no enought questions"
+		end
 		i = 0
-		retry_count = 0
-		while i < count && retry_count < 100 do
+		while i < count do
 			question = Question.where(
 				:field_id => var[:topic],
-				:difficulty => var[:difficulty]
+				:difficulty => var[:difficulty],
+				:question_type_id => var[:question_type],
+				:enabled => true
 				).where.not(id: ids)
 				.offset(rand(count - i)).first
 			if question
 				ids << question.id
 				i += 1
-				retry_count = 0
-			else
-				retry_count += 1
 			end
 		end
 		ids
@@ -50,48 +53,19 @@ class TestController < ApplicationController
 				})
 			# test generator
 			test_parameter = JobTestParameter.find_by! job_id: job_id
-			options = 
+			options =
 				JSON.parse test_parameter.descriptor
 			question_set = []
 			options['topics'].each do |topic|
 				field = Field.find_by! token: topic['topic']
-				# count = Question.where(field_id: field).count
+				question_type = QuestionType.find_by! name: topic['type']
 				question_set +=
-					random_pick_questions ({
-						:count => topic['count'] / 2,
+					random_pick_questions (
+						:count => topic['count'],
 						:topic => field.id,
+						:question_type => question_type.id
 						:difficulty => topic['difficulty']
-					})
-
-				case topic['difficulty']
-				when 1
-					question_set +=
-						random_pick_questions ({
-							:count => topic['count'] - topic['count'] / 2,
-							:topic => field.id,
-							:difficulty => topic['difficulty'] + 1
-						})
-				when 2
-					question_set +=
-						random_pick_questions ({
-							:count => topic['count'] / 4,
-							:topic => field.id,
-							:difficulty => topic['difficulty'] + 1
-						})
-					question_set +=
-						random_pick_questions ({
-							:count => topic['count'] - topic['count'] / 4 - topic['count'] / 2,
-							:topic => field.id,
-							:difficulty => topic['difficulty'] + 1
-						})
-				when 3
-					question_set +=
-						random_pick_questions ({
-							:count => topic['count'] - topic['count'] / 2,
-							:topic => field.id,
-							:difficulty => topic['difficulty'] - 1
-						})
-				end
+					)
 			end
 
 			test = Test.new
@@ -166,5 +140,21 @@ class TestController < ApplicationController
 			end
 		end
 		render :json => {status: 'success'}
+	end
+	def save_evaluation
+		marks = JSON.parse params[:marks]
+		marks.each do |marking|
+			test_response = TestResponse.find marking['id']
+			test_response.mark = marking['mark']
+			test_response.save
+
+			question = test_response.question
+			question_type = question.question_type
+			case question_type.name
+			when 'mas'
+				marker = MCQQuestion.new question
+				marker.evaluate(test_response, marking['mark'])
+			end
+		end
 	end
 end

@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     scope '/:id' do
       get '/', to: 'question#get'
       post '/', to: 'question#save'
+      post '/enable', to: 'question#enable'
+      post '/disable', to: 'question#disable'
     end
     post '/', to: 'question#new'
   end
@@ -19,6 +21,7 @@ Rails.application.routes.draw do
     scope '/:id' do
       get '/', to: 'test#get'
       post '/', to: 'test#save'
+      post '/evaluate', to: 'test#save_evaluation'
     end
     post '/', to: 'test#new'
   end

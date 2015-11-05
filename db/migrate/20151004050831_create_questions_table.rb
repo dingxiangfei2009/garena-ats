@@ -10,6 +10,7 @@ class CreateQuestionsTable < ActiveRecord::Migration
         t.integer :mark
         t.references :field, null: false, index: true
         t.references :question_type, null: false, index: true
+        t.bool :enabled, default: true
     end
     add_foreign_key :questions, :fields
     add_foreign_key :questions, :question_types
