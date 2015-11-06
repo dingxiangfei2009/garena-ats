@@ -1,4 +1,5 @@
-angular.module('app').controller('TestController', ['$scope', '$http', function($scope, $http) {
+angular.module('app').controller('TestController',
+['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
   $scope.testName = 'Garena Android Developer Test';
 
   $scope.attempt = [];
@@ -58,6 +59,7 @@ angular.module('app').controller('TestController', ['$scope', '$http', function(
           answers: angular.fromJson(data.questions[x].info.config).answer
         });
       }
+      start_autosave(data);
     });
 
   $scope.attempted = function(index){
@@ -74,4 +76,48 @@ angular.module('app').controller('TestController', ['$scope', '$http', function(
 
   $scope.submit_answer = function() {};
 
+  function start_autosave(data) {
+    function prepare_autosave_data(answer) {
+      return {
+        id: answer.id,
+        answer: answer.answer,
+        updated_at: new Date(answer.updated_at)
+      };
+    }
+    var DB_NAME = 'DATA_TEST_AUTOSAVE';
+    var VERSION = 1;
+    // update indexed db data
+    var request = indexedDB.open(DB_NAME, VERSION);
+    request.onupgradeneeded = function(e) {
+      var db = db.target.result;
+      var autosave = db.createObjectStore('autosave', {keyPath: 'id'});
+      autosave.transaction.oncomplete = function () {
+        var transaction = db.transaction('autosave', 'readwrite');
+        transaction.onerror = e => console.log(e);
+        transaction.oncomplete = e => console.log(e);
+        var autosave = transaction.objectStorage('autosave');
+        data.questions.forEach(function(question) {
+          autosave.add(prepare_autosave_data(question.config));
+        });
+      };
+    };
+    request.onsuccess = function(e) {
+      var db = db.target.result;
+      var transaction = db.transaction('autosave', 'readwrite');
+      transaction.onerror = e => console.log(e);
+      transaction.oncomplete = e => console.log(e);
+      var autosave = transaction.objectStorage('autosave');
+      // compare
+      data.questions.forEach(function(question) {
+        var server_updated_at = new Date(question.config.updated_at);
+        var read_request = autosave.get(question.config.id);
+        read_request.onerror =
+          () => autosave.add(prepare_autosave_data(question.config));
+        read_request.onsuccess = function() {
+          var autosave_data = read_request.result;
+          
+        };
+      })
+    };
+  }
 }]);
