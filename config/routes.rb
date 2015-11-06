@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/login', :to => 'pages#login'
   get '/available', :to => 'pages#available'
   scope '/question' do
+    post '/query', to: 'question#list'
     scope '/:id' do
       get '/', to: 'question#get'
       post '/', to: 'question#save'
