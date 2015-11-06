@@ -69,7 +69,6 @@ class TestController < ApplicationController
 
 		test = Test.new
 		test.application_id = application.id
-		byebug
 		test.duration = params[:duration]
 		test.save
 

@@ -1,4 +1,5 @@
 class QuestionController < ApplicationController
+	@@LIMIT = 100
 	def save
 	end
 	def new
@@ -31,5 +32,28 @@ class QuestionController < ApplicationController
 		question = Question.find! params[:id]
 		question.enabled = false
 		question.save
+	end
+	def list
+		if params[:disabled]
+			query = Question.where(enabled: false)
+		else
+			query = Question.where(enabled: true)
+		end
+
+		if params[:topic]
+			topic = Field.find_by! token: params[:topic]
+			query = query.where(field_id: topic.id)
+		end
+
+		if params[:difficulty]
+			query = query.where(difficulty: params[:difficulty])
+		end
+
+		if params[:type]
+			type = QuestionType.find_by! name: params[:type]
+			query = query.where(question_type_id: type.id)
+		end
+
+		render json: query.limit(@@LIMIT)
 	end
 end
