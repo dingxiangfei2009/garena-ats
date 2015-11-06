@@ -3,6 +3,7 @@ require 'field'
 require 'job_field'
 
 class JobController < ApplicationController
+    @@LIMIT = 100
 	# new
 	# data [json]:
 	# 	title [string]: job title
@@ -46,4 +47,7 @@ class JobController < ApplicationController
 		ret[:fields] = job.fields
 		render :json => ret
 	end
+    def list
+        render :json => Job.offset(params[:start] || 0).limit(@@LIMIT)
+    end
 end
