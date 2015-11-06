@@ -84,10 +84,15 @@ class QuestionController < ApplicationController
     render json: query.offset(params[:offset] || 0).limit(@@LIMIT)
 	end
 	def list
-		if params[:disabled]
-			query = Question.where(enabled: false)
+        query = Question
+            .joins(:question_type, :field)
+            .select(:id, :description, :enabled, :mark,
+                'fields.name as field_name',
+                'fields.token as field_token')
+        if params[:disabled] == 'true' or params[:disable] == '1'
+            query = query.where(enabled: false)
 		else
-			query = Question.where(enabled: true)
+            query = query.where(enabled: true)
 		end
 
 		if params[:topic]
@@ -104,6 +109,6 @@ class QuestionController < ApplicationController
 			query = query.where(question_type_id: type.id)
 		end
 
-		render json: query.limit(@@LIMIT)
+        render json: query.offset(params[:offset] || 0).limit(@@LIMIT)
 	end
 end
