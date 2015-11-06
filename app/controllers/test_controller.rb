@@ -69,7 +69,11 @@ class TestController < ApplicationController
 
 		test = Test.new
 		test.application_id = application.id
-		test.duration = params[:duration]
+        if params[:duration] && params[:duration] != '0'
+            test.duration = params[:duration]
+        else
+            test.duration = options[:duration]
+        end
 		test.save
 
 		question_set.shuffle!	# shuffle
