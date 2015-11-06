@@ -88,7 +88,8 @@ class QuestionController < ApplicationController
             .joins(:question_type, :field)
             .select(:id, :description, :enabled, :mark,
                 'fields.name as field_name',
-                'fields.token as field_token')
+                'fields.token as field_token',
+                'question_types.token as question_type_token')
         if params[:disabled] == 'true' or params[:disable] == '1'
             query = query.where(enabled: false)
 		else
