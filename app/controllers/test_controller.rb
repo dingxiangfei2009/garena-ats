@@ -107,7 +107,8 @@ class TestController < ApplicationController
 			question_info = Hash.new
 			question_info[:config] = {
 				:id => test_response.id,
-				:answer => test_response.answer
+				:answer => test_response.answer,
+				:updated_at => test_response.updated_at.rfc2822
 			}
 			question_info[:info] = {
 				:description => question.description,
