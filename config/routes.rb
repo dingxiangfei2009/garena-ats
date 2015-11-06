@@ -32,7 +32,7 @@ Rails.application.routes.draw do
       get '/', to: 'job#get'
     end
     post '/', to: 'job#new'
-    get '/', to: 'pages#job'
+    get '/', to: 'job#list'
   end
   scope '/applicants' do
     get '/', :to => 'pages#applicants'
