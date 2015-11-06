@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get '/jobs', :to => 'pages#jobs'
   get '/candidate', :to => 'pages#candidate'
   get '/question', :to => 'pages#question'
+  get '/questions', :to => 'pages#questions'
   get '/test', :to => 'pages#test'
   get '/tests', :to => 'pages#tests'
   get '/register', :to => 'pages#register'
