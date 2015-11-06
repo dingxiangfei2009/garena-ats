@@ -1,5 +1,11 @@
 angular.module('app').controller('TestController',
 ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+  var question_controllers = {
+    'mas': {},
+    'sbt': {},
+    'sbc': {}
+  };
+  
   $scope.testName = 'Garena Android Developer Test';
 
   $scope.attempt = [];
@@ -115,9 +121,15 @@ angular.module('app').controller('TestController',
           () => autosave.add(prepare_autosave_data(question.config));
         read_request.onsuccess = function() {
           var autosave_data = read_request.result;
-          
+          if (autosave_data.updated_at < server_updated_at)
+            autosave.put(prepare_autosave_data(question.config));
+          else
+            Object.assign(question.config, autosave_data);
         };
-      })
+      });
+      // start autosave service
+      var timeout_handler = $timeout(function() {
+      });
     };
   }
 }]);
