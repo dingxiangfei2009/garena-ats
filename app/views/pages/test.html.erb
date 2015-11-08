@@ -23,43 +23,8 @@
   </div>
 
   <div class="pusher">
-    <!-- <div>
-      <div class="ui black inverted segment sticky">
-
-        <div class="ui teal inverted indicating progress" id="attempt">
-          <div class="bar" style="transition-duration: 300ms; height: 50%;">
-            <div class="ui right aligned container">
-              <div class='right floated right aligned column black'>
-                <h3 class="ui header">25%</h3>
-                <div class='right floated right aligned label' style='width: 100%;'>25%</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div> -->
-  <!--
-    <div class="ui inverted menu">
-      <a class="down item">
-        <h1 class="ui header">{{testName}}</h1>
-      </a>
-      <a class="down item">
-        Messages
-      </a>
-      <a class="down item">
-        Friends
-      </a>
-    </div> -->
     <div class="ui two column container grid" id='context'>
       <div class="two column row"></div>
-
-      <!-- <div class="two column row">
-        <div class="column">
-          <h1 class="ui header">{{testName}}</h1>
-        </div>
-      </div>
-      <div class="ui divider"></div>-->
       <div class="row" id='testbox' ng-repeat='question in questions'>
         <div class="column">
           <h2 class="ui header">Question {{$index + 1}}</h2>
