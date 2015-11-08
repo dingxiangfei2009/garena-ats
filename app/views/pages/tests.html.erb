@@ -57,7 +57,7 @@
       </div>
     </div>
   </div>
-  <div class="ui small modal">
+  <div class="ui small modal invite">
     <i class="close icon"></i>
     <div class="header">
       Create New Test
@@ -75,6 +75,13 @@
                   {{pos.name}}
                 </div>
             </div>
+          </div>
+        </div>
+        <div class='eight wide field'>
+          <label>Enter Test Duration (in minutes)</label>
+          <div class='twelve wide field'>
+            <input class='' type='number' min='0' placeholder='' ng-model='newCandidate.duration'>
+            </input>
           </div>
         </div>
         <div class='eight wide field'>
@@ -97,6 +104,18 @@
         Invite Candidate
         <i class="checkmark icon"></i>
       </div>
+    </div>
+  </div>
+  <div class="ui small modal error">
+    <i class="close icon"></i>
+    <div class="header">
+      Error
+    </div>
+    <div class="content">
+      We could not create a test, because there aren't enough questions that fit the parameters :(
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">Ok</div>
     </div>
   </div>
 </div>

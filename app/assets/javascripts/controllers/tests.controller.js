@@ -4,6 +4,7 @@ angular.module('app').controller('TestsController', function($scope) {
   $scope.newCandidate = {
     position: '',
     name: '',
+    duration: 0,
     email: ''
   };
 
@@ -68,10 +69,39 @@ angular.module('app').controller('TestsController', function($scope) {
       complete: 'Not Completed',
       score: '-'
     });
+    $.ajax({
+      method: "POST",
+      url: "/applicants",
+      data: {
+        name: $scope.newCandidate.name,
+        email: $scope.newCandidate.email
+      }
+    })
+    .success(function(data){
+      $.ajax({
+        method: "POST",
+        url: "/applicants/" + data.id + "/job/" + 1,
+      })
+      .success(function(data){
+        $.ajax({
+          method: "POST",
+          url: "/test",
+          data: {
+            email: $scope.newCandidate.email,
+            duration: $scope.newCandidate.duration,
+            job: 1
+          }
+        }).error(function(data) {
+          console.log(data);
+          $('.ui.modal.error').modal('show');
+        });
+      });
+    })
+    ;
   };
 
   setTimeout(function(){
-    $('.ui.modal')
+    $('.ui.modal.invite')
       .modal('attach events', '.green.button', 'show')
     ;
   }, 0);

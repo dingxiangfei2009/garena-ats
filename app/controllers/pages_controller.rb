@@ -9,6 +9,8 @@ class PagesController < ApplicationController
   end
   def question
   end
+  def questions
+  end
   def test
   end
   def register
