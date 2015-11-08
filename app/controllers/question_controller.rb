@@ -36,7 +36,7 @@ class QuestionController < ApplicationController
 	def list
         query = Question
             .joins(:question_type, :field)
-            .select(:id, :description, :enabled, :mark,
+            .select(:id, :description, :enabled, :mark, :difficulty,
                 'fields.name as field_name',
                 'fields.token as field_token',
 				'question_types.name as question_type_name')

@@ -51,15 +51,15 @@
               <td>{{question.topic}}</td>
               <td>{{question.difficulty}}</td>
               <td>{{question.type}}</td>
-              <td>{{question.description}}</td>
+              <td ng-bind-html="question.description"></td>
               <td ng-switch on='question.enabled'>
                 <div ng-switch-when='true'>
-                  <button class="ui red button">
+                  <button class="ui red button" ng-click='disable(question)'>
                     Disable
                   </button>
                 </div>
                 <div ng-switch-when='false'>
-                  <button class="ui green button">
+                  <button class="ui green button" ng-click='enable(question)'>
                     Enable
                   </button>
                 </div>

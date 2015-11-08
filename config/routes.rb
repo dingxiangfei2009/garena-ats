@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-
+  get '/home', :to => 'pages#home'
+  get '/position', :to => 'pages#position'
   get '/jobs', :to => 'pages#jobs'
   get '/candidate', :to => 'pages#candidate'
   get '/question', :to => 'pages#question'

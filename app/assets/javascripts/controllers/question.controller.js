@@ -160,8 +160,7 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
           question.questionText = CKEDITOR.instances['editor' + x].getData();
         }
 
-        var configuration = angular.toJson({
-          description: question.questionText,
+        var configuration = angular.toJson({          
           answer: question.answer
         });
 
@@ -170,6 +169,7 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
           topic: question.topic.value,
           mark: question.mark,
           difficulty: question.difficulty.value,
+          description: question.questionText,
           configuration: configuration
         };
 
