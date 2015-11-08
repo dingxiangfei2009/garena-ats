@@ -4,7 +4,8 @@ class CreateTestsTable < ActiveRecord::Migration
     	t.timestamps null: false
     	t.references :application, null: false
     	t.integer :duration, null: false
-    	t.datetime :start_time
+    	t.datetime :start_time,
+        t.string :name
     end
     add_foreign_key :tests, :applications
   end
