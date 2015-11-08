@@ -24,12 +24,12 @@ class QuestionController < ApplicationController
 		render :json => question
 	end
 	def enable
-		question = Question.find! params[:id]
+		question = Question.find params[:id]
 		question.enabled = true
 		question.save
 	end
 	def disable
-		question = Question.find! params[:id]
+		question = Question.find params[:id]
 		question.enabled = false
 		question.save
 	end
