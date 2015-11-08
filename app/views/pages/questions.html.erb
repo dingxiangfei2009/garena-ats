@@ -47,19 +47,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="question in questions | filter:searchText | orderBy:'-topic'">
+            <tr ng-repeat="question in questions | filter:searchText">
               <td>{{question.topic}}</td>
               <td>{{question.difficulty}}</td>
               <td>{{question.type}}</td>
               <td ng-bind-html="question.description"></td>
               <td ng-switch on='question.enabled'>
                 <div ng-switch-when='true'>
-                  <button class="ui red button" ng-click='disable(question)'>
+                  <button class="ui red button" ng-click='disable(question, $index)'>
                     Disable
                   </button>
                 </div>
                 <div ng-switch-when='false'>
-                  <button class="ui green button" ng-click='enable(question)'>
+                  <button class="ui green button" ng-click='enable(question, $index)'>
                     Enable
                   </button>
                 </div>

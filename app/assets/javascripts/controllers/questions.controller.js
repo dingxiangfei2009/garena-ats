@@ -16,7 +16,6 @@ angular.module('app').controller('QuestionsController', ['$scope', '$http', '$sc
     method: "POST",
     url: "/question/query"
   }).success(function(data) {
-    alert(JSON.stringify(data));
 
     $scope.$apply(function(){
       for (var x = 0; x < data.length; x++) {
@@ -43,36 +42,30 @@ angular.module('app').controller('QuestionsController', ['$scope', '$http', '$sc
       }
     });
 
-    alert(JSON.stringify($scope.questionsByTopic));
-    alert(JSON.stringify($scope.topics));
-
   }).error(function(data) {
-    alert(JSON.stringify(data));
+    console.log(JSON.stringify(data));
   });
 
-  $scope.disable = function(question) {
+  $scope.disable = function(question, index) {
     $.ajax({
       method: "POST",
       url: "/question/" + question.id + "/disable"
     }).success(function(data) {
-      alert(JSON.stringify(data));
       $scope.$apply(function(){
-        question.enabled = false;
+        alert(JSON.stringify($scope.questions) + " " + index);
+        $scope.questions[index].enabled = false;
       });
     });
   }
 
-  $scope.enable = function(question) {
+  $scope.enable = function(question, index) {
     $.ajax({
       method: "POST",
-      url: "/question/" + question.id + "/enable",
-      data: {
-        id: question.id
-      }
+      url: "/question/" + question.id + "/enable"
     }).success(function(data) {
-      alert(JSON.stringify(data));
       $scope.$apply(function(){
-        question.enabled = true;
+        alert(JSON.stringify($scope.questions) + " " + index);
+        $scope.questions[index].enabled = true;
       });
     });
   }

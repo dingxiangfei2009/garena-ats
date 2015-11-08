@@ -27,11 +27,13 @@ class QuestionController < ApplicationController
 		question = Question.find params[:id]
 		question.enabled = true
 		question.save
+		render :json => question
 	end
 	def disable
 		question = Question.find params[:id]
 		question.enabled = false
 		question.save
+		render :json => question
 	end
 	def list
         query = Question
@@ -40,9 +42,9 @@ class QuestionController < ApplicationController
                 'fields.name as field_name',
                 'fields.token as field_token',
 				'question_types.name as question_type_name')
-        if params[:disabled] == 'true' or params[:disable] == '1'
+        if params[:disabled] == 'true' or params[:disabled] == '1'
             query = query.where(enabled: false)
-		else
+				elsif params[:disabled] == 'false' or params[:disabled] == '0'
             query = query.where(enabled: true)
 		end
 
