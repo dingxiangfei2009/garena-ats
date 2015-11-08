@@ -1,5 +1,5 @@
 angular.module('app').controller('TestController',
-['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+['$scope', '$http', '$interval', function($scope, $http, $interval) {
   var question_controllers = {
     'mas': {},
     'sbt': {},
@@ -54,15 +54,20 @@ angular.module('app').controller('TestController',
       };
     },
     parseAnswer(answer) {
-      if (answer)
-        return angular.fromJson(answer);
-      else
+      if (answer) {
+        var ret = Array(this.getQuestion().answers.length).fill(false);
+        var indices = angular.fromJson(answer);
+        indices.forEach(idx => ret[idx] = true);
+        return ret;
+      } else
         return [];
     },
     stringifyAnswer(answer) {
-      if (answer)
-        return angular.toJson(answer);
-      else
+      if (answer) {
+        var ret = [];
+        answer.forEach((tick, idx) => tick && ret.push(idx));
+        return angular.toJson(ret);
+      } else
         return '[]';
     }
   });
@@ -95,8 +100,9 @@ angular.module('app').controller('TestController',
     var currentValue = $scope.aceEditor.getSession().getValue();
     console.log(currentValue);
   };
+  $scope.alert = () => window.alert();
 
-  var RESPONSE_ID_TO_IDX = new Map;
+  var RESPONSE_ID_TO_IDX = [], IDX_TO_RESPONSE_ID = [];
   var questions = [];
   $http.get("test/1") // TODO
     .success(function(result) {
@@ -115,16 +121,26 @@ angular.module('app').controller('TestController',
             $scope.questions.push(null);
             $scope.answer.push(null);
             break;
-          case 'sbc'
+          case 'sbc':
             $scope.questions.push(null);
             $scope.answer.push(null);
             break;
         }
-        RESPONSE_ID_TO_IDX.set(data.questions[x].config.id, x);
+        RESPONSE_ID_TO_IDX[data.questions[x].config.id] = x;
+        IDX_TO_RESPONSE_ID[x] = data.questions[x].config.id;
         questions.push(data.questions[x].info);
       }
       start_autosave(data);
     });
+  function collateAnswer() {
+    return questions.map(function(question, i) {
+      return {
+        id: IDX_TO_RESPONSE_ID[i],
+        answer: stringifyAnswer(questions[i], $scope.answer[i]),
+        updated_at: new Date
+      };
+    });
+  }
 
   $scope.attempted = function(index){
     $scope.attempt[index] = true;
@@ -152,47 +168,47 @@ angular.module('app').controller('TestController',
     var VERSION = 1;
     // update indexed db data
     var request = indexedDB.open(DB_NAME, VERSION);
-    request.onupgradeneeded = function(e) {
-      var db = db.target.result;
-      var autosave = db.createObjectStore('autosave', {keyPath: 'id'});
-      autosave.transaction.oncomplete = function () {
-        var transaction = db.transaction('autosave', 'readwrite');
-        transaction.onerror = e => console.log(e);
-        transaction.oncomplete = e => console.log(e);
-        var autosave = transaction.objectStorage('autosave');
-        data.questions.forEach(function(question) {
-          autosave.add(prepare_autosave_data(question.config));
-        });
-      };
-    };
-    request.onsuccess = function(e) {
-      var db = db.target.result;
+    function get_autosave_transaction(db) {
       var transaction = db.transaction('autosave', 'readwrite');
       transaction.onerror = e => console.log(e);
       transaction.oncomplete = e => console.log(e);
-      var autosave = transaction.objectStorage('autosave');
+      return transaction.objectStore('autosave');
+    }
+    request.onupgradeneeded = function(e) {
+      var db = e.target.result;
+      var autosave = db.createObjectStore('autosave', {keyPath: 'id'});
+      autosave.transaction.oncomplete = function () {
+        var autosave = get_autosave_transaction(db);
+        data.questions.forEach(
+          question =>
+            autosave.add(prepare_autosave_data(question.config)));
+      };
+    };
+    request.onsuccess = function(e) {
+      var db = e.target.result;
       // compare
       data.questions.forEach(function(question) {
+        var autosave = get_autosave_transaction(db);
         var server_updated_at = new Date(question.config.updated_at);
         var read_request = autosave.get(question.config.id);
         read_request.onerror =
-          () => autosave.add(prepare_autosave_data(question.config));
+          () => get_autosave_transaction(db).add(prepare_autosave_data(question.config));
         read_request.onsuccess = function() {
           var autosave_data = read_request.result;
           if (autosave_data.updated_at < server_updated_at)
-            autosave.put(prepare_autosave_data(question.config));
+            get_autosave_transaction(db).put(prepare_autosave_data(question.config));
           else
             $scope.$apply(function() {
-              var idx = RESPONSE_ID_TO_IDX.get(question.config.id);
-              $scope.answer[idx] = parseAnswer(question.info, autosave_data);
+              var idx = RESPONSE_ID_TO_IDX[question.config.id];
+              $scope.answer[idx] = parseAnswer(question.info, autosave_data.answer);
             });
         };
       });
       // start autosave service
-      var timeout_handler = $timeout(function() {
-        questions.forEach(function (question, index) {
-          autosave.put(prepare_autosave_data())
-        });
+      var timeout_handler = $interval(function() {
+        collateAnswer().forEach(
+          answer => get_autosave_transaction(db).put(prepare_autosave_data(answer))
+        );
       }, 3000);
     };
   }

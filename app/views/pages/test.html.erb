@@ -37,7 +37,7 @@
               <div class="field" ng-repeat='ans in question.answers'>
                 <div class="ui checkbox" ng-click='attempted($parent.$index, $element)'>
                   <input type="checkbox" name="answers[{{$parent.$index}}]" ng-change='attempted($parent.$index)'
-                  ng-model='answer[$parent.$index]'>
+                  ng-model='answer[$parent.$index][$index]'>
                   <label>{{$index + 1}}: {{ans.description}}</label>
                 </div>
               </div>
