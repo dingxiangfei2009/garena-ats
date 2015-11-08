@@ -37,6 +37,8 @@ class PagesController < ApplicationController
 			return
 		end
   end
+  def questions
+  end
   def test
   end
   def register
