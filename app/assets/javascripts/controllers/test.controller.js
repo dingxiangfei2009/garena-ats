@@ -1,19 +1,21 @@
+angular.module('app').controller('LoadQuestionController', ['$scope', '$rootScope'
+function($scope, $rootScope){
+  $scope.load = function(test_id) {
+    $rootScope.$broadcast('load-test', test_id);
+  };
+}]);
+
 angular.module('app').controller('TestController',
 ['$scope', '$http', '$interval', function($scope, $http, $interval) {
+  $scope.$on('load-test', function(event, test_id) {
+    load_test(test_id);
+  });
+  
   var question_controllers = {
     'mas': {},
     'sbt': {},
     'sbc': {}
   };
-  
-  $scope.testName = 'Garena Android Developer Test';
-
-  $scope.attempt = [];
-  $scope.answer = [];
-
-  $scope.aceEditor = {};
-
-  $scope.questions = [];
   //   {
   //     type: 'mas',
   //     statement: 'Which of the following are true?',
@@ -89,12 +91,12 @@ angular.module('app').controller('TestController',
   }
 
   $scope.aceLoaded = function(_editor) {
-    // Options
+    // PROBLEM: aceEditor may be shared by multiple questions, Anand.
     $scope.aceEditor = _editor;
   };
 
   $scope.aceChanged = function(e) {
-    //
+    // PROBLEM: refer to $scope.aceLoaded
     console.log('Ace editor changed');
     // Get Current Value
     var currentValue = $scope.aceEditor.getSession().getValue();
@@ -102,8 +104,20 @@ angular.module('app').controller('TestController',
   };
   $scope.alert = () => window.alert();
 
-  var RESPONSE_ID_TO_IDX = [], IDX_TO_RESPONSE_ID = [];
-  var questions = [];
+  
+  $scope.testName = 'Garena Android Developer Test';
+
+  var RESPONSE_ID_TO_IDX, IDX_TO_RESPONSE_ID, questions;
+  function load_test(id) {
+    var url = 'test/' + Number(id);
+    $scope.attempt = [];
+    $scope.answer = [];
+
+    $scope.aceEditor = {};
+
+    $scope.questions = [];
+    RESPONSE_ID_TO_IDX = []; IDX_TO_RESPONSE_ID = []; questions = [];
+  }
   $http.get("test/1") // TODO
     .success(function(result) {
       var data = angular.fromJson(result);
@@ -142,7 +156,7 @@ angular.module('app').controller('TestController',
     });
   }
 
-  $scope.attempted = function(index){
+  $scope.attempted = function(index) {
     $scope.attempt[index] = true;
   };
 
@@ -154,7 +168,13 @@ angular.module('app').controller('TestController',
     }
   });
 
-  $scope.submit_answer = function() {};
+  $scope.submit_answer = function() {
+    $http.post('test/1', {
+      data: JSON.stringify(collateAnswer())
+    }).success(function(msg) {
+      // success
+    });
+  };
 
   function start_autosave(data) {
     function prepare_autosave_data(answer) {
@@ -184,6 +204,7 @@ angular.module('app').controller('TestController',
             autosave.add(prepare_autosave_data(question.config)));
       };
     };
+    var timeout_handler = null;
     request.onsuccess = function(e) {
       var db = e.target.result;
       // compare
@@ -205,11 +226,16 @@ angular.module('app').controller('TestController',
         };
       });
       // start autosave service
-      var timeout_handler = $interval(function() {
+      timeout_handler = $interval(function() {
         collateAnswer().forEach(
           answer => get_autosave_transaction(db).put(prepare_autosave_data(answer))
         );
       }, 3000);
+    };
+    return {
+      stop_autosave() {
+        $interval.cancel(timeout_handler);
+      }
     };
   }
 }]);
