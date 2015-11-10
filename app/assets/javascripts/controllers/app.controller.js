@@ -1,4 +1,4 @@
-// (function() {
+(function() {
 /* global angular */
 var BIND_HANDLERS = new Map;
 
@@ -89,4 +89,4 @@ app.directive('subjectiveCode', function() {
       templateUrl: '/templates/subjective-code.html'
   };
 });
-// }());
+}());

@@ -158,7 +158,8 @@ angular.module('app').controller('TestController',
       return {
         id: IDX_TO_RESPONSE_ID[i],
         answer: stringifyAnswer(questions[i], $scope.answer[i]),
-        updated_at: new Date
+        updated_at: new Date,
+        attempted: $scope.attempt[i]
       };
     });
   }
@@ -188,7 +189,8 @@ angular.module('app').controller('TestController',
       return {
         id: answer.id,
         answer: answer.answer,
-        updated_at: new Date(answer.updated_at)
+        updated_at: new Date(answer.updated_at),
+        attempted: $scope.attempt[RESPONSE_ID_TO_IDX[answer.id]]
       };
     }
     var DB_NAME = 'DATA_TEST_AUTOSAVE';
@@ -229,6 +231,7 @@ angular.module('app').controller('TestController',
             $scope.$apply(function() {
               var idx = RESPONSE_ID_TO_IDX[question.config.id];
               $scope.answer[idx] = parseAnswer(question.info, autosave_data.answer);
+              $scope.attempt[idx] = autosave_data.attempted;
             });
         };
       });
