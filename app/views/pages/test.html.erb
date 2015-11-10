@@ -1,4 +1,33 @@
-<div ng-controller="TestController" >
+<div ng-controller="LoadTestController" ng-show="!loaded">
+  <div class="ui fullscreen modal" id="loader-modal">
+    <div class="header">
+      Enter your Test ID
+    </div>
+    <div class="content">
+      <div class="description">
+        <div class="ui container">
+          <div class="ui header">
+            To start your test, first enter the Test ID issued to you.
+          </div>
+          <h2 style="text-align: center">Your Test ID is</h2>
+          <div style="text-align: center">
+            <div class="ui input">
+              <input type="text" placeholder="Test ID, eg. 235" ng-model="test_id">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui positive button" ng-click="load_test(test_id)">Start the Test</div>
+    </div>
+  </div>
+  <script>
+    requestAnimationFrame(() => $('#loader-modal').modal('show'));
+  </script>
+</div>
+
+<div ng-controller="TestController" ng-show="loaded">
   <div class='ui left visible sidebar inverted vertical menu'>
 
     <h2 class='ui grey header item'>{{testName}}</h2>
@@ -13,7 +42,7 @@
       <div ng-repeat='question in questions'>
         <div class="step" ng-class="{'completed': $parent.attempt[$index]!=null}">
           <i class="red warning icon"></i>
-          <div class="content">
+            <div class="content">
             <div class="title">Q{{$index + 1}}</div>
           </div>
         </div>
@@ -35,11 +64,11 @@
           <div class="ui form" ng-switch on='question.type'>
             <div class="grouped fields" ng-switch-when='mas'>
               <div class="field" ng-repeat='ans in question.answers'>
-                <div class="ui checkbox" ng-click='attempted($parent.$index, $element)'>
-                  <input type="checkbox" name="answers[{{$parent.$index}}]" ng-change='attempted($parent.$index)'
-                  ng-model='answer[$parent.$index][$index]'>
-                  <label>{{$index + 1}}: {{ans.description}}</label>
-                </div>
+              <div class="ui checkbox" ng-click='attempted($parent.$index, $element)'>
+                <input type="checkbox" name="answers[{{$parent.$index}}]" ng-change='attempted($parent.$index)'
+        ng-model='answer[$parent.$index][$index]'>
+                <label>{{$index + 1}}: {{ans.description}}</label>
+              </div>
               </div>
               <script type='text/javascript'>
                 requestAnimationFrame(function () {
@@ -50,22 +79,22 @@
             <div ng-switch-when='sbt'>
               <div class='twelve wide field'>
                 <textarea name='reference-answer' name="answers[{{$index}}]" placeholder='' ng-change='attempted($index)'
-                ng-model='answer[$index]'>
+              ng-model='answer[$index]'>
                 </textarea>
               </div>
             </div>
             <div ng-switch-when='sbc'>
               <div>
                 <style>
-                    .ace_editor { height: 200px;}
+                  .ace_editor { height: 200px;}
                 </style>
                 <div class='twelve wide field'>
                   <div ui-ace="{
-                      useWrapMode : true,
-                      showGutter: false,
-                      theme:'twilight',
-                      onLoad: aceLoaded,
-                      onChange: aceChanged
+                    useWrapMode : true,
+                    showGutter: false,
+                    theme:'twilight',
+                    onLoad: aceLoaded,
+                    onChange: aceChanged
                     }" ng-change='attempted($index)'  ng-model='answer[$index]'>
                   </div>
                 </div>
@@ -80,20 +109,13 @@
         <button class="ui primary button" ng-click="submit_answer">
           Submit your answers
         </button>
-        <button class="ui secondary button" ng-click="reset">
-          Reset
-        </button>
       </div>
     </div>
   </div>
 
   <script type='text/javascript'>
-    $('.ui.sticky')
-      .sticky({
-        context: '#context'
-      })
-    ;
-
-
+    $('.ui.sticky').sticky({
+      context: '#context'
+    });
   </script>
 </div>

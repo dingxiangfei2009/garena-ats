@@ -1,4 +1,4 @@
-angular.module('app').controller('LoadQuestionController', ['$scope', '$rootScope'
+angular.module('app').controller('LoadTestController', ['$scope', '$rootScope',
 function($scope, $rootScope){
   $scope.load = function(test_id) {
     $rootScope.$broadcast('load-test', test_id);
@@ -106,46 +106,53 @@ angular.module('app').controller('TestController',
 
   
   $scope.testName = 'Garena Android Developer Test';
+  $scope.attempt = [];
+  $scope.answer = [];
+  $scope.aceEditor = {};
+  $scope.questions = [];
 
   var RESPONSE_ID_TO_IDX, IDX_TO_RESPONSE_ID, questions;
+  var url;
   function load_test(id) {
-    var url = 'test/' + Number(id);
+    url = 'test/' + Number(id);
+    // scope set-up
     $scope.attempt = [];
     $scope.answer = [];
-
     $scope.aceEditor = {};
-
     $scope.questions = [];
+    $scope.loaded = false;
+    // shared maps
     RESPONSE_ID_TO_IDX = []; IDX_TO_RESPONSE_ID = []; questions = [];
-  }
-  $http.get("test/1") // TODO
-    .success(function(result) {
-      var data = angular.fromJson(result);
-      for (var x = 0, question; x < data.questions.length; x++) {
-        switch (data.questions[x].info.question_type) {
-          case 'mas':
-            question = new MCQQuestion(data.questions[x].info);
-            $scope.questions.push(question.getQuestion());
-            $scope.answer.push(
-              parseAnswer(
-                data.questions[x].info,
-                data.questions[x].config.answer));
-            break;
-          case 'sbt':
-            $scope.questions.push(null);
-            $scope.answer.push(null);
-            break;
-          case 'sbc':
-            $scope.questions.push(null);
-            $scope.answer.push(null);
-            break;
+    $http.get(url) // TODO
+      .success(function(result) {
+        var data = angular.fromJson(result);
+        for (var x = 0, question; x < data.questions.length; x++) {
+          switch (data.questions[x].info.question_type) {
+            case 'mas':
+              question = new MCQQuestion(data.questions[x].info);
+              $scope.questions.push(question.getQuestion());
+              $scope.answer.push(
+                parseAnswer(
+                  data.questions[x].info,
+                  data.questions[x].config.answer));
+              break;
+            case 'sbt':
+              $scope.questions.push(null);
+              $scope.answer.push(null);
+              break;
+            case 'sbc':
+              $scope.questions.push(null);
+              $scope.answer.push(null);
+              break;
+          }
+          RESPONSE_ID_TO_IDX[data.questions[x].config.id] = x;
+          IDX_TO_RESPONSE_ID[x] = data.questions[x].config.id;
+          questions.push(data.questions[x].info);
         }
-        RESPONSE_ID_TO_IDX[data.questions[x].config.id] = x;
-        IDX_TO_RESPONSE_ID[x] = data.questions[x].config.id;
-        questions.push(data.questions[x].info);
-      }
-      start_autosave(data);
-    });
+        start_autosave(data);
+        $scope.loaded = true;
+      });
+  }
   function collateAnswer() {
     return questions.map(function(question, i) {
       return {
@@ -169,7 +176,7 @@ angular.module('app').controller('TestController',
   });
 
   $scope.submit_answer = function() {
-    $http.post('test/1', {
+    $http.post(url, {
       data: JSON.stringify(collateAnswer())
     }).success(function(msg) {
       // success
