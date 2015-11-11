@@ -122,7 +122,6 @@ class TestController < ApplicationController
 	def save
 		id = params[:id]
 		test = Test.where('date_add(start_time, interval duration second) >= now()').where(id: id).first
-		byebug
 		responses = JSON.parse params[:answer]
 		responses.each do |response|
 			test_response = TestResponse.find response['id']

@@ -68,6 +68,7 @@ class MCQQuestion
 			question_id: @id,
 			test_response_id: test_response.id,
 			tag: "mas:mark",
+			latest: Time.now,
 			value: mark)
 		mark
 	end

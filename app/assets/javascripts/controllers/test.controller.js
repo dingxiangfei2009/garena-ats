@@ -58,7 +58,7 @@ angular.module('app').controller('TestController',
     parseAnswer(answer) {
       if (answer) {
         var ret = Array(this.getQuestion().answers.length).fill(false);
-        var indices = angular.fromJson(answer);
+        var indices = angular.fromJson(answer).choices;
         indices.forEach(idx => ret[idx] = true);
         return ret;
       } else
@@ -68,9 +68,9 @@ angular.module('app').controller('TestController',
       if (answer) {
         var ret = [];
         answer.forEach((tick, idx) => tick && ret.push(idx));
-        return angular.toJson(ret);
+        return angular.toJson({choices: ret});
       } else
-        return '[]';
+        return JSON.stringify({choices:[]});
     }
   });
   function parseAnswer(question, answer) {
@@ -177,12 +177,28 @@ angular.module('app').controller('TestController',
   });
 
   $scope.submit_answer = function() {
-    $http.post(url, {
-      data: JSON.stringify(collateAnswer())
-    }).success(function(msg) {
-      // success
-    });
+    var is_all_completed = true;
+    for (var i = 0; i < questions.length; ++i)
+      is_all_completed &= $scope.attempt[i];
+    if (is_all_completed)
+      send_answer();
+    else
+      $('#confirm-not-complete').modal('show');
   };
+  
+  $scope.send_answer = send_answer;
+    
+  function send_answer() {
+    $.ajax({
+      url: url,
+      method: 'POST',
+      data: {
+        answer: JSON.stringify(collateAnswer())
+      }
+    }).success(function(msg) {
+      $('#submit-success').modal('show');
+    });
+  }
 
   function start_autosave(data) {
     function prepare_autosave_data(answer) {
@@ -200,7 +216,6 @@ angular.module('app').controller('TestController',
     function get_autosave_transaction(db) {
       var transaction = db.transaction('autosave', 'readwrite');
       transaction.onerror = e => console.log(e);
-      transaction.oncomplete = e => console.log(e);
       return transaction.objectStore('autosave');
     }
     request.onupgradeneeded = function(e) {

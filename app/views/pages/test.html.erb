@@ -22,6 +22,25 @@
       <div class="ui positive button" ng-click="load(test_id)">Start the Test</div>
     </div>
   </div>
+  <div class="ui basic modal" id="submit-success">
+    <i class="close icon"></i>
+    <div class="header">
+      Submit Success
+    </div>
+    <div class="image content">
+      <div class="image">
+        <i class="green checkmark icon"></i>
+      </div>
+      <div class="description">
+        <p>Your submission is accepted. Thank you for taking this test.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui positive green basic inverted button">
+        Okay
+      </div>
+    </div>
+  </div>
   <script>
     requestAnimationFrame(() => $('#loader-modal').modal('show'));
   </script>
@@ -35,7 +54,7 @@
     <h2 class='ui grey header item'>
       <!-- TODO: time is wrong for single digits -->
       <timer interval="1000"  countdown="1800">
-        {{minutes}} : {{seconds}}
+        {{mminutes}} : {{sseconds}}
       </timer>
     </h2>
     
@@ -51,18 +70,6 @@
         </a>
       </div>
     </div>
-
-    <!--div class="ui vertical steps">
-      <div ng-repeat='question in questions'>
-        <div class="step" ng-class="{'completed': $parent.attempt[$index]!=null}">
-          <i class="red warning icon"></i>
-            <div class="content">
-            <div class="title">Q{{$index + 1}}</div>
-          </div>
-        </div>
-      </div>
-    </div-->
-
   </div>
 
   <div class="pusher">
@@ -125,7 +132,8 @@
 
       <div class="ui divider"></div>
       <div class="two column row">
-        <button class="ui primary button" ng-click="submit_answer">
+        <button class="ui labeled icon primary button" ng-click="submit_answer()">
+          <i class="write icon"></i>
           Submit your answers
         </button>
       </div>
@@ -137,4 +145,23 @@
       context: '#context'
     });
   </script>
+  <div class="ui basic modal" id="confirm-not-complete">
+    <i class="close icon"></i>
+    <div class="header">
+      Confirm Submission
+    </div>
+    <div class="content">
+      <div class="description">
+        You have incomplete test questions. Do you still want to proceed?
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui negative basic inverted button">
+        No
+      </div>
+      <div class="ui positive green basic inverted button" ng-click="send_answer()">
+        Yes
+      </div>
+    </div>
+  </div>
 </div>
