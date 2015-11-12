@@ -15,7 +15,6 @@
 //= require ckeditor/init
 //= require angular/angular
 //= require angular-rails-templates
-//= require_tree ./controllers
 //= require semantic/dist/semantic
 //= require_tree ../../../vendor/assets/components/semantic/dist
 //= require ace-builds/src-min-noconflict/ace
@@ -26,3 +25,7 @@
 //= require humanize-duration/humanize-duration.js
 //= require angular-timer/dist/angular-timer.js
 //= require jquery.turbolinks
+//= require require/require
+//= require require/domReady
+//= require vis/vis-compat
+//= require_tree ./controllers

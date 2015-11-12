@@ -1,6 +1,6 @@
 (function() {
 /* global angular */
-var BIND_HANDLERS = new Map;
+/*var BIND_HANDLERS = new Map;
 
 function delegate_property_setter(constructor, property, event_name) {
   if (!BIND_HANDLERS.has(constructor))
@@ -41,7 +41,7 @@ delegate_property_setter(HTMLInputElement, 'checked', ['input', 'change', 'click
 delegate_property_setter(HTMLOptionElement, 'selected', function (element) {
   element.parentElement.dispatchEvent(new Event('change'));
 });
-delegate_property_setter(HTMLTextAreaElement, 'value', ['input', 'change']);
+delegate_property_setter(HTMLTextAreaElement, 'value', ['input', 'change']);*/
 
 var app = angular.module('app', ['templates', 'ui.ace', 'timer']);
 

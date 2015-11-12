@@ -44,6 +44,12 @@ Rails.application.routes.draw do
       end
     end
   end
+  scope '/evaluate' do
+    scope '/:id' do
+      get '/', to: 'evaluate#evaluate'
+      post '/', to: 'evaluate#save'
+    end
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

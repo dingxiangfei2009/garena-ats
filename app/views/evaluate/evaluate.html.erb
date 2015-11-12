@@ -1,0 +1,95 @@
+<div>
+  <div class="ui left visible sidebar inverted vertical menu"></div>
+  <div class="pusher" id="main" ng-non-bindable>
+    <%= hidden_field_tag :test_id, @id, 'vis-element' => 'test_id_field' %>
+    <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info_field' %>
+    <!-- definitions -->
+    <template vis-element="question_template.mas">
+      <div class="grouped fields">
+        <template vis-iterate="choice, choice_index in choices">
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" vis-value="user_answers[choice_index]" disabled>
+              <label>
+                {{choice_index + 1}}: {{choice.description}}
+                <template vis-condition="choice.correct">
+                  <div class="ui left pointing green label">Correct Option</div>
+                </template>
+              </label>
+            </div>
+          </div>
+          <script>
+            requestAnimationFrame(() => $('.ui.checkbox').checkbox());
+          </script>
+        </template>
+      </div>
+    </template>
+    <template vis-element="question_template.sbt">
+    </template>
+    <template vis-element="question_template.sbc">
+    </template>
+    
+    <!-- page -->
+    <div class="ui two column grid container">
+      <div class="two column row"></div>
+      
+      <!-- main content -->
+      <div class="row centered">
+        <div class="column">
+          <h1 class="ui icon header">
+            <i class="write icon"></i>
+            <div class="content">
+              Evaluation
+              <div class="sub header">
+                Your are evaluating Test {{ id }}
+              </div>
+            </div>
+          </h1>
+        </div>
+      </div>
+      
+      <div class="ui divider"></div>
+      
+      <div class="row">
+        <div class="column">
+          <template vis-iterate="question, question_index in test.questions">
+            <h2 class="ui header">Question {{question_index + 1}}</h2>
+            <div class="ui divider"></div>
+            <div class="ui raised segment">
+              <template vis-inject="injectHTML(question.info.description)"></template>
+            </div>
+            <div class="ui label">
+              Mark
+              <div class="detail">{{question.info.mark}}</div>
+            </div>
+            <div class="ui form">
+              <template vis-condition="question.info.type === 'mas'">
+                <template
+                  vis-inject="question_template.mas"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <template vis-condition="question.info.type === 'sbt'">
+                <template
+                  vis-inject="question_template.sbt"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <template vis-condition="question.info.type === 'sbc'">
+                <template
+                  vis-inject="question_template.sbc"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <div class="ui right labeled left icon input">
+                <i class="write icon"></i>
+                <input type="text" vis-value="mark[question_index]" placeholder="Mark" vis-value-type="number">
+                <a class="ui tag label">Enter Mark</a>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+      
+      <div class="ui divider"></div>
+      <div class="row"></div>
+    </div>
+  </div>
+</div>
