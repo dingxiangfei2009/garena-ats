@@ -45,8 +45,13 @@ class EvaluateController < ApplicationController
         
         @test_info = JSON.generate test_info
     end
-    def get
-    end
     def save
+        marks = JSON.parse params[:marks]
+        marks.each do |mark|
+            test_response = TestResponse.find mark['id']
+            test_response.mark = mark['mark']
+            test_response.save
+        end
+        render json: JSON.generate({status: 'success'})
     end
 end
