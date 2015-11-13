@@ -8,27 +8,55 @@ angular.module('app').controller('PositionController', ['$scope', '$http', funct
     testParameters: [{
       topic: {
         name: 'Select Topic',
-        value: null
+        value: 'def'
       },
       no: 1,
       type: {
         name: 'Select Type',
-        value: null
+        value: 'def'
       },
       diff: {
         name: 'Select Difficulty',
-        value: null
+        value: '0'
       }
     }]
   };
-  $scope.jobTopics = [{}];
+  $scope.jobTopics = [
+    {
 
-  $http.get('/topics/all').success(data =>
-    $scope.topics = data.map(topic => ({
-      name: topic.name,
-      value: topic.token
-    }))
-  );
+    }
+  ];
+
+  $scope.topics = [
+    {
+      name: 'Algorithm and Data Structures',
+      value: 'adt'
+    },
+    {
+      name: 'Android',
+      value: 'and'
+    },
+    {
+      name: 'iOS',
+      value: 'ios'
+    },
+    {
+      name: 'Networks',
+      value: 'net'
+    },
+    {
+      name: 'Operating Systems',
+      value: 'ops'
+    },
+    {
+      name: 'Security',
+      value: 'sec'
+    },
+    {
+      name: 'Web Development',
+      value: 'web'
+    }
+  ];
 
   $scope.types = [
     {
@@ -100,22 +128,23 @@ angular.module('app').controller('PositionController', ['$scope', '$http', funct
   };
 
   $scope.submit = function(){
-    var testParams =
-      $scope.job.testParameters.filter(parameter =>
-        parameter.topic.value && parameter.type.value && parameter.diff.value &&
-        parameter.no
-      ).map(parameter => ({
-        topic: parameter.topic.value,
-        type: parameter.type.value,
-        difficulty: parameter.diff.value,
-        count: parameter.no
-      }));
+    $scope.job.skills = $('.ui.dropdown.multiple').dropdown('get value');
+    var testParams = [];
+    for (var x = 0; x < $scope.job.testParameters.length; x++) {
+      testParams.push({
+        topic: $scope.job.testParameters[x].topic.value,
+        type: $scope.job.testParameters[x].type.value,
+        difficulty: $scope.job.testParameters[x].diff.value,
+        count: $scope.job.testParameters[x].no
+      });
+    }
     var dataToSend = {
       title: $scope.job.pos,
         description: $scope.job.desc,
         experience: $scope.job.exp,
         test_parameter: angular.toJson(testParams)
     };
+    // alert(angular.toJson(dataToSend));
     $.ajax({
       method: "POST",
       url: "/job",
