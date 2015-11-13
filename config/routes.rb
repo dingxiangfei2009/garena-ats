@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     post '/', to: 'question#new'
   end
   scope '/test' do
+    get '/query', to: 'test#list'
     scope '/:id' do
       get '/', to: 'test#get'
       post '/', to: 'test#save'

@@ -3,7 +3,7 @@ define('qmod', [], function(window) {
 
 function MCQQuestion(question) {
   this.question = question;
-  this.type = question.type;
+  this.type = question.question_type;
   this.statement = question.description;
   this.answers = JSON.parse(question.config).answer;
 }
@@ -12,12 +12,12 @@ Object.assign(MCQQuestion.prototype, {
     return {
       type: this.type,
       statement: this.statement,
-      answers: this.answer
+      answers: this.answers
     };
   },
   parseReferenceAnswer(answer) {
     var ret = [];
-    this.answer
+    this.answers
       .forEach(
         (answer, index) => answer.correct && ret.push(index));
   },
@@ -63,9 +63,47 @@ function MCQQuestionController(question) {
   this.model.user_answers = this.question.parseAnswer(question.config.answer);
 }
   
+function SBCQuestion(question) {
+  this.question = question;
+  var config = JSON.parse(question.config);
+  this.stub = config.stub;
+}
+Object.assign(SBCQuestion.prototype, {
+  getQuestion() {
+    return {};
+  },
+  parseAnswer(answer) {
+    if (answer) {
+      var parsed = JSON.parse(answer);
+      return {
+        language: parsed.language,
+        code: parsed.code
+      };
+    } else
+      return {};
+  },
+  stringifyAnswer(answer) {
+    if (answer && 'object' === typeof answer)
+      return JSON.stringify({
+        language: answer.language,
+        code: answer.code
+      });
+    else
+      return JSON.stringify({
+        language: null,
+        code: ''
+      });
+  }
+});
+  
+function SBCQuestionController() {
+}
+  
 return {
   MCQQuestion: MCQQuestion,
-  MCQQuestionController: MCQQuestionController
+  MCQQuestionController: MCQQuestionController,
+  SBCQuestion: SBCQuestion,
+  SBCQuestionController: SBCQuestionController
 };
   
 });

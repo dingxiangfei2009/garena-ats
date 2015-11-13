@@ -7,77 +7,18 @@ function($scope, $rootScope){
 
 angular.module('app').controller('TestController',
 ['$scope', '$http', '$interval', function($scope, $http, $interval) {
+  var qmod;
+  require(['qmod'], _ => qmod = _);
   $scope.$on('load-test', function(event, test_id) {
     load_test(test_id);
   });
-  
-  var question_controllers = {
-    'mas': {},
-    'sbt': {},
-    'sbc': {}
-  };
-  //   {
-  //     type: 'mas',
-  //     statement: 'Which of the following are true?',
-  //     optionA: 'The Void class extends the Class class.',
-  //     optionB: 'The Float class extends the Double class.',
-  //     optionC: 'The System class extends the Runtime class',
-  //     optionD: 'The Integer class extends the Number class.'
-  //   },
-  //   {
-  //     type: 'mas',
-  //     statement: 'Which of the following is true?',
-  //     optionA: 'The Class class is the superclass of the Object class.',
-  //     optionB: 'The Object class is final.',
-  //     optionC: 'The Class objects are constructed by the JVM as classes are loaded by an instance of java.lang.ClassLoader',
-  //     optionD: 'None of the above.'
-  //   },
-  //   {
-  //     type: 'sbt',
-  //     statement: 'Describe briefly how over-riding is different from over-loading',
-  //   },
-  //   {
-  //     type: 'sbc',
-  //     statement: 'Write a function to perform bubble-sort. The function takes in an array of 10 numbers as parameter.',
-  //   }
-  // ];
-
   $scope.types = ['mas', 'sbt', 'sbc'];
   
-  function MCQQuestion(question) {
-    this.question = question;
-  }
-  Object.assign(MCQQuestion.prototype, {
-    getQuestion() {
-      return {
-        type: this.question.question_type,
-        statement: this.question.description,
-        answers: angular.fromJson(this.question.config).answer
-      };
-    },
-    parseAnswer(answer) {
-      if (answer) {
-        var ret = Array(this.getQuestion().answers.length).fill(false);
-        var indices = angular.fromJson(answer).choices;
-        indices.forEach(idx => ret[idx] = true);
-        return ret;
-      } else
-        return [];
-    },
-    stringifyAnswer(answer) {
-      if (answer) {
-        var ret = [];
-        answer.forEach((tick, idx) => tick && ret.push(idx));
-        return angular.toJson({choices: ret});
-      } else
-        return JSON.stringify({choices:[]});
-    }
-  });
   function parseAnswer(question, answer) {
     var qn_controller;
     switch (question.question_type) {
       case 'mas':
-        qn_controller = new MCQQuestion(question);
+        qn_controller = new qmod.MCQQuestion(question);
         return qn_controller.parseAnswer(answer);
     }
   }
@@ -85,25 +26,29 @@ angular.module('app').controller('TestController',
     var qn_controller;
     switch (question.question_type) {
       case 'mas':
-        qn_controller = new MCQQuestion(question);
+        qn_controller = new qmod.MCQQuestion(question);
         return qn_controller.stringifyAnswer(answer);
     }
   }
-
-  $scope.aceLoaded = function(_editor) {
-    // PROBLEM: aceEditor may be shared by multiple questions, Anand.
-    $scope.aceEditor = _editor;
+  
+  var ace_editors;
+  
+  $scope.createAceOption = function(question_index) {
+    function aceLoaded(editor) {
+      debugger;
+      ace_editors[question_index] = editor;
+    }
+    function aceChanged() {
+      debugger;
+    }
+    return {
+      useWrapMode : true,
+      showGutter: false,
+      theme:'twilight',
+      onLoad: aceLoaded,
+      onChange: aceChanged
+    };
   };
-
-  $scope.aceChanged = function(e) {
-    // PROBLEM: refer to $scope.aceLoaded
-    console.log('Ace editor changed');
-    // Get Current Value
-    var currentValue = $scope.aceEditor.getSession().getValue();
-    console.log(currentValue);
-  };
-  $scope.alert = () => window.alert();
-
   
   $scope.testName = 'Garena Android Developer Test';
   $scope.attempt = [];
@@ -118,7 +63,7 @@ angular.module('app').controller('TestController',
     // scope set-up
     $scope.attempt = [];
     $scope.answer = [];
-    $scope.aceEditor = {};
+    ace_editors = [];
     $scope.questions = [];
     $scope.loaded = false;
     // shared maps
@@ -129,20 +74,20 @@ angular.module('app').controller('TestController',
         for (var x = 0, question; x < data.questions.length; x++) {
           switch (data.questions[x].info.question_type) {
             case 'mas':
-              question = new MCQQuestion(data.questions[x].info);
+              question = new qmod.MCQQuestion(data.questions[x].info);
               $scope.questions.push(question.getQuestion());
               $scope.answer.push(
-                parseAnswer(
-                  data.questions[x].info,
-                  data.questions[x].config.answer));
+                question.parseAnswer(data.questions[x].config.answer));
               break;
             case 'sbt':
               $scope.questions.push(null);
               $scope.answer.push(null);
               break;
             case 'sbc':
-              $scope.questions.push(null);
-              $scope.answer.push(null);
+              question = new qmod.SBCQuestion(data.questions[x].info);
+              $scope.questions.push(question.getQuestion());
+              $scope.answer.push(
+                question.parseAnswer(data.questions[x].config.answer));
               break;
           }
           RESPONSE_ID_TO_IDX[data.questions[x].config.id] = x;

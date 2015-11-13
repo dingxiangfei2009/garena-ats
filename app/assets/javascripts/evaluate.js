@@ -22,7 +22,7 @@ function EvaluateControllerImpl() {
             return {
                 element: fragment,
                 scope: new el.scope.Scope
-            }
+            };
         },
         submit_marks() {
             console.log(collateMarks());
@@ -55,10 +55,10 @@ Object.assign(EvaluateControllerImpl.prototype, {
                     _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
                     break;
                 case 'sbt':
-                    question_controllers[index] = null;
+                    this.question_controllers[index] = null;
                     break;
                 case 'sbc':
-                    question_controllers[index] = null;
+                    this.question_controllers[index] = null;
                     break;
                 }
             });
