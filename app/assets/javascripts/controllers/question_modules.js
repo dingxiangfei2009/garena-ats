@@ -1,4 +1,4 @@
-!function(window) {
+define('qmod', [], function(window) {
 'use strict';
 
 function MCQQuestion(question) {
@@ -63,7 +63,9 @@ function MCQQuestionController(question) {
   this.model.user_answers = this.question.parseAnswer(question.config.answer);
 }
   
-window.MCQQuestion = MCQQuestion;
-window.MCQQuestionController = MCQQuestionController;
+return {
+  MCQQuestion: MCQQuestion,
+  MCQQuestionController: MCQQuestionController
+};
   
-}(window);
+});

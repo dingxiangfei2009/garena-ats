@@ -24,6 +24,8 @@
     "semantic-ui": "*",
     "humanize-duration": "*",
     "momentjs": "*",
-    "angular-timer": "*"
+    "angular-timer": "*",
+    "requirejs": "*",
+    "domReady": "*"
   }
 }

@@ -25,6 +25,14 @@
       </div>
     </template>
     <template vis-element="question_template.sbt">
+      <h4 class="ui dividing header">Candidate Answer</h4>
+      <div class="field">
+        <template vis-inject="injectHTML(answer)"></template>
+      </div>
+      <h4 class="ui dividing header">Suggested Answer</h4>
+      <div class="field">
+        <template vis-inject="injectHTML(suggested_answer)"></template>
+      </div>
     </template>
     <template vis-element="question_template.sbc">
     </template>
@@ -41,7 +49,9 @@
             <div class="content">
               Evaluation
               <div class="sub header">
-                Your are evaluating Test {{ id }}
+                <p>Your are evaluating Test {{ id }}</p>
+                <p>Candidate: {{ application.candidate.name }}, Email: {{ application.candidate.email }} </p>
+                <p>Applying for {{ application.job.title }} </p>
               </div>
             </div>
           </h1>
@@ -80,7 +90,11 @@
               </template>
               <div class="ui right labeled left icon input">
                 <i class="write icon"></i>
-                <input type="text" vis-value="mark[question_index]" placeholder="Mark" vis-value-type="number">
+                <input
+                  type="text"
+                  vis-value="mark[question_index]"
+                  placeholder="Mark"
+                  vis-value-type="number">
                 <a class="ui tag label">Enter Mark</a>
               </div>
             </div>
@@ -89,7 +103,13 @@
       </div>
       
       <div class="ui divider"></div>
-      <div class="row"></div>
+      <div class="row">
+        <div class="column">
+          <div class="ui primary button" vis-action="(\=> submit_marks())">
+            Save Marks
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

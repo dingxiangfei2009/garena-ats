@@ -25,7 +25,7 @@
 //= require humanize-duration/humanize-duration.js
 //= require angular-timer/dist/angular-timer.js
 //= require jquery.turbolinks
-//= require require/require
-//= require require/domReady
+//= require requirejs/require
+//= require domReady/domReady
 //= require vis/vis-compat
 //= require_tree ./controllers
