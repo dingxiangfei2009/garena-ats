@@ -1,4 +1,7 @@
-<div>
+<style>
+  .ace_editor { height: 200px;}
+</style>
+ <div>
   <div class="ui fullscreen modal" id="loader-modal" ng-controller="LoadTestController" ng-show="!loaded">
     <div class="header">
       Enter your Test ID
@@ -111,17 +114,12 @@
             </div>
             <div ng-switch-when='sbc'>
               <div>
-                <style>
-                  .ace_editor { height: 200px;}
-                </style>
-                <div class='twelve wide field'>
-                  <div ui-ace="{
-                    useWrapMode : true,
-                    showGutter: false,
-                    theme:'twilight',
-                    onLoad: aceLoaded,
-                    onChange: aceChanged
-                    }" ng-change='attempted($index)'  ng-model='answer[$index]'>
+                <select></select>
+                <div class="twelve wide field">
+                  <div
+                    ui-ace="createAceOption($index)"
+                    ng-change="attempted($index)"
+                    ng-model="answer[$index]">
                   </div>
                 </div>
               </div>

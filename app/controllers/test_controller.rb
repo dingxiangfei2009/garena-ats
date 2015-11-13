@@ -4,6 +4,7 @@ require 'test'
 require 'field'
 require 'question'
 require 'mcqquestion'
+require 'sbcquestion'
 
 class TestController < ApplicationController
 	# random_pick_questions
@@ -90,11 +91,15 @@ class TestController < ApplicationController
 		when 'mas'
 			renderer = MCQQuestion.new question
 			return renderer.render nil
+		when 'sbc'
+			renderer = SBCQuestion.new question
+			return renderer.render nil
 		end
 	end
 	def get
 		id = params[:id]
 		test = Test.find id
+		byebug
 		if !test.start_time then
 			test.start_time = Time.now
 			test.save
@@ -121,24 +126,35 @@ class TestController < ApplicationController
 	end
 	def save
 		id = params[:id]
-		test = Test.where('date_add(start_time, interval duration second) >= now()').where(id: id).first
-		responses = JSON.parse params[:answer]
-		responses.each do |response|
-			test_response = TestResponse.find response['id']
-			test_response.answer = response['answer']
-			test_response.save
-		end
-		test.test_responses.each do |response|
-			question = response.question
-			question_type = question.question_type
-			case question_type.name
-			when 'mas'
-				marker = MCQQuestion.new question
-				response.mark = marker.mark response
-				response.save
+		test = Test.where('date_add(start_time, interval duration second) >= utc_timestamp()').where(id: id).first
+		if test
+			responses = JSON.parse params[:answer]
+			responses.each do |response|
+				test_response = TestResponse.find response['id']
+				test_response.answer = response['answer']
+				test_response.save
 			end
+			application = test.application
+			application.status = 'pending evaluation'
+			application.save
+			test.test_responses.each do |response|
+				question = response.question
+				question_type = question.question_type
+				case question_type.name
+				when 'mas'
+					marker = MCQQuestion.new question
+					response.mark = marker.mark response
+					response.save
+				when 'sbc'
+					marker = SBCQuestion.new question
+					response.mark = marker.mark response
+					response.save
+				end
+			end
+			render json: {status: 'success'}
+		else
+			render json: {status: 'no record'}
 		end
-		render :json => {status: 'success'}
 	end
 	def save_evaluation
 		marks = JSON.parse params[:marks]
@@ -155,5 +171,12 @@ class TestController < ApplicationController
 				marker.evaluate(test_response, marking['mark'])
 			end
 		end
+	end
+		
+	def list
+		query = Test.joins(:candidate, :application)
+			.select('tests.*', 'application.id' 'candidates.id as candidate_id')
+		
+		render json: query.all
 	end
 end

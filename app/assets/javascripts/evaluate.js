@@ -1,4 +1,5 @@
-require(['bind', 'module_struct', 'compat/observe', 'el/el', 'qmod', 'domReady!'],
+$(function(){
+require(['bind', 'module_struct', 'compat/observe', 'el/el', 'qmod'],
 function(bind, module, _proxy, el, qmod) {
 'use strict';
     
@@ -21,7 +22,7 @@ function EvaluateControllerImpl() {
             return {
                 element: fragment,
                 scope: new el.scope.Scope
-            }
+            };
         },
         submit_marks() {
             console.log(collateMarks());
@@ -29,8 +30,10 @@ function EvaluateControllerImpl() {
                 url: '/evaluate/1',
                 method: 'POST',
                 data: {
-                    data: JSON.stringify(collateMarks())
+                    marks: JSON.stringify(collateMarks())
                 }
+            }).success(function() {
+                $('#success').modal('show');
             });
         }
     };
@@ -41,7 +44,6 @@ Object.assign(EvaluateControllerImpl.prototype, {
             this.id =
             Number(this.model.test_id_field.element.value);
         var test_info = JSON.parse(this.model.test_info_field.element.value);
-        debugger;
         _proxy(this.model).test = this.test = test_info;
         this.question_controllers = [];
         test_info.questions.forEach(
@@ -53,10 +55,10 @@ Object.assign(EvaluateControllerImpl.prototype, {
                     _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
                     break;
                 case 'sbt':
-                    question_controllers[index] = null;
+                    this.question_controllers[index] = null;
                     break;
                 case 'sbc':
-                    question_controllers[index] = null;
+                    this.question_controllers[index] = null;
                     break;
                 }
             });
@@ -70,4 +72,5 @@ var evaluater = EvaluateController.instance();
 bind.bind('#main', evaluater);
 evaluater.initialize();
 
+});
 });
