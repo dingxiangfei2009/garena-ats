@@ -7,6 +7,7 @@ require 'mcqquestion'
 require 'sbcquestion'
 
 class TestController < ApplicationController
+	@@LIMIT = 100
 	# random_pick_questions
 	# select :count questions of :topic at :difficulty level
 	def random_pick_questions(var)
@@ -174,9 +175,40 @@ class TestController < ApplicationController
 	end
 		
 	def list
-		query = Test.joins(:candidate, :application)
-			.select('tests.*', 'application.id' 'candidates.id as candidate_id')
-		
-		render json: query.all
+		query = Test.joins(:candidate, :application, :job)
+			.select(
+				'tests.id',
+				'jobs.id as job_id',
+				'jobs.title as job_title',
+				'applications.id as application_id',
+				'applications.status as application_status',
+				'candidates.id as candidate_id',
+				'candidates.name as candidate_name',
+				'candidates.email as candidate_email')
+		if (params[:job])
+			query = query.where(['jobs.title like ?', "%#{params[:job]}%"])
+		end
+		query = query.offset(params[:offset] || 0)
+		query = query.limit(@@LIMIT)
+		result = query.all.map do |test|
+			mark = TestResponse.where(test_id: test.id).sum(:mark)
+			total_mark = TestResponse.joins(:question)
+				.select('questions.mark')
+				.where(test_id: test.id)
+				.sum('questions.mark')
+			{
+				id: test.id,
+				job_id: test.job_id,
+				job_title: test.job_title,
+				application_id: test.application_id,
+				application_status: test.application_status,
+				candidate_id: test.candidate_id,
+				candidate_name: test.candidate_name,
+				candidate_email: test.candidate_email,
+				mark: mark,
+				total_mark: total_mark
+			}
+		end
+		render json: result
 	end
 end
