@@ -1,4 +1,4 @@
-angular.module('app').controller('JobController', ['$scope', '$http', function($scope, $http) {
+angular.module('app').controller('PositionController', ['$scope', '$http', function($scope, $http) {
 
   $scope.job = {
     exp: '',

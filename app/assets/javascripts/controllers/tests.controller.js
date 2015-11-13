@@ -1,4 +1,4 @@
-angular.module('app').controller('TestsController', function($scope) {
+angular.module('app').controller('TestsController', ["$scope", "$http", function($scope, $http) {
   $scope.searchText = '';
 
   $scope.newCandidate = {
@@ -35,36 +35,30 @@ angular.module('app').controller('TestsController', function($scope) {
     }
   ];
 
-  $scope.positions = [
-    {
-      name: 'Android Developer',
-      value: 'AND'
-    },
-    {
-      name: 'Data Scientist',
-      value: 'DAT'
-    },
-    {
-      name: 'Security Engineer',
-      value: 'SEC'
-    },
-    {
-      name: 'System Admin',
-      value: 'SYS'
-    },
-    {
-      name: 'Web Developer',
-      value: 'WEB'
+  $scope.positions = [];
+
+  $http({
+    method: "GET",
+    url: "/job"
+  })
+  .success(function(data) {
+    alert(JSON.stringify(data));
+    for (var x = 0; x < data.length; x++) {
+      $scope.positions.push({
+        name: data[x].title,
+        value: data[x].id
+      });
     }
-  ];
+  });
+
 
   $scope.setNewPosition = function (pos) {
-    $scope.newCandidate.pos = pos.name;
+    $scope.newCandidate.pos = pos;
   };
 
   $scope.submit = function () {
     $scope.tests.push({
-      position: $scope.newCandidate.pos,
+      position: $scope.newCandidate.pos.name,
       candidate: $scope.newCandidate.name,
       complete: 'Not Completed',
       score: '-'
@@ -80,7 +74,7 @@ angular.module('app').controller('TestsController', function($scope) {
     .success(function(data){
       $.ajax({
         method: "POST",
-        url: "/applicants/" + data.id + "/job/" + 1,
+        url: "/applicants/" + data.id + "/job/" + $scope.newCandidate.pos.value,
       })
       .success(function(data){
         $.ajax({
@@ -89,7 +83,7 @@ angular.module('app').controller('TestsController', function($scope) {
           data: {
             email: $scope.newCandidate.email,
             duration: $scope.newCandidate.duration,
-            job: 1
+            job: $scope.newCandidate.pos.value
           }
         }).error(function(data) {
           console.log(data);
@@ -112,4 +106,4 @@ angular.module('app').controller('TestsController', function($scope) {
 
 
 
-});
+}]);
