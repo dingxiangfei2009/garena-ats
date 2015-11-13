@@ -14,32 +14,13 @@ angular.module('app').controller('TestController',
   });
   $scope.types = ['mas', 'sbt', 'sbc'];
   
-  function parseAnswer(question, answer) {
-    var qn_controller;
-    switch (question.question_type) {
-      case 'mas':
-        qn_controller = new qmod.MCQQuestion(question);
-        return qn_controller.parseAnswer(answer);
-    }
-  }
-  function stringifyAnswer(question, answer) {
-    var qn_controller;
-    switch (question.question_type) {
-      case 'mas':
-        qn_controller = new qmod.MCQQuestion(question);
-        return qn_controller.stringifyAnswer(answer);
-    }
-  }
-  
   var ace_editors;
   
   $scope.createAceOption = function(question_index) {
     function aceLoaded(editor) {
-      debugger;
       ace_editors[question_index] = editor;
     }
-    function aceChanged() {
-      debugger;
+    function aceChanged(e) {
     }
     return {
       useWrapMode : true,
@@ -49,6 +30,20 @@ angular.module('app').controller('TestController',
       onChange: aceChanged
     };
   };
+  
+  var ace_language_modes = new Map([
+    ['javascript', 'javascript'],
+    ['ruby', 'ruby'],
+    ['cxx', 'c++']
+  ]);
+  
+  $scope.switch_language = function(question_index, language) {
+    ace_editors[question_index]
+      .getSession()
+      .setMode(
+        'ace/mode/' +
+        ace_language_modes.get($scope.answer[question_index].language));
+  }
   
   $scope.testName = 'Garena Android Developer Test';
   $scope.attempt = [];
@@ -102,7 +97,7 @@ angular.module('app').controller('TestController',
     return questions.map(function(question, i) {
       return {
         id: IDX_TO_RESPONSE_ID[i],
-        answer: stringifyAnswer(questions[i], $scope.answer[i]),
+        answer: qmod.stringifyAnswer(questions[i], $scope.answer[i]),
         updated_at: new Date,
         attempted: $scope.attempt[i]
       };
@@ -190,7 +185,7 @@ angular.module('app').controller('TestController',
           else
             $scope.$apply(function() {
               var idx = RESPONSE_ID_TO_IDX[question.config.id];
-              $scope.answer[idx] = parseAnswer(question.info, autosave_data.answer);
+              $scope.answer[idx] = qmod.parseAnswer(question.info, autosave_data.answer);
               $scope.attempt[idx] = autosave_data.attempted;
             });
         };

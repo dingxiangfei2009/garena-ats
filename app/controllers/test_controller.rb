@@ -100,7 +100,6 @@ class TestController < ApplicationController
 	def get
 		id = params[:id]
 		test = Test.find id
-		byebug
 		if !test.start_time then
 			test.start_time = Time.now
 			test.save

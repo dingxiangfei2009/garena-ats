@@ -113,14 +113,21 @@
               </div>
             </div>
             <div ng-switch-when='sbc'>
-              <div>
-                <select></select>
-                <div class="twelve wide field">
-                  <div
-                    ui-ace="createAceOption($index)"
-                    ng-change="attempted($index)"
-                    ng-model="answer[$index]">
-                  </div>
+              <div class="field">
+                <select
+                  class="ui dropdown"
+                  ng-model="answer[$index].language"
+                  ng-change="switch_language($index)">
+                  <option value="javascript">JavaScript</option>
+                  <option value="cxx">C++</option>
+                  <option value="ruby">Ruby</option>
+                </select>
+              </div>
+              <div class="field">
+                <div
+                  ui-ace="createAceOption($index)"
+                  ng-change="attempted($index)"
+                  ng-model="answer[$index].code">
                 </div>
               </div>
             </div>

@@ -45,6 +45,9 @@ function parseAnswer(question, answer) {
     case 'mas':
       qn_controller = new MCQQuestion(question);
       return qn_controller.parseAnswer(answer);
+    case 'sbc':
+      qn_controller = new SBCQuestion(question);
+      return qn_controller.parseAnswer(answer);
   }
 }
 function stringifyAnswer(question, answer) {
@@ -52,6 +55,9 @@ function stringifyAnswer(question, answer) {
   switch (question.question_type) {
     case 'mas':
       qn_controller = new MCQQuestion(question);
+      return qn_controller.stringifyAnswer(answer);
+    case 'sbc':
+      qn_controller = new SBCQuestion(question);
       return qn_controller.stringifyAnswer(answer);
   }
 }
@@ -65,12 +71,18 @@ function MCQQuestionController(question) {
   
 function SBCQuestion(question) {
   this.question = question;
+  this.statement = question.description;
+  this.type = question.question_type;
   var config = JSON.parse(question.config);
   this.stub = config.stub;
 }
 Object.assign(SBCQuestion.prototype, {
   getQuestion() {
-    return {};
+    return {
+      type: this.type,
+      statement: this.statement,
+      code: this.stub
+    };
   },
   parseAnswer(answer) {
     if (answer) {
@@ -80,7 +92,10 @@ Object.assign(SBCQuestion.prototype, {
         code: parsed.code
       };
     } else
-      return {};
+      return {
+        language: null,
+        code: this.stub || ''
+      };
   },
   stringifyAnswer(answer) {
     if (answer && 'object' === typeof answer)
@@ -103,7 +118,9 @@ return {
   MCQQuestion: MCQQuestion,
   MCQQuestionController: MCQQuestionController,
   SBCQuestion: SBCQuestion,
-  SBCQuestionController: SBCQuestionController
+  SBCQuestionController: SBCQuestionController,
+  parseAnswer: parseAnswer,
+  stringifyAnswer: stringifyAnswer
 };
   
 });
