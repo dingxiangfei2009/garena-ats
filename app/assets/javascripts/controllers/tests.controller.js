@@ -55,10 +55,10 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
 
   $scope.submit = function () {
     $scope.tests.push({
-      position: $scope.newCandidate.pos.name,
-      candidate: $scope.newCandidate.name,
-      complete: 'Not Completed',
-      score: '-'
+      title: $scope.newCandidate.pos.name,
+      candidateName: $scope.newCandidate.name,
+      applicationStatus: null,
+      mark: 0
     });
     $.ajax({
       method: "POST",
