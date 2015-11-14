@@ -64,17 +64,25 @@ function stringifyAnswer(question, answer) {
   
 function MCQQuestionController(question) {
   this.question = new MCQQuestion(question.info);
-  this.model = {};
-  this.model.choices = this.question.answers;
-  this.model.user_answers = this.question.parseAnswer(question.config.answer);
+  this.model = {
+    choices: this.question.answers,
+    user_answers: this.question.parseAnswer(question.config.answer)
+  };
 }
-  
+
+var ace_language_modes = new Map([
+  ['javascript', 'javascript'],
+  ['ruby', 'ruby'],
+  ['cxx', 'c++']
+]);
+
 function SBCQuestion(question) {
   this.question = question;
   this.statement = question.description;
   this.type = question.question_type;
   var config = JSON.parse(question.config);
   this.stub = config.stub;
+  this.suggested_answer = config.suggested_answer;
 }
 Object.assign(SBCQuestion.prototype, {
   getQuestion() {
@@ -111,7 +119,28 @@ Object.assign(SBCQuestion.prototype, {
   }
 });
   
-function SBCQuestionController() {
+function SBCQuestionController(question, editable) {
+  var self = this;
+  this.question = new SBCQuestion(question.info);
+  var answer = this.question.parseAnswer(question.config.answer);
+  this.model = {
+    answer: answer,
+    set codeArea(element) {
+      var editor = self.candidate_answer_editor = ace.edit(element.element);
+      editor.setTheme('ace/theme/twilight');
+      editor.getSession().setMode('ace/mode/' + ace_language_modes.get(answer.language));
+      editor.setValue(answer.code);
+      editor.setReadOnly(!Boolean(editable));
+    },
+    set answerArea(element) {
+      var editor = self.suggested_answer_editor = ace.edit(element.element);
+      editor.setTheme('ace/theme/twilight');
+      editor.getSession().setMode(
+        'ace/mode/' + ace_language_modes.get(self.question.suggested_answer.language));
+      editor.setValue(self.question.suggested_answer.code);
+      editor.setReadOnly(!Boolean(editable));
+    }
+  };
 }
   
 return {

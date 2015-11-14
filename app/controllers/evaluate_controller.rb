@@ -48,10 +48,14 @@ class EvaluateController < ApplicationController
     def save
         marks = JSON.parse params[:marks]
         marks.each do |mark|
-            test_response = TestResponse.find mark['id']
+            test_response = TestResponse.find_by id: mark['id'], test_id: params[:id]
             test_response.mark = mark['mark']
             test_response.save
         end
+        test = Test.find params[:id]
+        application = test.application
+        application.status = 'evaluated';
+        application.save
         render json: JSON.generate({status: 'success'})
     end
 end

@@ -1,67 +1,95 @@
-<div>
-  <div class="ui left visible sidebar inverted vertical menu"></div>
-  <div class="pusher" id="main" ng-non-bindable>
-    <%= hidden_field_tag :test_id, @id, 'vis-element' => 'test_id_field' %>
-    <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info_field' %>
-    <!-- definitions -->
-    <template vis-element="question_template.mas">
-      <div class="grouped fields">
-        <template vis-iterate="choice, choice_index in choices">
-          <div class="field">
-            <div class="ui checkbox">
-              <input type="checkbox" vis-value="user_answers[choice_index]" disabled>
-              <label>
-                {{choice_index + 1}}: {{choice.description}}
-                <template vis-condition="choice.correct">
-                  <div class="ui left pointing green label">Correct Option</div>
-                </template>
-              </label>
+<div class="evaluator-main" ng-non-bindable>
+  <%= hidden_field_tag :test_id, @id, 'vis-element' => 'test_id_field' %>
+  <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info_field' %>
+  <!-- definitions -->
+  <template vis-element="question_template.mas">
+    <div class="grouped fields">
+      <template vis-iterate="choice, choice_index in choices">
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" vis-value="user_answers[choice_index]" disabled>
+            <label>
+              {{choice_index + 1}}: {{choice.description}}
+              <template vis-condition="choice.correct">
+                <div class="ui left pointing green label">Correct Option</div>
+              </template>
+            </label>
+          </div>
+        </div>
+        <script>
+          requestAnimationFrame(() => $('.ui.checkbox').checkbox());
+        </script>
+      </template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbt">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(answer)"></template>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(suggested_answer)"></template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbc">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ answer.language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="codeArea" style="height:20em"></div>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="answerArea" style="height:20em"></div>
+    </div>
+  </template>
+
+  <!-- page -->
+  <div class="ui two column grid container">
+    <div class="two column centered row">
+      <h1 class="ui icon header">
+        <i class="write icon"></i>
+        <div class="content">
+          Evaluation
+          <div class="sub header">
+          </div>
+        </div>
+      </h1>
+    </div>
+    <div class="ui divider"></div>
+
+    <!-- main content -->
+    <div class="row">
+      <div class="column">
+        <div id="question-container">
+          <div class="ui right dividing rail">
+            <div class="ui sticky">
+              <p>Your are evaluating Test {{ id }}</p>
+              <p>Candidate: {{ application.candidate.name }}, Email: {{ application.candidate.email }} </p>
+              <p>Applying for {{ application.job.title }} </p>
+              <div class="ui primary button" vis-action="(\=> submit_marks())" style="margin-top:20px;">
+                Save Marks
+              </div>
             </div>
           </div>
           <script>
-            requestAnimationFrame(() => $('.ui.checkbox').checkbox());
+            setTimeout(() => $('.ui.sticky').sticky(), 1000);
           </script>
-        </template>
-      </div>
-    </template>
-    <template vis-element="question_template.sbt">
-      <h4 class="ui dividing header">Candidate Answer</h4>
-      <div class="field">
-        <template vis-inject="injectHTML(answer)"></template>
-      </div>
-      <h4 class="ui dividing header">Suggested Answer</h4>
-      <div class="field">
-        <template vis-inject="injectHTML(suggested_answer)"></template>
-      </div>
-    </template>
-    <template vis-element="question_template.sbc">
-    </template>
-    
-    <!-- page -->
-    <div class="ui two column grid container">
-      <div class="two column row"></div>
-      
-      <!-- main content -->
-      <div class="row centered">
-        <div class="column">
-          <h1 class="ui icon header">
-            <i class="write icon"></i>
-            <div class="content">
-              Evaluation
-              <div class="sub header">
-                <p>Your are evaluating Test {{ id }}</p>
-                <p>Candidate: {{ application.candidate.name }}, Email: {{ application.candidate.email }} </p>
-                <p>Applying for {{ application.job.title }} </p>
-              </div>
-            </div>
-          </h1>
-        </div>
-      </div>
-      
-      <div class="ui divider"></div>
-      
-      <div class="row">
-        <div class="column">
           <template vis-iterate="question, question_index in test.questions">
             <h2 class="ui header">Question {{question_index + 1}}</h2>
             <div class="ui divider"></div>
@@ -99,15 +127,6 @@
               </div>
             </div>
           </template>
-        </div>
-      </div>
-      
-      <div class="ui divider"></div>
-      <div class="row">
-        <div class="column">
-          <div class="ui primary button" vis-action="(\=> submit_marks())">
-            Save Marks
-          </div>
         </div>
       </div>
     </div>

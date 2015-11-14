@@ -8,8 +8,14 @@
 </head>
 <body>
 
-<%= render partial: 'layouts/sidebar' unless params[:action] == "test" || params[:action] == "home" %>
-<%= yield %>
+<div class="pusher">
+  <div>
+    <%= render partial: 'layouts/sidebar' unless params[:action] == "test" || params[:action] == "home" %>
+  </div>
+  <div>
+    <%= yield %>
+  </div>
+</div>
 
 </body>
 </html>

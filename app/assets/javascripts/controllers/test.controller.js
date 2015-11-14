@@ -19,6 +19,11 @@ angular.module('app').controller('TestController',
   $scope.createAceOption = function(question_index) {
     function aceLoaded(editor) {
       ace_editors[question_index] = editor;
+      editor
+        .getSession()
+        .setMode(
+          'ace/mode/' +
+            ace_language_modes.get($scope.answer[question_index].language));
     }
     function aceChanged(e) {
     }

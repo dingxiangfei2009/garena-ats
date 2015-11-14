@@ -58,7 +58,8 @@ Object.assign(EvaluateControllerImpl.prototype, {
                     this.question_controllers[index] = null;
                     break;
                 case 'sbc':
-                    this.question_controllers[index] = null;
+                    this.question_controllers[index] = new qmod.SBCQuestionController(question);
+                    _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
                     break;
                 }
             });
@@ -69,7 +70,7 @@ Object.assign(EvaluateControllerImpl.prototype, {
 var EvaluateController = module('EvaluateController', {instance: EvaluateControllerImpl});
     
 var evaluater = EvaluateController.instance();
-bind.bind('#main', evaluater);
+bind.bind('.evaluator-main', evaluater);
 evaluater.initialize();
 
 });
