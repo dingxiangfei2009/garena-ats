@@ -30,10 +30,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="test in tests | filter:searchText | orderBy:'-score'">
-              <td>{{test.position}}</td>
-              <td>{{test.candidate}}</td>
-              <td ng-switch on='test.complete'>
+            <tr ng-repeat="test in tests | filter:searchText | orderBy:'-mark/totalMark'">
+              <td>{{test.title}}</td>
+              <td>{{test.candidateName}}</td>
+              <td ng-switch on='test.applicationStatus'>
                 <div ng-switch-when='Evaluate'>
                   <button class="ui yellow button">
                     <i class="checkmark box icon"></i>
@@ -46,11 +46,11 @@
                     View Report
                   </button>
                 </div>
-                <div ng-switch-when='Not Completed'>
+                <div ng-switch-when='null'>
                   Not Completed
                 </div>
               </td>
-              <td>{{test.score}}</td>
+              <td>{{test.mark}}/{{test.totalMark}}</td>
             </tr>
           </tbody>
         </table>

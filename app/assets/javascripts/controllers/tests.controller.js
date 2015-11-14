@@ -8,32 +8,7 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
     email: ''
   };
 
-  $scope.tests = [
-    {
-      position: 'Android Developer',
-      candidate: 'Ding Xiangfei',
-      complete: 'Evaluate',
-      score: '-'
-    },
-    {
-      position: 'Web Developer',
-      candidate: 'Qunfeng Ye',
-      complete: 'Not Completed',
-      score: '-'
-    },
-    {
-      position: 'Security Engineer',
-      candidate: 'Anand Sundaram',
-      complete: 'View Report',
-      score: '17/20'
-    },
-    {
-      position: 'Data Scientist',
-      candidate: 'Zhao Cong',
-      complete: 'View Report',
-      score: '9/10'
-    }
-  ];
+  $scope.tests = [];
 
   $scope.positions = [];
 
@@ -47,6 +22,28 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
       $scope.positions.push({
         name: data[x].title,
         value: data[x].id
+      });
+    }
+  });
+
+  $http({
+    method: "GET",
+    url: "/test/query"
+  })
+  .success(function(data) {
+    alert(JSON.stringify(data));
+    for (var x = 0; x < data.length; x++) {
+      $scope.tests.push({
+        id: data[x].id,
+        jobId: data[x].job_id,
+        title: data[x].job_title,
+        applicationId: data[x].application_id,
+        applicationStatus: data[x].application_status,
+        candidateId: data[x].candidate_id,
+        candidateName: data[x].candidate_name,
+        candidateEmail: data[x].candidate_email,
+        mark: data[x].mark,
+        totalMark: data[x].total_mark,
       });
     }
   });

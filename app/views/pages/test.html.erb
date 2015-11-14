@@ -60,7 +60,7 @@
         {{mminutes}} : {{sseconds}}
       </timer>
     </h2>
-    
+
     <div class="item">
       <b>Questions</b>
       <div class="menu">
@@ -83,8 +83,8 @@
           <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
           <h2 class="ui header">Question {{$index + 1}}</h2>
           <div class="ui divider"></div>
-          <div class="ui raised segment">
-            {{question.statement}}
+          <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
+            <!-- {{question.statement}} -->
           </div>
           <div class="ui form" ng-switch on='question.type'>
             <div class="grouped fields" ng-switch-when='mas'>

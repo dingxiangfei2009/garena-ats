@@ -6,16 +6,18 @@ function($scope, $rootScope){
 }]);
 
 angular.module('app').controller('TestController',
-['$scope', '$http', '$interval', function($scope, $http, $interval) {
+['$scope', '$http', '$interval', '$sce', function($scope, $http, $interval, $sce) {
   var qmod;
   require(['qmod'], _ => qmod = _);
   $scope.$on('load-test', function(event, test_id) {
     load_test(test_id);
   });
-  $scope.types = ['mas', 'sbt', 'sbc'];
-  
+  $scope.types = ['mas', 'sbc', 'sbt'];
+
   var ace_editors;
-  
+
+  $scope.trustAsHtml = $sce.trustAsHtml;
+
   $scope.createAceOption = function(question_index) {
     function aceLoaded(editor) {
       ace_editors[question_index] = editor;
@@ -35,13 +37,13 @@ angular.module('app').controller('TestController',
       onChange: aceChanged
     };
   };
-  
+
   var ace_language_modes = new Map([
     ['javascript', 'javascript'],
     ['ruby', 'ruby'],
     ['cxx', 'c++']
   ]);
-  
+
   $scope.switch_language = function(question_index, language) {
     ace_editors[question_index]
       .getSession()
@@ -49,7 +51,7 @@ angular.module('app').controller('TestController',
         'ace/mode/' +
         ace_language_modes.get($scope.answer[question_index].language));
   }
-  
+
   $scope.testName = 'Garena Android Developer Test';
   $scope.attempt = [];
   $scope.answer = [];
@@ -72,6 +74,7 @@ angular.module('app').controller('TestController',
       .success(function(result) {
         var data = angular.fromJson(result);
         for (var x = 0, question; x < data.questions.length; x++) {
+          alert(JSON.stringify(data.questions[x]));
           switch (data.questions[x].info.question_type) {
             case 'mas':
               question = new qmod.MCQQuestion(data.questions[x].info);
@@ -80,8 +83,10 @@ angular.module('app').controller('TestController',
                 question.parseAnswer(data.questions[x].config.answer));
               break;
             case 'sbt':
-              $scope.questions.push(null);
-              $scope.answer.push(null);
+              question = new qmod.SBTQuestion(data.questions[x].info);
+              $scope.questions.push(question.getQuestion());
+              $scope.answer.push(
+                question.parseAnswer(data.questions[x].config.answer));
               break;
             case 'sbc':
               question = new qmod.SBCQuestion(data.questions[x].info);
@@ -130,9 +135,9 @@ angular.module('app').controller('TestController',
     else
       $('#confirm-not-complete').modal('show');
   };
-  
+
   $scope.send_answer = send_answer;
-    
+
   function send_answer() {
     $.ajax({
       url: url,

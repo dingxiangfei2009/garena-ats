@@ -61,7 +61,7 @@ function stringifyAnswer(question, answer) {
       return qn_controller.stringifyAnswer(answer);
   }
 }
-  
+
 function MCQQuestionController(question) {
   this.question = new MCQQuestion(question.info);
   this.model = {
@@ -118,7 +118,7 @@ Object.assign(SBCQuestion.prototype, {
       });
   }
 });
-  
+
 function SBCQuestionController(question, editable) {
   var self = this;
   this.question = new SBCQuestion(question.info);
@@ -142,14 +142,63 @@ function SBCQuestionController(question, editable) {
     }
   };
 }
-  
+
+
+function SBTQuestion(question) {
+  this.question = question;
+  this.statement = question.description;
+  this.type = question.question_type;
+  var config = JSON.parse(question.config);
+}
+Object.assign(SBTQuestion.prototype, {
+  getQuestion() {
+    return {
+      type: this.type,
+      statement: this.statement
+    };
+  },
+  parseAnswer(answer) {
+    if (answer) {
+      var parsed = JSON.parse(answer);
+      return {
+        answer: parsed
+      };
+    } else
+      return {
+        answer: ''
+      };
+  },
+  stringifyAnswer(answer) {
+    if (answer && 'object' === typeof answer)
+      return JSON.stringify({
+        answer: answer
+      });
+    else
+      return JSON.stringify({
+        answer: null
+      });
+  }
+});
+
+function SBTQuestionController(question, editable) {
+  var self = this;
+  this.question = new SBTQuestion(question.info);
+  var answer = this.question.parseAnswer(question.config.answer);
+  this.model = {
+    answer: answer
+  };
+}
+
+
 return {
   MCQQuestion: MCQQuestion,
   MCQQuestionController: MCQQuestionController,
   SBCQuestion: SBCQuestion,
   SBCQuestionController: SBCQuestionController,
+  SBTQuestion: SBTQuestion,
+  SBTQuestionController: SBTQuestionController,
   parseAnswer: parseAnswer,
   stringifyAnswer: stringifyAnswer
 };
-  
+
 });
