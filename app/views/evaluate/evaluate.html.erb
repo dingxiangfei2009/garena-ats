@@ -75,21 +75,8 @@
 
     <!-- main content -->
     <div class="row">
-      <div class="column">
+      <div class="nine wide column">
         <div id="question-container">
-          <div class="ui right dividing rail">
-            <div class="ui sticky">
-              <p>Your are evaluating Test {{ id }}</p>
-              <p>Candidate: {{ application.candidate.name }}, Email: {{ application.candidate.email }} </p>
-              <p>Applying for {{ application.job.title }} </p>
-              <div class="ui primary button" vis-action="(\=> submit_marks())" style="margin-top:20px;">
-                Save Marks
-              </div>
-            </div>
-          </div>
-          <script>
-            setTimeout(() => $('.ui.sticky').sticky(), 1000);
-          </script>
           <template vis-iterate="question, question_index in test.questions">
             <h2 class="ui header">Question {{question_index + 1}}</h2>
             <div class="ui divider"></div>
@@ -128,6 +115,23 @@
             </div>
           </template>
         </div>
+      </div>
+      <div class="two wide column">
+          <div class="ui right dividing rail">
+            <div class="ui sticky">
+              <div style="margin-top: 30px;">
+                <p>Your are evaluating Test {{ id }}</p>
+                <p>Candidate: {{ application.candidate.name }}, Email: {{ application.candidate.email }} </p>
+                <p>Applying for {{ application.job.title }} </p>
+                <div class="ui primary button" vis-action="(\=> submit_marks())" style="margin-top:20px;">
+                  Save Marks
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            setTimeout(() => $('.ui.sticky').sticky(), 1000);
+          </script>
       </div>
     </div>
   </div>

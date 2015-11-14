@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       post '/', to: 'question#save'
       post '/enable', to: 'question#enable'
       post '/disable', to: 'question#disable'
+      get '/report', to: 'question#statistics'
     end
     post '/', to: 'question#new'
   end
@@ -26,6 +27,7 @@ Rails.application.routes.draw do
       get '/', to: 'test#get'
       post '/', to: 'test#save'
       post '/evaluate', to: 'test#save_evaluation'
+      get '/report', to: 'test#statistics'
     end
     post '/', to: 'test#new'
   end
