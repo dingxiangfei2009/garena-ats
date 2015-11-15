@@ -258,6 +258,7 @@ class TestController < ApplicationController
 				info: {
 					id: question.id,
 					config: question.config,
+					description: question.description,
 					difficulty: question.difficulty,
 					mark: question.mark,
 					topic: field.name,

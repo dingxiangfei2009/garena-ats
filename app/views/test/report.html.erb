@@ -56,7 +56,11 @@
     </div>
   </template>
   <template vis-element="bar_chart">
-    <relative-layout>
+    <relative-layout data-bind-init="
+      bar_height = (\ graph_height, value => graph_height^ * value^ / max);
+      bar_y = (\ graph_height, value => graph_height - bar_height^(graph_height^, value^));
+      void();
+      ">
       <!-- graph area -->
       <relative-layout data-bind-x="settings.yAxis.width">
         <template data-iterate="item, item_index in values">
@@ -77,7 +81,25 @@
       </relative-layout>
       <!-- xAxis -->
       <relative-layout data-bind-x="settings.yAxis.width" data-bind-y="settings.height">
-        <shape type="line"></shape>
+        <shape type="line" data-bind-style="{
+          startX: 0,
+          startY: 0,
+          endX: settings.width,
+          endY: 0,
+          color: 'black'
+        }"></shape>
+        <template data-iterate="item, item_index in values">
+          <text anchor="middle" data-bind-x="(item_index + .5) * settings.width / values.length" data-bind-y="$element.textSize">{{break_text(item.name)}}</text>
+        </template>
+      </relative-layout>
+      <!-- yAxis -->
+      <relative-layout data-bind-x="settings.yAxis.width">
+        <shape type="line" data-bind-style="{
+          startX: 0,
+          startY: 0,
+          endX: 0,
+          endY: settings.height
+        }"></shape>
       </relative-layout>
     </relative-layout>
   </template>
@@ -106,7 +128,7 @@
     
     <div class="row">
       <div class="nine wide column">
-        <template vis-iterate="question in test.questions">
+        <template vis-iterate="question, question_index in test.questions">
           <h2 class="ui header">Question {{question_index + 1}}</h2>
           <div class="ui divider"></div>
           <div class="ui raised segment">
@@ -118,7 +140,7 @@
           </div>
           <div class="ui label">
             Percentile
-            <div class="detail">{{question.info.percentile}}</div>
+            <div class="detail">{{*.math.floor(question.statistics.percentile * 10000)/100}}%</div>
           </div>
           <div class="ui form">
             <template vis-condition="question.info.type === 'mas'">
@@ -140,7 +162,7 @@
         </template>
       </div>
       <div class="two wide column">
-        <svg vis-element="bar_graph_area" width="500" height="500"></svg>
+        <svg vis-element="bar_graph_area" width="300" height="300"></svg>
       </div>
     </div>
   </div>

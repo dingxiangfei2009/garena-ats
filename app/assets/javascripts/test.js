@@ -26,11 +26,20 @@ function BarChartImpl() {
 			xAxis: {
 			}
 		},
-		bar_height(graph_height, value) {
-			return graph_height * value / this.max;
-		},
-		bar_y(graph_height, value) {
-			return graph_height * (1 - value / this.max);
+		break_text(text) {
+			var arr = text.trim().split(/\s+/);
+			if (arr.length) {
+				var lines = [arr[0]];
+				for (var i = 1, j = 0; i < arr.length; ++i)
+					if (lines[j].length > 10)
+						lines[++j] = arr[i];
+					else {
+						lines[j] += ' ';
+						lines[j] += arr[i];
+					}
+				return lines.join('\n');
+			} else
+				return '';
 		}
 	};
 	this.context = new el.shadow.ShadowContext;
@@ -40,7 +49,7 @@ function BarChartImpl() {
 	this.shadow = new el.shadow.object(new Map([
 		['max', el.shadow.value(this.context, this.scope, 'aggregate.max * 1.1')],
 		['values', el.shadow.value(this.context, this.scope, `
-			data.* >>= (\\item => @(!#(item.values.sort(sort^).*), item))
+			data.* >>= (\\item => @((item.values.sort(sort^).*), item))
 		`)]
 		]), this.model);
 }
@@ -55,7 +64,16 @@ Object.assign(BarChartImpl.prototype, {
 var BarChart = module('BarChart', {instance: BarChartImpl});
 
 function TestReportControllerImpl() {
-    this.model = {};
+    this.model = {
+        injectHTML(html) {
+            var fragment = document.createElement('template');
+            fragment.innerHTML = html;
+            return {
+                element: fragment,
+                scope: new el.scope.Scope
+            };
+        }
+    };
 }
 Object.assign(TestReportControllerImpl.prototype, {
     initialize() {
@@ -63,9 +81,7 @@ Object.assign(TestReportControllerImpl.prototype, {
         var chart = BarChart.instance();
         this.svg = presenter.svg.SVGPresenter.instance();
         this.svg.bind(this.model.bar_graph_area.element, this.model.bar_chart.element, chart.model);
-
         var test_info = JSON.parse(this.model.test_info.element.value);
-        debugger;
 
         function set_selection(token) {
         }
@@ -112,7 +128,6 @@ Object.assign(TestReportControllerImpl.prototype, {
         	questions.*.filter((\\ x, index => @(selector.*, selector[index]^))) |
         	process
         `, value => chart.load(value));
-        debugger;
     }
 });
     
