@@ -7,7 +7,6 @@ Rails.application.config.assets.precompile += types
 Rails.application.config.assets.precompile += ['jquery/dist/jquery.js']
 Rails.application.config.assets.precompile += ['semantic/dist/*']
 Rails.application.config.assets.precompile += %w( semantic/dist/semantic.css semantic/dist/semantic.js )
-Rails.application.config.assets.precompile += %w( evaluate.js )
 # Add additional assets to the asset load path
 # Rails.application.config.assets.paths << Emoji.images_path
 
