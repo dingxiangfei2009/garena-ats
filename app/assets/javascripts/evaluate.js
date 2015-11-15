@@ -25,7 +25,6 @@ function EvaluateControllerImpl() {
             };
         },
         submit_marks() {
-            console.log(collateMarks());
             $.ajax({
                 url: '/evaluate/1',
                 method: 'POST',

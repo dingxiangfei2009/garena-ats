@@ -1,0 +1,147 @@
+<div class="test-report-main" ng-non-bindable>
+  <template vis-element="question_template.mas">
+    <div class="grouped fields">
+      <template vis-iterate="choice, choice_index in choices">
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" vis-value="user_answers[choice_index]" disabled>
+            <label>
+              {{choice_index + 1}}: {{choice.description}}
+              <template vis-condition="choice.correct">
+                <div class="ui left pointing green label">Correct Option</div>
+              </template>
+            </label>
+          </div>
+        </div>
+        <script>
+          requestAnimationFrame(() => $('.ui.checkbox').checkbox());
+        </script>
+      </template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbt">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(answer)"></template>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(suggested_answer)"></template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbc">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ answer.language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="codeArea" style="height:20em"></div>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="answerArea" style="height:20em"></div>
+    </div>
+  </template>
+  <template vis-element="bar_chart">
+    <relative-layout>
+      <!-- graph area -->
+      <relative-layout data-bind-x="settings.yAxis.width">
+        <template data-iterate="item, item_index in values">
+          <relative-layout data-bind-x="(item_index + .5) * settings.width / values.length">
+            <template data-iterate="value in item.values">
+              <shape
+                type="rect"
+                data-bind-style="{
+                  x: -settings.width / values.length * settings.bar_width / 2,
+                  width: settings.width / values.length * settings.bar_width,
+                  y: bar_y(settings.height, value.value),
+                  height: bar_height(settings.height, value.value),
+                  fillColor: *.util.rgb(*.math.random(),*.math.random(),*.math.random())
+                }"></shape>
+            </template>
+          </relative-layout>
+        </template>
+      </relative-layout>
+      <!-- xAxis -->
+      <relative-layout data-bind-x="settings.yAxis.width" data-bind-y="settings.height">
+        <shape type="line"></shape>
+      </relative-layout>
+    </relative-layout>
+  </template>
+</div>
+
+
+
+<div class="test-report-main" ng-non-bindable>
+  <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info'%>
+  <!-- definitions -->
+  <template vis-element="pie_chart"></template>
+  
+  <!-- main content -->
+  <div class="ui two column grid container">
+    <div class="two column centered row">
+      <h1 class="ui icon header">
+        <i class="bar chart icon"></i>
+        <div class="content">
+          Report
+          <div class="sub header">
+          </div>
+        </div>
+      </h1>
+    </div>
+    <div class="ui divider"></div>
+    
+    <div class="row">
+      <div class="nine wide column">
+        <template vis-iterate="question in test.questions">
+          <h2 class="ui header">Question {{question_index + 1}}</h2>
+          <div class="ui divider"></div>
+          <div class="ui raised segment">
+            <template vis-inject="injectHTML(question.info.description)"></template>
+          </div>
+          <div class="ui label">
+            Mark
+            <div class="detail">{{question.info.mark}}</div>
+          </div>
+          <div class="ui label">
+            Percentile
+            <div class="detail">{{question.info.percentile}}</div>
+          </div>
+          <div class="ui form">
+            <template vis-condition="question.info.type === 'mas'">
+              <template
+                vis-inject="question_template.mas"
+                vis-argument="question_controllers[question_index]"></template>
+            </template>
+            <template vis-condition="question.info.type === 'sbt'">
+              <template
+                vis-inject="question_template.sbt"
+                vis-argument="question_controllers[question_index]"></template>
+            </template>
+            <template vis-condition="question.info.type === 'sbc'">
+              <template
+                vis-inject="question_template.sbc"
+                vis-argument="question_controllers[question_index]"></template>
+            </template>
+          </div>
+        </template>
+      </div>
+      <div class="two wide column">
+        <svg vis-element="bar_graph_area" width="500" height="500"></svg>
+      </div>
+    </div>
+  </div>
+</div>
