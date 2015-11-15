@@ -1,6 +1,6 @@
 $(() =>
-require(['bind', 'module_struct', 'data/data', 'el/el', 'compat/observe', 'presenter/presenter'],
-function(bind, module, data, el, _proxy, presenter) {
+require(['bind', 'module_struct', 'data/data', 'el/el', 'compat/observe', 'presenter/presenter', 'qmod'],
+function(bind, module, data, el, _proxy, presenter, qmod) {
 'use strict';
 
 function BarChartImpl() {
@@ -47,7 +47,10 @@ function BarChartImpl() {
 	this.aggregate = new data.Aggregate(this.context, this.scope, 'data.* >>= extract_max');
 	this.model.aggregate = this.aggregate.model;
 	this.shadow = new el.shadow.object(new Map([
-		['max', el.shadow.value(this.context, this.scope, 'aggregate.max * 1.1')],
+		['max', el.shadow.value(this.context, this.scope, 'aggregate.max * 1.1'), value => {
+			debugger;
+			return value;
+		}],
 		['values', el.shadow.value(this.context, this.scope, `
 			data.* >>= (\\item => @((item.values.sort(sort^).*), item))
 		`)]
@@ -65,6 +68,7 @@ var BarChart = module('BarChart', {instance: BarChartImpl});
 
 function TestReportControllerImpl() {
     this.model = {
+    	question_template: {},
         injectHTML(html) {
             var fragment = document.createElement('template');
             fragment.innerHTML = html;
@@ -75,6 +79,13 @@ function TestReportControllerImpl() {
         }
     };
 }
+
+var colors = [
+	[218, 100, 50],
+	[144, 100, 50],
+	[39, 100, 50],
+	[284, 100, 50]
+];
 Object.assign(TestReportControllerImpl.prototype, {
     initialize() {
         // generate chart
@@ -83,7 +94,10 @@ Object.assign(TestReportControllerImpl.prototype, {
         this.svg.bind(this.model.bar_graph_area.element, this.model.bar_chart.element, chart.model);
         var test_info = JSON.parse(this.model.test_info.element.value);
 
+        var self = this;
         function set_selection(token) {
+        	for (var i = 0; i < selector.length; ++i)
+        		selector[i] = test_info.questions[i].info.topic_token === token;
         }
 
         // generate more statistics
@@ -111,11 +125,13 @@ Object.assign(TestReportControllerImpl.prototype, {
         		});
         		var values = [];
         		digest.forEach(function (digest, topic_token) {
+        			var color = colors[values.length % colors.length];
         			values.push({
         				name: topic_names.get(topic_token),
+        				click_data: {token: topic_token},
         				values: [
-        					{name: 'Total', value: digest.total, click_data: {token: topic_token}},
-        					{name: 'Mark', value: digest.mark, click_data: {token: topic_token}}
+        					{name: 'Total', value: digest.total, click_data: {token: topic_token}, color: [color[0], color[1], color[2] + 40]},
+        					{name: 'Mark', value: digest.mark, click_data: {token: topic_token}, color: color}
         				],
         				click: set_selection
         			});
@@ -128,6 +144,28 @@ Object.assign(TestReportControllerImpl.prototype, {
         	questions.*.filter((\\ x, index => @(selector.*, selector[index]^))) |
         	process
         `, value => chart.load(value));
+        _proxy(chart.model).onclick = function (e, item, item_index) {
+        	set_selection(item.click_data.token);
+        };
+
+        this.question_controllers = [];
+        _proxy(this.model).question_controllers = [];
+        test_info.questions.forEach(
+            (question, index) => {
+                switch(question.info.type) {
+                case 'mas':
+                    this.question_controllers[index] = new qmod.MCQQuestionController(question);
+                    _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
+                    break;
+                case 'sbt':
+                    this.question_controllers[index] = null;
+                    break;
+                case 'sbc':
+                    this.question_controllers[index] = new qmod.SBCQuestionController(question);
+                    _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
+                    break;
+                }
+            });
     }
 });
     

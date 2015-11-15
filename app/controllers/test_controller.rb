@@ -263,7 +263,7 @@ class TestController < ApplicationController
 					mark: question.mark,
 					topic: field.name,
 					topic_token: field.token,
-					question_type: question.question_type.name
+					type: question.question_type.name
 				},
 				statistics: {
 					percentile: lower_mark_attempts / total_attempts

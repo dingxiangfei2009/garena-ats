@@ -73,8 +73,15 @@
                   width: settings.width / values.length * settings.bar_width,
                   y: bar_y(settings.height, value.value),
                   height: bar_height(settings.height, value.value),
-                  fillColor: *.util.rgb(*.math.random(),*.math.random(),*.math.random())
-                }"></shape>
+                  fillColor: *.util.hsl(...value.color)
+                }"
+                data-bind-event="(\ e => e.type eq 'click' and onclick(e, item, item_index))"></shape>
+              <text
+                font="Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif"
+                anchor="middle"
+                data-bind-y="bar_y(settings.height, value.value) - 5">
+                  {{value.name}} {{value.value}}
+              </text>
             </template>
           </relative-layout>
         </template>
@@ -89,7 +96,13 @@
           color: 'black'
         }"></shape>
         <template data-iterate="item, item_index in values">
-          <text anchor="middle" data-bind-x="(item_index + .5) * settings.width / values.length" data-bind-y="$element.textSize">{{break_text(item.name)}}</text>
+          <text
+            font="Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif"
+            anchor="middle"
+            data-bind-x="(item_index + .5) * settings.width / values.length"
+            data-bind-y="$element.textSize">
+              {{break_text(item.name)}}
+          </text>
         </template>
       </relative-layout>
       <!-- yAxis -->
@@ -127,43 +140,78 @@
     <div class="ui divider"></div>
     
     <div class="row">
-      <div class="nine wide column">
+      <div class="twelve wide column" id="main-content">
         <template vis-iterate="question, question_index in test.questions">
-          <h2 class="ui header">Question {{question_index + 1}}</h2>
-          <div class="ui divider"></div>
-          <div class="ui raised segment">
-            <template vis-inject="injectHTML(question.info.description)"></template>
-          </div>
-          <div class="ui label">
-            Mark
-            <div class="detail">{{question.info.mark}}</div>
-          </div>
-          <div class="ui label">
-            Percentile
-            <div class="detail">{{*.math.floor(question.statistics.percentile * 10000)/100}}%</div>
-          </div>
-          <div class="ui form">
-            <template vis-condition="question.info.type === 'mas'">
-              <template
-                vis-inject="question_template.mas"
-                vis-argument="question_controllers[question_index]"></template>
-            </template>
-            <template vis-condition="question.info.type === 'sbt'">
-              <template
-                vis-inject="question_template.sbt"
-                vis-argument="question_controllers[question_index]"></template>
-            </template>
-            <template vis-condition="question.info.type === 'sbc'">
-              <template
-                vis-inject="question_template.sbc"
-                vis-argument="question_controllers[question_index]"></template>
-            </template>
-          </div>
+          <template vis-condition="selector[question_index]">
+            <h2 class="ui header">Question {{question_index + 1}}</h2>
+            <div class="ui divider"></div>
+            <div class="ui divided grid">
+              <div class="row">
+                <div class="nine wide column">
+                  <div class="ui raised segment">
+                    <template vis-inject="injectHTML(question.info.description)"></template>
+                  </div>
+                  <div class="ui label">
+                    Mark
+                    <div class="detail">{{question.info.mark}}</div>
+                  </div>
+                  <div class="ui label">
+                    Percentile
+                    <div class="detail">{{*.math.floor(question.statistics.percentile * 10000)/100}}%</div>
+                  </div>
+                  <div class="ui form">
+                    <template vis-condition="question.info.type === 'mas'">
+                      <template
+                        vis-inject="question_template.mas"
+                        vis-argument="question_controllers[question_index]"></template>
+                    </template>
+                    <template vis-condition="question.info.type === 'sbt'">
+                      <template
+                        vis-inject="question_template.sbt"
+                        vis-argument="question_controllers[question_index]"></template>
+                    </template>
+                    <template vis-condition="question.info.type === 'sbc'">
+                      <template
+                        vis-inject="question_template.sbc"
+                        vis-argument="question_controllers[question_index]"></template>
+                    </template>
+                  </div>
+                </div>
+                <div class="two wide column">
+                  <div class="ui statistic">
+                    <div class="value">
+                      {{question.config.mark}}
+                    </div>
+                    <div class="label">Mark Awarded</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
         </template>
       </div>
-      <div class="two wide column">
-        <svg vis-element="bar_graph_area" width="300" height="300"></svg>
+      <div class="one wide column">
+        <div class="ui sticky" id="graph-control">
+          <svg vis-element="bar_graph_area" width="300" height="300" style="margin-top: 50px"></svg>
+          <div class="ui form">
+            <div class="grouped fields">
+              <template vis-iterate="selector_switch, index in selector">
+                <div class="field">
+                  <div class="ui slider checkbox">
+                    <input type="checkbox" vis-value="selector_switch">
+                    <label>Question {{index}}</label>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
       </div>
+      <script>
+        requestAnimationFrame(() => $('#graph-control').sticky({
+          context: '#main-content'
+        }));
+      </script>
     </div>
   </div>
 </div>
