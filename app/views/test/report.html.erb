@@ -68,13 +68,19 @@
             <template data-iterate="value in item.values">
               <shape
                 type="rect"
-                data-bind-style="{
-                  x: -settings.width / values.length * settings.bar_width / 2,
-                  width: settings.width / values.length * settings.bar_width,
-                  y: bar_y(settings.height, value.value),
-                  height: bar_height(settings.height, value.value),
+                data-bind-style="
+                *.interpolate(${settings.width / values.length * settings.bar_width},
+                  ${bar_y(settings.height, value.value)},
+                  ${bar_height(settings.height, value.value)})
+                .duration(200)
+                .functor((\ _, width, y, height => {
+                  x: -width / 2,
+                  width: width,
+                  y: y,
+                  height: height,
                   fillColor: *.util.hsl(...value.color)
-                }"
+                }))
+                .transition"
                 data-bind-event="(\ e => e.type eq 'click' and onclick(e, item, item_index))"></shape>
               <text
                 font="Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif"
@@ -99,7 +105,11 @@
           <text
             font="Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif"
             anchor="middle"
-            data-bind-x="(item_index + .5) * settings.width / values.length"
+            data-bind-x="
+            *.interpolate(${(item_index + .5) * settings.width / values.length})
+            .duration(500)
+            .functor((\ _, x => x))
+            .transition"
             data-bind-y="$element.textSize">
               {{break_text(item.name)}}
           </text>
@@ -139,15 +149,21 @@
     </div>
     <div class="ui divider"></div>
     
-    <div class="row">
-      <div class="twelve wide column" id="main-content">
+    <div class="row" id="main-content">
+      <div class="twelve wide column">
+        <style>
+          .fadeOut {
+            opacity: 0;
+            transition: opacity 0.2s;
+          }
+        </style>
         <template vis-iterate="question, question_index in test.questions">
-          <template vis-condition="selector[question_index]">
+          <template vis-condition="selector[question_index]" vis-animate="animate_options">
             <h2 class="ui header">Question {{question_index + 1}}</h2>
             <div class="ui divider"></div>
             <div class="ui divided grid">
               <div class="row">
-                <div class="nine wide column">
+                <div class="twelve wide column">
                   <div class="ui raised segment">
                     <template vis-inject="injectHTML(question.info.description)"></template>
                   </div>
@@ -177,7 +193,7 @@
                     </template>
                   </div>
                 </div>
-                <div class="two wide column">
+                <div class="one wide column">
                   <div class="ui statistic">
                     <div class="value">
                       {{question.config.mark}}
@@ -199,7 +215,7 @@
                 <div class="field">
                   <div class="ui slider checkbox">
                     <input type="checkbox" vis-value="selector_switch">
-                    <label>Question {{index}}</label>
+                    <label>Question {{index + 1}}</label>
                   </div>
                 </div>
               </template>
@@ -208,9 +224,9 @@
         </div>
       </div>
       <script>
-        requestAnimationFrame(() => $('#graph-control').sticky({
+        setTimeout(() => $('#graph-control').sticky({
           context: '#main-content'
-        }));
+        }), 1000);
       </script>
     </div>
   </div>

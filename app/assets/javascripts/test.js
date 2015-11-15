@@ -76,6 +76,14 @@ function TestReportControllerImpl() {
                 element: fragment,
                 scope: new el.scope.Scope
             };
+        },
+        animate_options: {
+        	enter(elements) {
+        		$(elements).hide().slideDown(200);
+        	},
+        	leave(elements) {
+        		$(elements).addClass('fadeOut').slideUp(200, function() {this.remove();});
+        	}
         }
     };
 }
