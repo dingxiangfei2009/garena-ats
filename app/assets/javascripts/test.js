@@ -89,10 +89,10 @@ function TestReportControllerImpl() {
 }
 
 var colors = [
-	[218, 100, 50],
-	[144, 100, 50],
-	[39, 100, 50],
-	[284, 100, 50]
+	[218, 45, 60],
+	[144, 45, 60],
+	[39, 45, 60],
+	[284, 45, 60]
 ];
 Object.assign(TestReportControllerImpl.prototype, {
     initialize() {
@@ -138,8 +138,21 @@ Object.assign(TestReportControllerImpl.prototype, {
         				name: topic_names.get(topic_token),
         				click_data: {token: topic_token},
         				values: [
-        					{name: 'Total', value: digest.total, click_data: {token: topic_token}, color: [color[0], color[1], color[2] + 40]},
-        					{name: 'Mark', value: digest.mark, click_data: {token: topic_token}, color: color}
+        					{
+        						name: digest.mark / digest.total > .95 ?
+        							'Total ' + digest.total + ' Mark ' + digest.mark :
+        							('Total ' + digest.total),
+        						value: digest.total,
+        						click_data: {token: topic_token},
+        						color: [color[0], color[1], color[2] + 35]
+        					},
+        					{
+        						name: digest.mark / digest.total > .95 ?
+        							'' : ('Mark ' + digest.mark),
+        						value: digest.mark,
+        						click_data: {token: topic_token},
+        						color: color
+        					}
         				],
         				click: set_selection
         			});
