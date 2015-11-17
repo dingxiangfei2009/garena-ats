@@ -37,6 +37,7 @@ class TestController < ApplicationController
 		end
 		ids
 	end
+
 	###############
 	# new
 	# POST
@@ -87,6 +88,7 @@ class TestController < ApplicationController
 		end
 		render :json => {:id => test.id}
 	end
+
 	def render_question(question)
 		case question.question_type.name
 		when 'mas'
@@ -97,6 +99,7 @@ class TestController < ApplicationController
 			return renderer.render nil
 		end
 	end
+
 	def get
 		id = params[:id]
 		test = Test.find id
@@ -124,6 +127,7 @@ class TestController < ApplicationController
 		end
 		render :json => test_info
 	end
+
 	def save
 		id = params[:id]
 		test = Test.where('date_add(start_time, interval duration second) >= utc_timestamp()').where(id: id).first
@@ -156,6 +160,7 @@ class TestController < ApplicationController
 			render json: {status: 'no record'}
 		end
 	end
+
 	def save_evaluation
 		marks = JSON.parse params[:marks]
 		marks.each do |marking|
@@ -209,5 +214,64 @@ class TestController < ApplicationController
 			}
 		end
 		render json: result
+	end
+
+	def statistics
+		id = params[:id]
+		test = Test.find id
+		application = test.application
+		job = application.job
+		candidate = application.candidate
+		test_info = {
+			id: id,
+			application: {
+				id: application.id,
+				candidate: {
+					id: candidate.id,
+					name: candidate.name,
+					email: candidate.email
+				},
+				job: {
+					id: job.id,
+					title: job.title,
+					experience: job.experience
+				}
+			}
+		}
+		test_info[:questions] = test.test_responses.map do |test_response|
+			# generate statistics
+			question = test_response.question
+			field = question.field
+			total_attempts =
+				TestResponse.where(question_id: question.id)
+					.count(:test_id, distinct: true)
+			lower_mark_attempts =
+				TestResponse.where(question_id: question.id)
+					.where(['mark <= ?', test_response.mark.to_f])
+					.count(:test_id, distinct: true)
+			{
+				config: {
+					id: test_response.id,
+					answer: test_response.answer,
+					mark: test_response.mark
+				},
+				info: {
+					id: question.id,
+					config: question.config,
+					description: question.description,
+					difficulty: question.difficulty,
+					mark: question.mark,
+					topic: field.name,
+					topic_token: field.token,
+					type: question.question_type.name
+				},
+				statistics: {
+					percentile: lower_mark_attempts / total_attempts
+				}
+			}
+		end
+
+		@test_info = JSON.generate(test_info)
+		render 'test/report'
 	end
 end
