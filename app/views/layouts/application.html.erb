@@ -9,20 +9,12 @@
 <body>
 
 <%= render partial: 'layouts/sidebar' unless params[:action] == "test" || params[:action] == "home" %>
-<div class="pusher">
 
-  <div class="ui black big right attached sticky fixed button" style="top: 2.5em" id="sidebar-main-toggle">
-    <i class="content icon"></i>
-  </div>
-  <script>
-    $('#sidebar-main-toggle').click(function() {
-      $('#sidebar-main').sidebar('show');
-    });
-  </script>
-  <div>
-    <%= yield %>
-  </div>
-</div>
+<% if params[:action] == "test" || params[:action] == "home" %>
+  <%= yield %>
+<% else %>
+  <%= render partial: "partials/menu" %>
+<% end %>
 
 </body>
 </html>
