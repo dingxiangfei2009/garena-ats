@@ -63,6 +63,10 @@ Object.assign(EvaluateControllerImpl.prototype, {
                     this.question_controllers[index] = new qmod.SBCQuestionController(question);
                     _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
                     break;
+                case 'fib':
+                    this.question_controllers[index] = new qmod.FIBQuestionController(question);
+                    _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
+                    break;
                 }
             });
         _proxy(this.model).application = test_info.application;

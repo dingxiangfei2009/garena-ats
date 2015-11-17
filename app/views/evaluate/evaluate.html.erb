@@ -58,6 +58,34 @@
       <div vis-element="answerArea" style="height:20em"></div>
     </div>
   </template>
+  <template vis-element="question_template.fib">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <template vis-iterate="segment, segment_index in question.segments">
+        <template vis-condition="segment.blank">
+          <consequent>
+            <em>{{answer[(segment_index + 1) / 2 - 1]}}</em>
+          </consequent>
+          <alternative>
+            {{segment.content}}
+          </alternative>
+        </template>
+      </template>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <template vis-iterate="segment, segment_index in question.segments">
+        <template vis-condition="segment.blank">
+          <consequent>
+            <em>{{suggested_answer[(segment_index + 1) / 2 - 1]}}</em>
+          </consequent>
+          <alternative>
+            {{segment.content}}
+          </alternative>
+        </template>
+      </template>
+    </div>
+  </template>
 
   <!-- page -->
   <div class="ui two column grid container">
@@ -101,6 +129,11 @@
               <template vis-condition="question.info.type === 'sbc'">
                 <template
                   vis-inject="question_template.sbc"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <template vis-condition="question.info.type === 'fib'">
+                <template
+                  vis-inject="question_template.fib"
                   vis-argument="question_controllers[question_index]"></template>
               </template>
               <div class="ui right labeled left icon input">

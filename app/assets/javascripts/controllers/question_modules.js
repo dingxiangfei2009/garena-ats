@@ -239,6 +239,7 @@ function FIBQuestionController(question, editable) {
   var answer = this.question.parseAnswer(question.config.answer);
   this.model = {
     answer: answer,
+    question: this.question.getQuestion(),
     suggested_answer: this.question.suggested_answer
   };
 }

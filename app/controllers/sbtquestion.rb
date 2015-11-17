@@ -7,7 +7,7 @@ class SBTQuestion
 		@mark = question.mark
 	end
 	def render(question_config)
-		'{}'
+		JSON.generate answer: Hash.new
 	end
 	def mark(answer)
 		nil
