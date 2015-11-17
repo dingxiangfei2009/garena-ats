@@ -1,17 +1,17 @@
 <div ng-controller="SidebarController" class="ui left sidebar inverted vertical menu" id="sidebar-main">
 
-  <h2 class='ui grey header item'>Tests</h2>
+  <h3 class='ui grey header item'>Tests</h3>
   <a class='item' id="all-test" ng-click="clickAlert('all-test')" ng-href="/tests">
-    <h3 class='ui grey header'>View All Tests</h3>
+    <h4 class='ui grey header'>View All Tests</h4>
   </a>
   <a class='item' id="add-question" ng-click="clickAlert('add-question')" ng-href="/question">
-    <h3 class='ui grey header'>Add Questions</h3>
+    <h4 class='ui grey header'>Add Questions</h4>
   </a>
   <a class='item' id="preview-test" ng-click="clickAlert('preview-test')" ng-href="/test" target='_blank'>
-    <h3 class='ui grey header'>Preview Test</h3>
+    <h4 class='ui grey header'>Preview Test</h4>
   </a>
   <a class='item' id="view-questions" ng-click="clickAlert('view-questions')" ng-href="/questions" target='_blank'>
-    <h3 class='ui grey header'>View All Questions</h3>
+    <h4 class='ui grey header'>View All Questions</h4>
   </a>
 
   <!-- <h2 class='ui grey header item'>Interviews</h2>
@@ -22,19 +22,23 @@
     <h3 class='ui grey header'>Add Questions</h3>
   </a> -->
 
-  <h2 class='ui grey header item'>Jobs</h2>
+  <h3 class='ui grey header item'>Jobs</h3>
   <a class='item' id="all-positions" ng-click="clickAlert('all-positions')" ng-href="/jobs">
-    <h3 class='ui grey header'>View All Positions</h3>
+    <h4 class='ui grey header'>View All Positions</h4>
   </a>
   <a class='item' id="add-position" ng-click="clickAlert('add-position')" ng-href="/position">
-    <h3 class='ui grey header'>Add Position</h3>
+    <h4 class='ui grey header'>Add Position</h4>
   </a>
 
   <div class='ui three column grid' style='width: 100%;'>
-    <div class="column"></div>
+    <!-- <div class="column"></div> -->
+    <br>
     <div class="centered column">
         <button class="ui red button centered">Logout</button>
     </div>
-    <div class="column"></div>
+    <!-- <div class="column"></div> -->
+  </div>
+  <div class='ui three column grid' style='width: 100%;'>
+    <img src="img/garena.png" height="230px"></img>
   </div>
 </div>
