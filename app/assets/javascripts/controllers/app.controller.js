@@ -46,4 +46,15 @@ app.directive('subjectiveCode', function() {
       templateUrl: '/templates/subjective-code.html'
   };
 });
+
+app.directive('fillInBlank', function() {
+  return {
+    restrict: 'AE',
+    replace: 'true',
+    scope: {
+      data: '='
+    },
+    templateUrl: '/templates/fill-in-blank.html'
+  }
+})
 }();

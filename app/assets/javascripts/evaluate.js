@@ -11,6 +11,7 @@ function EvaluateControllerImpl() {
                     id: question.config.id,
                     mark: this.model.mark[index]
                 }));
+    var self = this;
     this.model = {
         // question_template: list of question templates
         question_template: {},
@@ -26,7 +27,7 @@ function EvaluateControllerImpl() {
         },
         submit_marks() {
             $.ajax({
-                url: '/evaluate/1',
+                url: '/evaluate/' + self.id,
                 method: 'POST',
                 data: {
                     marks: JSON.stringify(collateMarks())

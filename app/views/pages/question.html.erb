@@ -65,12 +65,6 @@
             <div class='twelve wide field'>
               <textarea id='editor{{$index}}' ng-model='question.questionText' >
               </textarea>
-              <script>
-                // window.onload = function() {
-                  // CKEDITOR.replaceAll('ckeditors');
-                // }
-
-              </script>
             </div>
           </div>
           <div class='answers'ng-switch on='question.type.value'>
@@ -84,6 +78,9 @@
             </div>
             <div ng-switch-when='sbc'>
               <subjective-code data='question.answer' ng-init="question.answer = {description: ''}"></subjective-code>
+            </div>
+            <div ng-switch-when="fib">
+              <fill-in-blank data="qeustion.answer" ng-init="question.answer = {description: ''}"></fill-in-blank>
             </div>
           </div>
         </div>

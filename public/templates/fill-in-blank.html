@@ -1,0 +1,13 @@
+<div>
+	<button class='ui basic button richtext' ng-click='useRichText($index)'>
+		Rich Text
+	</button>
+	<div class='fields'>
+		<div class='twelve wide field'>
+			<textarea id='editor{{$index}}' ng-model="data.statement" ng-change="watch_content">
+			</textarea>
+		</div>
+		<div ng-repeat="blanks" >
+		</div>
+	</div>
+</div>
