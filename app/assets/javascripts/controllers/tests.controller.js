@@ -79,7 +79,7 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
           url: "/test",
           data: {
             email: $scope.newCandidate.email,
-            duration: $scope.newCandidate.duration,
+            duration: $scope.newCandidate.duration*60,
             job: $scope.newCandidate.pos.value
           }
         }).error(function(data) {

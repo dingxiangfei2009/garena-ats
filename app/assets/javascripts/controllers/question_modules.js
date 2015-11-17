@@ -51,6 +51,9 @@ function parseAnswer(question, answer) {
     case 'sbt':
       qn_controller = new SBTQuestion(question);
       return qn_controller.parseAnswer(answer);
+    case 'fib':
+      qn_controller = new FIBQuestion(question);
+      return qn_controller.parseAnswer(answer);
   }
 }
 function stringifyAnswer(question, answer) {
@@ -64,6 +67,9 @@ function stringifyAnswer(question, answer) {
       return qn_controller.stringifyAnswer(answer);
     case 'sbt':
       qn_controller = new SBTQuestion(question);
+      return qn_controller.stringifyAnswer(answer);
+    case 'fib':
+      qn_controller = new FIBQuestion(question);
       return qn_controller.stringifyAnswer(answer);
   }
 }
