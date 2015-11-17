@@ -144,7 +144,6 @@ angular.module('app').controller('PositionController', ['$scope', '$http', funct
         experience: $scope.job.exp,
         test_parameter: angular.toJson(testParams)
     };
-    // alert(angular.toJson(dataToSend));
     $.ajax({
       method: "POST",
       url: "/job",
