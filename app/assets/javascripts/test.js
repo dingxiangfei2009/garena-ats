@@ -44,7 +44,21 @@ function BarChartImpl() {
 	};
 	this.context = new el.shadow.ShadowContext;
 	this.scope = new el.scope.Scope(this.model);
-	this.aggregate = new data.Aggregate(this.context, this.scope, 'data.* >>= extract_max');
+	this.aggregate = new data.Aggregate(this.context, this.scope, 'data.* >>= extract_max', {
+		compare(x, y) {
+			x = x || 0; y = y || 0;
+			return (x > y) - (x < y);
+		},
+		equal(x, y) {
+			return (x || 0) === (y || 0);
+		},
+		left_fold(x, y) {
+			return (x || 0) + (y || 0);
+		},
+		right_fold(x, y) {
+			return (x || 0) + (y || 0);
+		}
+	});
 	this.model.aggregate = this.aggregate.model;
 	this.shadow = new el.shadow.object(new Map([
 		['max', el.shadow.value(this.context, this.scope, 'aggregate.max * 1.1'), value => {
@@ -179,7 +193,8 @@ Object.assign(TestReportControllerImpl.prototype, {
                     _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
                     break;
                 case 'sbt':
-                    this.question_controllers[index] = null;
+                	this.question_controllers[index] = new qmod.SBTQuestionController(question);
+                	_proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
                     break;
                 case 'sbc':
                     this.question_controllers[index] = new qmod.SBCQuestionController(question);

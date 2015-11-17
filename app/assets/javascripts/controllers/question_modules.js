@@ -155,6 +155,7 @@ function SBTQuestion(question) {
   this.statement = question.description;
   this.type = question.question_type;
   var config = JSON.parse(question.config);
+  this.suggested_answer = config.answer;
 }
 Object.assign(SBTQuestion.prototype, {
   getQuestion() {
@@ -176,7 +177,8 @@ function SBTQuestionController(question, editable) {
   this.question = new SBTQuestion(question.info);
   var answer = this.question.parseAnswer(question.config.answer);
   this.model = {
-    answer: answer
+    answer: answer,
+    suggested_answer: this.question.suggested_answer
   };
 }
 
