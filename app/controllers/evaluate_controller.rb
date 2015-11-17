@@ -42,7 +42,7 @@ class EvaluateController < ApplicationController
             }
             test_info[:questions] << question_info
         end
-        
+
         @test_info = JSON.generate test_info
     end
     def save

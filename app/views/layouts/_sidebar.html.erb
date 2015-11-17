@@ -1,17 +1,20 @@
 <div ng-controller="SidebarController" class="ui left sidebar inverted vertical menu" id="sidebar-main">
 
-  <h3 class='ui grey header item'>Tests</h3>
+  <h3 class='ui white header item'>Tests</h3>
   <a class='item' id="all-test" ng-click="clickAlert('all-test')" ng-href="/tests">
-    <h4 class='ui grey header'>View All Tests</h4>
+    <h4 class='ui white header vertically fitted item'>View All Tests<i class="table icon"></i></h4>
+
   </a>
   <a class='item' id="add-question" ng-click="clickAlert('add-question')" ng-href="/question">
-    <h4 class='ui grey header'>Add Questions</h4>
+    <h4 class='ui white header vertically fitted item'>Add Questions<i class="edit icon"></i></h4>
+
   </a>
-  <a class='item' id="preview-test" ng-click="clickAlert('preview-test')" ng-href="/test" target='_blank'>
+  <!-- <a class='item' id="preview-test" ng-click="clickAlert('preview-test')" ng-href="/test" target='_blank'>
     <h4 class='ui grey header'>Preview Test</h4>
-  </a>
+  </a> -->
   <a class='item' id="view-questions" ng-click="clickAlert('view-questions')" ng-href="/questions" target='_blank'>
-    <h4 class='ui grey header'>View All Questions</h4>
+    <h4 class='ui white header vertically fitted item'>View All Questions<i class="browser icon"></i></h4>
+
   </a>
 
   <!-- <h2 class='ui grey header item'>Interviews</h2>
@@ -22,12 +25,13 @@
     <h3 class='ui grey header'>Add Questions</h3>
   </a> -->
 
-  <h3 class='ui grey header item'>Jobs</h3>
+  <h3 class='ui white header item'>Jobs</h3>
   <a class='item' id="all-positions" ng-click="clickAlert('all-positions')" ng-href="/jobs">
-    <h4 class='ui grey header'>View All Positions</h4>
+    <h4 class='ui white header vertically fitted item'>View All Positions<i class="list layout icon"></i></h4>
+
   </a>
   <a class='item' id="add-position" ng-click="clickAlert('add-position')" ng-href="/position">
-    <h4 class='ui grey header'>Add Position</h4>
+    <h4 class='ui white header vertically fitted item'>Add Position<i class="add user icon"></i></h4>
   </a>
 
   <div class='ui three column grid' style='width: 100%;'>
@@ -39,6 +43,6 @@
     <!-- <div class="column"></div> -->
   </div>
   <div class='ui three column grid' style='width: 100%;'>
-    <img src="img/garena.png" height="230px"></img>
+    <img src="/img/garena.png" height="230px"></img>
   </div>
 </div>

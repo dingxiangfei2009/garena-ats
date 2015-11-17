@@ -1,4 +1,4 @@
-<div class="ui container grid">
+<div class="ui container grid"  ng-controller='RegisterController'>
   <div class="one column row">
   </div>
   <div class="one column row">
@@ -14,10 +14,10 @@
         <label>Name</label>
         <div class="two fields">
           <div class="field">
-            <input type="text" name="first-name" placeholder="First Name">
+            <input type="text" name="first-name" placeholder="First Name" ng-model='firstName'>
           </div>
           <div class="field">
-            <input type="text" name="last-name" placeholder="Last Name">
+            <input type="text" name="last-name" placeholder="Last Name" ng-model='lastName'>
           </div>
         </div>
       </div>
@@ -25,35 +25,30 @@
         <label>Contact Details</label>
         <div class="two fields">
           <div class="field">
-            <input type="text" name="mobile-number" placeholder="Handphone Number">
+            <input type="text" name="mobile-number" placeholder="Handphone Number" ng-model='mobileNo'>
           </div>
           <div class="field">
-            <input type="text" name="email" placeholder="Email ID">
+            <input type="text" name="email" placeholder="Email ID" ng-model='email'>
           </div>
         </div>
       </div>
       <div class="field">
         <label>Position Interested In</label>
-        <div class="twelve wide field">
-          <div class='ui selection dropdown'>
-            <i class='dropdown icon'></i>
-            <div class='default text'>Select Topic</div>
-            <div class='menu'>
-              <div class='item' data-value='ADS'>Algorithm and Data Structures</div>
-              <div class='item' data-value='AND'>Android</div>
-              <div class='item' data-value='IOS'>iOS</div>
-              <div class='item' data-value='NET'>Networks</div>
-              <div class='item' data-value='OPS'>Operating Systems</div>
-              <div class='item' data-value='SEC'>Security</div>
-              <div class='item' data-value='WEB'>Web Development</div>
-            </div>
+        <div class='ui selection dropdown'>
+          <i class='dropdown icon'></i>
+          <div class='default text'>Select Position</div>
+          <div class='menu'>
+              <div ng-repeat="pos in positions" class='item' data-value='{{pos.value}}'
+                ng-click='setNewPosition(pos)'>
+                {{pos.name}}
+              </div>
           </div>
         </div>
       </div>
       <div class="field">
         <label>Relevant Skills</label>
         <div class="twelve wide field">
-          <select class="ui fluid search dropdown" multiple="">
+          <select class="ui fluid search dropdown" multiple="" ng-model='skills'>
             <option value="">Skills</option>
             <option value="AND">Android Development</option>
             <option value="IOS">iOS Development</option>
@@ -70,25 +65,42 @@
         </div>
       </div>
       <div class="field">
-        <label>Credentials</label>
+        <label>Credentials (Optional)</label>
         <div class="two fields">
           <div class="ui left icon input field">
-            <input type="text" name="github-id" placeholder="GitHub ID">
+            <input type="text" name="github-id" placeholder="GitHub ID" ng-model='githubId'>
             <i class="github icon"></i>
-          </div>
-          <div class="ui left icon input field">
-            <input type="text" name="stackoverflow-id" placeholder="Stack Overflow ID">
-            <i class="stack overflow icon"></i>
           </div>
         </div>
       </div>
-      <a href="available">
-        <button class='ui primary button'>
-          Register
-        </button>
-      </a>
+      <button class='ui primary button' ng-click='submit()'>
+        Apply
+      </button>
     </form>
   </div>
+
+  <div class="ui basic modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Thanks for applying!
+    </div>
+    <div class="image content">
+      <div class="image">
+        <i class="green checkmark icon"></i>
+      </div>
+      <div class="description">
+        <p>Our HR team shall contact you soon!</p>
+      </div>
+    </div>
+    <div class="actions">
+      <a href='jobs'>
+        <div class="ui positive green basic inverted button">
+          Okay
+        </div>
+      </a>
+    </div>
+  </div>
+
 </div>
 <script type='text/javascript'>
   $('.ui.dropdown')

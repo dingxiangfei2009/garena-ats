@@ -34,17 +34,21 @@
               <td>{{test.title}}</td>
               <td>{{test.candidateName}}</td>
               <td ng-switch on='test.applicationStatus'>
-                <div ng-switch-when='Evaluate'>
-                  <button class="ui yellow button">
-                    <i class="checkmark box icon"></i>
-                    Evaluate
-                  </button>
+                <div ng-switch-when='pending evaluation'>
+                  <a href='evaluate/{{test.id}}'>
+                    <button class="ui yellow button">
+                      <i class="checkmark box icon"></i>
+                      Evaluate
+                    </button>
+                  </a>
                 </div>
-                <div ng-switch-when='View Report'>
-                  <button class="ui blue button">
-                    <i class="bar chart icon"></i>
-                    View Report
-                  </button>
+                <div ng-switch-when='evaluated'>
+                  <a href='test/{{test.id}}/report'>
+                    <button class="ui blue button">
+                      <i class="bar chart icon"></i>
+                      View Report
+                    </button>
+                  </a>
                 </div>
                 <div ng-switch-when='null'>
                   Not Completed
