@@ -54,7 +54,9 @@ Object.assign(EvaluateControllerImpl.prototype, {
                     _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
                     break;
                 case 'sbt':
-                    this.question_controllers[index] = null;
+                    this.question_controllers[index] = new qmod.SBTQuestionController(question);
+                    _proxy(this.model.question_controllers)[index] = this.question_controllers[index].model;
+                    break;
                     break;
                 case 'sbc':
                     this.question_controllers[index] = new qmod.SBCQuestionController(question);
