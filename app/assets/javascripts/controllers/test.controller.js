@@ -12,7 +12,7 @@ angular.module('app').controller('TestController',
   $scope.$on('load-test', function(event, test_id) {
     load_test(test_id);
   });
-  $scope.types = ['mas', 'sbc', 'sbt'];
+  $scope.types = ['mas', 'sbc', 'sbt', 'fib'];
 
   var ace_editors;
 
@@ -91,6 +91,13 @@ angular.module('app').controller('TestController',
             case 'sbc':
               question = new qmod.SBCQuestion(data.questions[x].info);
               $scope.questions.push(question.getQuestion());
+              $scope.answer.push(
+                question.parseAnswer(data.questions[x].config.answer));
+              break;
+            case 'fib':
+              question = new qmod.FIBQuestion(data.questions[x].info);
+              $scope.questions.push(question.getQuestion());
+              console.log(question.getQuestion());
               $scope.answer.push(
                 question.parseAnswer(data.questions[x].config.answer));
               break;

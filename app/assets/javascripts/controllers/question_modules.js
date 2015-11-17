@@ -182,6 +182,61 @@ function SBTQuestionController(question, editable) {
   };
 }
 
+function FIBQuestion(question) {
+  this.question = question;
+  this.statement = question.description;
+  this.type = question.question_type;
+  var config = JSON.parse(question.config);
+  this.suggested_answer = config.answer.blanks;
+  this.questionStatement = config.answer.statement;
+  console.log("wololo" + config.answer.statement);
+}
+Object.assign(FIBQuestion.prototype, {
+  getQuestion() {
+    var segments = [];
+    console.log(this.questionStatement);
+    this.questionStatement
+    .split(/\{\{\s*blank\s*\}\}/)
+    .map(text => ({
+      blank: false,
+      content: text
+    })).forEach(statement => segments.push(statement, {blank: true}));
+    segments.pop();
+    return {
+      type: this.type,
+      statement: this.statement,
+      questionStatement: this.questionStatement,
+      segments: segments
+    };
+  },
+  parseAnswer(answer) {
+    if (answer) {
+      return JSON.parse(answer);
+    }
+    else {
+      return [];
+    }
+  },
+  stringifyAnswer(answer) {
+    if (answer) {
+      return JSON.stringify(answer);
+    }
+    else {
+      return '[]';
+    }
+  }
+});
+
+function FIBQuestionController(question, editable) {
+  var self = this;
+  this.question = new FIBQuestion(question.info);
+  var answer = this.question.parseAnswer(question.config.answer);
+  this.model = {
+    answer: answer,
+    suggested_answer: this.question.suggested_answer
+  };
+}
+
 
 return {
   MCQQuestion: MCQQuestion,
@@ -190,6 +245,8 @@ return {
   SBCQuestionController: SBCQuestionController,
   SBTQuestion: SBTQuestion,
   SBTQuestionController: SBTQuestionController,
+  FIBQuestion: FIBQuestion,
+  FIBQuestionController: FIBQuestionController,
   parseAnswer: parseAnswer,
   stringifyAnswer: stringifyAnswer
 };

@@ -77,7 +77,6 @@ app.directive('fillInBlank', function() {
         var positions = [];
         var lengths = [];
         var match;
-        debugger;
         while (match = r.exec(statement)) {
           positions.push(match.index);
           lengths.push(match[0].length);

@@ -6,6 +6,7 @@ require 'question'
 require 'mcqquestion'
 require 'sbcquestion'
 require 'sbtquestion'
+require 'fibquestion'
 
 class TestController < ApplicationController
 	@@LIMIT = 100
@@ -101,6 +102,9 @@ class TestController < ApplicationController
 		when 'sbt'
 			renderer = SBTQuestion.new question
 			return renderer.render nil
+		when 'fib'
+			renderer = FIBQuestion.new question
+			return renderer.render nil
 		end
 	end
 
@@ -181,7 +185,7 @@ class TestController < ApplicationController
 			end
 		end
 	end
-		
+
 	def list
 		query = Test.joins(:candidate, :application, :job)
 			.select(

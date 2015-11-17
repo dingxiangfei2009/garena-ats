@@ -9,6 +9,7 @@ angular.module('app').controller('QuestionsController', ['$scope', '$http', '$sc
   $scope.types["mas"] = "Multiple Answer";
   $scope.types["sbt"] = "Subjective Text";
   $scope.types["sbc"] = "Subjective Code";
+  $scope.types["fib"] = "Fill in the Blanks";
 
   $scope.questions = [];
 
