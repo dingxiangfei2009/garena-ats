@@ -194,6 +194,17 @@
                 ng-model="answer[$index].code">
               </div>
             </div>
+            <div ng-switch-when='fib'>
+              <span ng-repeat='segment in question.segments'>
+                <div ng-switch on='segment.blank'>
+                  <div ng-switch-when='true'>
+                    <input type='text' ng-model='answer[$parent.$index][Math.floor($index)]'/>
+                  </div>
+                  <div ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
+                  </div>
+                </div>
+              </span>
+            </div>
           </div>
           <div ng-switch-when='fib'>
             <table class="ui celled table">
