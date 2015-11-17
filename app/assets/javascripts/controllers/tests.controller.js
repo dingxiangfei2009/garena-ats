@@ -17,7 +17,6 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
     url: "/job"
   })
   .success(function(data) {
-    alert(JSON.stringify(data));
     for (var x = 0; x < data.length; x++) {
       $scope.positions.push({
         name: data[x].title,
@@ -31,7 +30,6 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
     url: "/test/query"
   })
   .success(function(data) {
-    alert(JSON.stringify(data));
     for (var x = 0; x < data.length; x++) {
       $scope.tests.push({
         id: data[x].id,

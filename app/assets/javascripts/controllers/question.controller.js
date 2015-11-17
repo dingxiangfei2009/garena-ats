@@ -95,9 +95,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
     $scope.toggleState = function() {
         $scope.state = !$scope.state;
     };
-    $scope.clickAlert = function() {
-      // alert("You clicked me!");
-    }
     $scope.typeChange = function(type, index) {
       // $scope.typeState[index] = type.value;
       // $scope.questionType[index] = type.name;
@@ -117,7 +114,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
       CKEDITOR.replace('editor' + index);
     }
     $scope.addQuestion = function() {
-      // alert("Current length is " + $scope.questionList.length + " new length is " + ($scope.questionList.length + 1));
       // $scope.questionList.push($scope.questionList.length + 1);
       // $scope.typeState.push('DEF');
       $scope.questions.push({
@@ -139,7 +135,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
       });
     }
     $scope.display = function(val) {
-      alert(val);
     }
     $scope.remove = function(index) {
       // $scope.questionList.splice(index, 1);
@@ -151,7 +146,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
       $scope.questions.splice(index, 1);
     }
     $scope.submit = function() {
-      // alert(angular.toJson($scope.questions));
       for(var x = 0; x < $scope.questions.length; x++){
         var question = $scope.questions[x];
 
@@ -173,7 +167,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
           configuration: configuration
         };
 
-        // alert(angular.toJson(dataToSend));
 
         // $http({
         //   method: 'POST',

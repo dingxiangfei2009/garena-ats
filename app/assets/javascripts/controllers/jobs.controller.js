@@ -6,7 +6,6 @@ angular.module('app').controller('JobsController', ['$scope', '$http', function(
     url: "/job"
   })
   .success(function(data) {
-    alert(JSON.stringify(data));
     $scope.jobs = data;
   });
 

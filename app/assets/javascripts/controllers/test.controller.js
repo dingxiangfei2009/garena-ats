@@ -74,7 +74,6 @@ angular.module('app').controller('TestController',
       .success(function(result) {
         var data = angular.fromJson(result);
         for (var x = 0, question; x < data.questions.length; x++) {
-          alert(JSON.stringify(data.questions[x]));
           switch (data.questions[x].info.question_type) {
             case 'mas':
               question = new qmod.MCQQuestion(data.questions[x].info);
