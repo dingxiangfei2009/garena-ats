@@ -48,6 +48,9 @@ function parseAnswer(question, answer) {
     case 'sbc':
       qn_controller = new SBCQuestion(question);
       return qn_controller.parseAnswer(answer);
+    case 'sbt':
+      qn_controller = new SBTQuestion(question);
+      return qn_controller.parseAnswer(answer);
   }
 }
 function stringifyAnswer(question, answer) {
@@ -58,6 +61,9 @@ function stringifyAnswer(question, answer) {
       return qn_controller.stringifyAnswer(answer);
     case 'sbc':
       qn_controller = new SBCQuestion(question);
+      return qn_controller.stringifyAnswer(answer);
+    case 'sbt':
+      qn_controller = new SBTQuestion(question);
       return qn_controller.stringifyAnswer(answer);
   }
 }
@@ -158,25 +164,10 @@ Object.assign(SBTQuestion.prototype, {
     };
   },
   parseAnswer(answer) {
-    if (answer) {
-      var parsed = JSON.parse(answer);
-      return {
-        answer: parsed
-      };
-    } else
-      return {
-        answer: ''
-      };
+    return answer || '';
   },
   stringifyAnswer(answer) {
-    if (answer && 'object' === typeof answer)
-      return JSON.stringify({
-        answer: answer
-      });
-    else
-      return JSON.stringify({
-        answer: null
-      });
+    return answer || '';
   }
 });
 

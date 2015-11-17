@@ -190,7 +190,9 @@ angular.module('app').controller('TestController',
           () => get_autosave_transaction(db).add(prepare_autosave_data(question.config));
         read_request.onsuccess = function() {
           var autosave_data = read_request.result;
-          if (autosave_data.updated_at < server_updated_at)
+          if (!autosave_data)
+            get_autosave_transaction(db).add(prepare_autosave_data(question.config))
+          else if (autosave_data.updated_at < server_updated_at)
             get_autosave_transaction(db).put(prepare_autosave_data(question.config));
           else
             $scope.$apply(function() {

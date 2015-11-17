@@ -5,6 +5,7 @@ require 'field'
 require 'question'
 require 'mcqquestion'
 require 'sbcquestion'
+require 'sbtquestion'
 
 class TestController < ApplicationController
 	@@LIMIT = 100
@@ -96,6 +97,9 @@ class TestController < ApplicationController
 			return renderer.render nil
 		when 'sbc'
 			renderer = SBCQuestion.new question
+			return renderer.render nil
+		when 'sbt'
+			renderer = SBTQuestion.new question
 			return renderer.render nil
 		end
 	end
