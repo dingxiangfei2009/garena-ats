@@ -53,18 +53,22 @@
             </div>
             <div class='six wide field'>
               <label>Marks for this Question</label>
-                <input class='' type='number' min='1' ng-model='question.mark'></input>
+              <input class='' type='number' min='1' ng-model='question.mark'></input>
             </div>
           </div>
-          <label>Question</label>
-          <button class='ui basic button richtext' ng-click='useRichText($index)'>
-            Rich Text
-          </button>
-          <br>
-          <div class='fields'>
-            <div class='twelve wide field'>
-              <textarea id='editor{{$index}}' ng-model='question.questionText' >
+          <div class="two column row">
+            <div class="twelve wide field">
+              <label>Question</label>
+              <textarea id='editor{{$index}}' ng-model='question.questionText'>
               </textarea>
+            </div>
+          </div>
+          <div class="two column row">
+            <label>&nbsp;</label>
+            <div class="twelve wide field">
+              <button class='ui basic button richtext' ng-click='useRichText($index)'>
+                Rich Text
+              </button>
             </div>
           </div>
           <div class='answers'ng-switch on='question.type.value'>
@@ -80,7 +84,7 @@
               <subjective-code data='question.answer' ng-init="question.answer = {description: ''}"></subjective-code>
             </div>
             <div ng-switch-when="fib">
-              <fill-in-blank data="qeustion.answer" ng-init="question.answer = {description: ''}"></fill-in-blank>
+              <fill-in-blank data="question.answer" ng-init="question.answer = {}"></fill-in-blank>
             </div>
           </div>
         </div>
@@ -114,8 +118,16 @@
     Questions Added Successfully!
   </div>
   <div class="actions">
-    <div class="ui yellow button" href='question'>Add More Questions</div>
-    <div class="ui blue button" href='questions'>View All Questions</div>
+    <a href="/question">
+      <div class="ui positive yellow button">
+        Add More Questions
+      </div>
+    </a>
+    <a href="/questions">
+      <div class="ui blue button" href='questions'>
+        View All Questions
+      </div>
+    </a>
   </div>
 </div>
 
