@@ -55,7 +55,7 @@ class MCQQuestion
 		end
 		correct_total = @choices.count { |choice| choice['correct'] }
 		# TODO flexible marking scheme
-		if wrong_count
+		if wrong_count > 0
 			mark = 0
 		elsif correct_total == correct_count
 			mark = @mark
