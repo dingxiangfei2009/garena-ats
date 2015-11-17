@@ -13,7 +13,7 @@
 <% if params[:action] == "test" || params[:action] == "home" %>
   <%= yield %>
 <% else %>
-  <%= render partial: "partials/menu" %>
+  <%= render partial: "layouts/menu" %>
 <% end %>
 
 </body>
