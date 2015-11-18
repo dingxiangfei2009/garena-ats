@@ -1,7 +1,7 @@
 <style>
   .ace_editor { height: 200px;}
 </style>
- <div>
+<div>
   <div class="ui fullscreen modal" id="loader-modal" ng-controller="LoadTestController" ng-show="!loaded">
     <div class="header">
       Enter your Test ID
@@ -44,6 +44,21 @@
       </div>
     </div>
   </div>
+  <div class="ui basic modal" id="timeout">
+    <i class="close icon"></i>
+    <div class="header">Test Ended</div>
+    <div class="image content">
+      <div class="image"><i class="red warning sign icon"></i></div>
+      <div class="description">
+        <p>This test has ended. Any submission beyond this point of time will not be accepted.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <div class="ui positive green basic inverted button">
+        Okay
+      </div>
+    </div>
+  </div>
   <script>
     requestAnimationFrame(() => $('#loader-modal').modal('show'));
   </script>
@@ -55,8 +70,7 @@
     <h2 class='ui grey header item'>{{testName}}</h2>
 
     <h2 class='ui grey header item'>
-      <!-- TODO: time is wrong for single digits -->
-      <timer interval="1000"  countdown="1800">
+      <timer interval="1000"  countdown="duration">
         {{mminutes}} : {{sseconds}}
       </timer>
     </h2>
@@ -133,14 +147,14 @@
             </div>
             <div ng-switch-when='fib'>
               <span ng-repeat='segment in question.segments'>
-                <div ng-switch on='segment.blank'>
-                  <div ng-switch-when='true'>
+                <span ng-switch on='segment.blank'>
+                  <span ng-switch-when='true'>
                     <input type='text' ng-model='answer[$parent.$parent.$index][($parent.$index + 1) / 2 - 1]'
                       ng-change='attempted($parent.$parent.$index)'/>
-                  </div>
-                  <div ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
-                  </div>
-                </div>
+                  </span>
+                  <span ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
+                  </span>
+                </span>
               </span>
             </div>
           </div>

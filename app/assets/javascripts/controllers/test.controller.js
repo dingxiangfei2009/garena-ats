@@ -6,7 +6,8 @@ function($scope, $rootScope){
 }]);
 
 angular.module('app').controller('TestController',
-['$scope', '$http', '$interval', '$sce', function($scope, $http, $interval, $sce) {
+['$scope', '$http', '$interval', '$timeout', '$sce',
+function($scope, $http, $interval, $timeout, $sce) {
   var qmod;
   require(['qmod'], _ => qmod = _);
   $scope.$on('load-test', function(event, test_id) {
@@ -52,11 +53,12 @@ angular.module('app').controller('TestController',
         ace_language_modes.get($scope.answer[question_index].language));
   }
 
-  $scope.testName = 'Garena Android Developer Test';
+  $scope.testName = '';
   $scope.attempt = [];
   $scope.answer = [];
   $scope.aceEditor = {};
   $scope.questions = [];
+  $scope.duration = 0;
 
   var RESPONSE_ID_TO_IDX, IDX_TO_RESPONSE_ID, questions;
   var url;
@@ -73,6 +75,12 @@ angular.module('app').controller('TestController',
     $http.get(url) // TODO
       .success(function(result) {
         var data = angular.fromJson(result);
+        $scope.testName = data.info.name;
+        $scope.duration = data.info.duration;
+        $timeout(() => $('timer')[0].start(), 0);
+        $scope.$on('timer-stopped', function() {
+          $('#timeout').modal('show');
+        });
         for (var x = 0, question; x < data.questions.length; x++) {
           switch (data.questions[x].info.question_type) {
             case 'mas':
@@ -96,7 +104,6 @@ angular.module('app').controller('TestController',
             case 'fib':
               question = new qmod.FIBQuestion(data.questions[x].info);
               $scope.questions.push(question.getQuestion());
-              console.log(question.getQuestion());
               $scope.answer.push(
                 question.parseAnswer(data.questions[x].config.answer));
               break;
@@ -110,7 +117,6 @@ angular.module('app').controller('TestController',
       });
   }
   function collateAnswer() {
-    console.log($scope.answer);
     return questions.map(function(question, i) {
       return {
         id: IDX_TO_RESPONSE_ID[i],
