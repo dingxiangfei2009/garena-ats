@@ -48,6 +48,7 @@ class TestController < ApplicationController
 	# duration [integer]: duration of test, unit is second
 	def new
 		job_id = params[:job]
+		job = Job.find job_id
 		email = params[:email]
 		candidate = Candidate.find_by! email: email
 		application =
@@ -79,6 +80,7 @@ class TestController < ApplicationController
         else
             test.duration = options[:duration]
         end
+        test.name = job.title + ' Test'
 		test.save
 
 		question_set.shuffle!	# shuffle
