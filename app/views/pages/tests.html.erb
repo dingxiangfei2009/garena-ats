@@ -23,6 +23,7 @@
         <table class="ui very padded large table">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Position</th>
               <th>Candidate Name</th>
               <th>Completed</th>
@@ -31,6 +32,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="test in tests | filter:searchText | orderBy:'-mark/totalMark'">
+              <td>{{test.id}}</td>
               <td>{{test.title}}</td>
               <td>{{test.candidateName}}</td>
               <td ng-switch on='test.applicationStatus'>

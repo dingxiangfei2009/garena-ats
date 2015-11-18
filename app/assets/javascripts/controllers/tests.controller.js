@@ -80,7 +80,11 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
             duration: $scope.newCandidate.duration*60,
             job: $scope.newCandidate.pos.value
           }
-        }).error(function(data) {
+        })
+        .success(function(data) {
+          location.reload();
+        })
+        .error(function(data) {
           console.log(data);
           $('.ui.modal.error').modal('show');
         });
