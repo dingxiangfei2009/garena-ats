@@ -98,6 +98,9 @@ function TestReportControllerImpl() {
         	leave(elements) {
         		$(elements).addClass('fadeOut').slideUp(200, function() {this.remove();});
         	}
+        },
+        select_all() {
+        	this.selector.fill(true);
         }
     };
 }

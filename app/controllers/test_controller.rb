@@ -230,6 +230,7 @@ class TestController < ApplicationController
 		application = test.application
 		job = application.job
 		candidate = application.candidate
+		
 		test_info = {
 			id: id,
 			application: {

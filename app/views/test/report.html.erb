@@ -113,7 +113,8 @@
               <text
                 font="Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif"
                 anchor="middle"
-                data-bind-y="bar_y(settings.height, value.value) - 5">
+                data-bind-y="bar_y(settings.height, value.value) - 5"
+                data-bind-event="(\ e => e.type eq 'click' and onclick(e, item, item_index))">
                   {{value.name}}
               </text>
             </template>
@@ -159,21 +160,24 @@
 
 
 <div class="test-report-main" ng-non-bindable>
-  <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info'%>
-  <!-- definitions -->
-  <template vis-element="pie_chart"></template>
-  
+  <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info'%>  
   <!-- main content -->
   <div class="ui two column grid container">
-    <div class="two column centered row">
-      <h1 class="ui icon header">
-        <i class="bar chart icon"></i>
-        <div class="content">
-          Report
-          <div class="sub header">
+    <div class="two column row">&nbsp;</div>
+    <div class="row">
+      <div class="centered four wide column">
+        <h1 class="ui icon header">
+          <i class="bar chart icon"></i>
+          <div class="content">
+            Report
           </div>
-        </div>
-      </h1>
+        </h1>
+      </div>
+      <div class="four wide column">
+        <p>Candidate: <b>{{test.application.candidate.name}}</b></p>
+        <p>Email: <a href="mailto: {{test.application.candidate.email}}">{{test.application.candidate.email}}</a></p>
+        <p>Applying for: {{test.application.job.title}}</p>
+      </div>
     </div>
     <div class="ui divider"></div>
     
@@ -196,10 +200,14 @@
                     <template vis-inject="injectHTML(question.info.description)"></template>
                   </div>
                   <div class="ui label">
+                    Topic
+                    <div class="detail">{{question.info.topic}}</div>
+                  </div>
+                  <div class="ui teal label">
                     Mark
                     <div class="detail">{{question.info.mark}}</div>
                   </div>
-                  <div class="ui label">
+                  <div class="ui orange label">
                     Percentile
                     <div class="detail">{{*.math.floor(question.statistics.percentile * 10000)/100}}%</div>
                   </div>
@@ -239,16 +247,17 @@
           </template>
         </template>
       </div>
-      <div class="one wide column">
+      <div class="two wide column">
         <div class="ui sticky" id="graph-control">
           <svg vis-element="bar_graph_area" width="300" height="300" style="margin-top: 50px"></svg>
           <div class="ui form">
             <div class="grouped fields">
+              <button class="ui button" vis-action="select_all">Select All</button>
               <template vis-iterate="selector_switch, index in selector">
-                <div class="field">
-                  <div class="ui slider checkbox">
+                <div class="ui field">
+                  <div class="ui toggle checkbox">
                     <input type="checkbox" vis-value="selector_switch">
-                    <label>Question {{index + 1}}</label>
+                    <label>Q {{index + 1}}</label>
                   </div>
                 </div>
               </template>

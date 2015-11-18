@@ -195,12 +195,10 @@ function FIBQuestion(question) {
   var config = JSON.parse(question.config);
   this.suggested_answer = config.answer.blanks;
   this.questionStatement = config.answer.statement;
-  console.log("wololo" + config.answer.statement);
 }
 Object.assign(FIBQuestion.prototype, {
   getQuestion() {
     var segments = [];
-    console.log(this.questionStatement);
     this.questionStatement
     .split(/\{\{\s*blank\s*\}\}/)
     .map(text => ({
