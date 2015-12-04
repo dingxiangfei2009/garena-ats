@@ -4,7 +4,7 @@ class CreateCandidateFieldTable < ActiveRecord::Migration
     	t.references :candidate, null: false, index: true
     	t.references :field, null: false, index: true
     end
-    add_foreign_key :candidate_fields, :candidates
-    add_foreign_key :candidate_fields, :fields
+    add_foreign_key :candidate_fields, :candidates, on_delete: :cascade
+    add_foreign_key :candidate_fields, :fields, on_delete: :cascade
   end
 end

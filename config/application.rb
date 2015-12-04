@@ -6,6 +6,8 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+ENV.update YAML.load_file('config/applciation.yml')[Rails.env] rescue {}
+
 module GarenaAts
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -24,7 +26,7 @@ module GarenaAts
     config.generators do |g|
       g.javascript_engine :js
     end
-    
+
     config.assets.enable = true
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
