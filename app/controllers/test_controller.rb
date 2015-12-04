@@ -13,6 +13,7 @@ class TestController < ApplicationController
 	# random_pick_questions
 	# select :count questions of :topic at :difficulty level
 	def random_pick_questions(var)
+		byebug
 		ids = []
 		count = Question.where({
 			:field_id => var[:topic],
@@ -24,7 +25,7 @@ class TestController < ApplicationController
 			raise "no enought questions"
 		end
 		i = 0
-		while i < count do
+		while i < var[:count] do
 			question = Question.where({
 				:field_id => var[:topic],
 				:difficulty => var[:difficulty],
@@ -83,7 +84,7 @@ class TestController < ApplicationController
         test.name = job.title + ' Test'
 		test.save
 
-		question_set.shuffle!	# shuffle
+		#question_set.shuffle!	# shuffle
 		question_set.each do |question_id|
 			test_response = TestResponse.new
 			test_response.question_id = question_id
@@ -232,7 +233,7 @@ class TestController < ApplicationController
 		application = test.application
 		job = application.job
 		candidate = application.candidate
-		
+
 		test_info = {
 			id: id,
 			application: {
