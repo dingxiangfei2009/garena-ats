@@ -1,8 +1,8 @@
-$(function(){    
+$(function(){
 require(['bind', 'module_struct', 'compat/observe', 'el/el', 'qmod'],
 function(bind, module, _proxy, el, qmod) {
 'use strict';
-    
+
 function EvaluateControllerImpl() {
     var collateMarks =
         () =>
@@ -20,6 +20,9 @@ function EvaluateControllerImpl() {
         injectHTML(html) {
             var fragment = document.createElement('template');
             fragment.innerHTML = html;
+            Array.prototype.forEach.call(
+              fragment.content.querySelectorAll('script'),
+              e => e.remove());
             return {
                 element: fragment,
                 scope: new el.scope.Scope
@@ -72,9 +75,9 @@ Object.assign(EvaluateControllerImpl.prototype, {
         _proxy(this.model).application = test_info.application;
     }
 });
-    
+
 var EvaluateController = module('EvaluateController', {instance: EvaluateControllerImpl});
-    
+
 var evaluater = EvaluateController.instance();
 bind.bind('.evaluator-main', evaluater);
 evaluater.initialize();
