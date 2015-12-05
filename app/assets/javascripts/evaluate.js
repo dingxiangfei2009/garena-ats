@@ -1,4 +1,4 @@
-$(function(){    
+$(function(){
 require(['bind', 'module_struct', 'compat/observe', 'el/el', 'qmod'],
 function(bind, module, _proxy, el, qmod) {
 'use strict';
