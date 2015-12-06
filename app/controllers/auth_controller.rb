@@ -4,7 +4,6 @@ class AuthController < ApplicationController
     auth_hash = request.env['omniauth.auth']
     # verify if the account is admin
     begin
-      byebug
       admin = Admin.find auth_hash.info.email
 
       if !admin.google_id

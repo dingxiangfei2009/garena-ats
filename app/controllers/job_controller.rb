@@ -3,7 +3,7 @@ require 'field'
 require 'job_field'
 
 class JobController < ApplicationController
-    @@LIMIT = 100
+  @@LIMIT = 100
 	# new
 	# data [json]:
 	# 	title [string]: job title
@@ -12,6 +12,10 @@ class JobController < ApplicationController
 	#   fields [array]:
 	#     each element [string]: field token
 	def new
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		job = Job.new
 		job_test_info = JSON.parse params[:test_parameter]
 		job.title = params[:title]
@@ -41,13 +45,21 @@ class JobController < ApplicationController
 		render :json => job
 	end
 	def get
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		job = Job.find! params[:id]
 		ret = Hash.new
 		ret[:info] = job
 		ret[:fields] = job.fields
 		render :json => ret
 	end
-    def list
-        render :json => Job.offset(params[:start] || 0).limit(@@LIMIT)
-    end
+  def list
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
+    render :json => Job.offset(params[:start] || 0).limit(@@LIMIT)
+  end
 end

@@ -48,6 +48,10 @@ class TestController < ApplicationController
 	# email [string]: email address
 	# duration [integer]: duration of test, unit is second
 	def new
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		job_id = params[:job]
 		job = Job.find job_id
 		email = params[:email]
@@ -112,6 +116,10 @@ class TestController < ApplicationController
 	end
 
 	def get
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		id = params[:id]
 		test = Test.find id
 		if !test.start_time then
@@ -140,6 +148,10 @@ class TestController < ApplicationController
 	end
 
 	def save
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		id = params[:id]
 		test = Test.where('date_add(start_time, interval duration second) >= utc_timestamp()').where(id: id).first
 		if test
@@ -190,6 +202,10 @@ class TestController < ApplicationController
 	end
 
 	def list
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		query = Test.joins(:candidate, :application, :job)
 			.select(
 				'tests.id',
@@ -228,6 +244,10 @@ class TestController < ApplicationController
 	end
 
 	def statistics
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		id = params[:id]
 		test = Test.find id
 		application = test.application
