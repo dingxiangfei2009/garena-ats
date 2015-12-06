@@ -15,6 +15,7 @@ angular.module('app').controller('RegisterController', ['$scope', '$http', '$sce
     url: "/job"
   })
   .success(function(data) {
+    console.log(data);
     for (var x = 0; x < data.length; x++) {
       $scope.positions.push({
         name: data[x].title,
