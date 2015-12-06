@@ -1,4 +1,4 @@
 class Admin < ActiveRecord::Base
 	self.table_name = 'admins'
-	has_one :user
+	self.primary_key = 'email'
 end

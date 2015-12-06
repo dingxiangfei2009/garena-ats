@@ -1,5 +1,9 @@
 class EvaluateController < ApplicationController
     def evaluate
+    		unless session[:user]
+      			redirect_to '/auth/google'
+      			return
+    		end
         @id = params[:id]
         test = Test.find @id
         test_info = Hash.new
@@ -46,6 +50,10 @@ class EvaluateController < ApplicationController
         @test_info = JSON.generate test_info
     end
     def save
+    		unless session[:user]
+    			redirect_to '/auth/google'
+    			return
+    		end
         marks = JSON.parse params[:marks]
         marks.each do |mark|
             test_response = TestResponse.find_by id: mark['id'], test_id: params[:id]

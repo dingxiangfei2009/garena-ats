@@ -9,7 +9,7 @@ class CreateQuestionStatistics < ActiveRecord::Migration
       t.datetime :latest, null: false
       t.timestamps null: false
     end
-    add_foreign_key :question_statistics, :questions
-    add_foreign_key :question_statistics, :test_responses
+    add_foreign_key :question_statistics, :questions, on_delete: :cascade
+    add_foreign_key :question_statistics, :test_responses, on_delete: :cascade
   end
 end

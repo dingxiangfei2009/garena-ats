@@ -86,6 +86,9 @@ function TestReportControllerImpl() {
         injectHTML(html) {
             var fragment = document.createElement('template');
             fragment.innerHTML = html;
+            Array.prototype.forEach.call(
+              fragment.content.querySelectorAll('script'),
+              e => e.remove());
             return {
                 element: fragment,
                 scope: new el.scope.Scope
@@ -211,9 +214,9 @@ Object.assign(TestReportControllerImpl.prototype, {
             });
     }
 });
-    
+
 var TestReportController = module('TestReportController', {instance: TestReportControllerImpl});
-    
+
 var instance = TestReportController.instance();
 bind.bind('.test-report-main', instance);
 instance.initialize();

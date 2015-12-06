@@ -1,8 +1,9 @@
 class CreateAdminsTable < ActiveRecord::Migration
   def change
-    create_table :admins do |t|
-    	t.references :user, null: false
+    create_table :admins, primary_key: 'email', id: false do |t|
+      t.string :email, null: false, unique: true
+      t.string :name
+      t.string :google_id
     end
-    add_foreign_key :admins, :users
   end
 end

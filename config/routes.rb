@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get '/auth/google/callback', to: 'auth#auth'
+  get '/auth/redirect', to: 'auth#redirect'
+  get '/auth/fail', to: 'auth#fail'
+
   get '/home', :to => 'pages#home'
   get '/position', :to => 'pages#position'
   get '/jobs', :to => 'pages#jobs'

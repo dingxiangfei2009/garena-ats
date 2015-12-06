@@ -13,6 +13,7 @@ class TestController < ApplicationController
 	# random_pick_questions
 	# select :count questions of :topic at :difficulty level
 	def random_pick_questions(var)
+		byebug
 		ids = []
 		count = Question.where({
 			:field_id => var[:topic],
@@ -24,7 +25,7 @@ class TestController < ApplicationController
 			raise "no enought questions"
 		end
 		i = 0
-		while i < count do
+		while i < var[:count] do
 			question = Question.where({
 				:field_id => var[:topic],
 				:difficulty => var[:difficulty],
@@ -47,6 +48,10 @@ class TestController < ApplicationController
 	# email [string]: email address
 	# duration [integer]: duration of test, unit is second
 	def new
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		job_id = params[:job]
 		job = Job.find job_id
 		email = params[:email]
@@ -83,7 +88,7 @@ class TestController < ApplicationController
         test.name = job.title + ' Test'
 		test.save
 
-		question_set.shuffle!	# shuffle
+		#question_set.shuffle!	# shuffle
 		question_set.each do |question_id|
 			test_response = TestResponse.new
 			test_response.question_id = question_id
@@ -111,6 +116,10 @@ class TestController < ApplicationController
 	end
 
 	def get
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		id = params[:id]
 		test = Test.find id
 		if !test.start_time then
@@ -139,6 +148,10 @@ class TestController < ApplicationController
 	end
 
 	def save
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		id = params[:id]
 		test = Test.where('date_add(start_time, interval duration second) >= utc_timestamp()').where(id: id).first
 		if test
@@ -189,6 +202,10 @@ class TestController < ApplicationController
 	end
 
 	def list
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		query = Test.joins(:candidate, :application, :job)
 			.select(
 				'tests.id',
@@ -227,12 +244,16 @@ class TestController < ApplicationController
 	end
 
 	def statistics
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		id = params[:id]
 		test = Test.find id
 		application = test.application
 		job = application.job
 		candidate = application.candidate
-		
+
 		test_info = {
 			id: id,
 			application: {

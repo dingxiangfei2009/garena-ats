@@ -8,7 +8,7 @@ class CreateTestResponsesTable < ActiveRecord::Migration
         t.references :test, null: false
         t.references :question, null: false
     end
-    add_foreign_key :test_responses, :tests
-    add_foreign_key :test_responses, :questions
+    add_foreign_key :test_responses, :tests, on_delete: :cascade
+    add_foreign_key :test_responses, :questions, on_delete: :cascade
   end
 end

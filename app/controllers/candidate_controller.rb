@@ -4,6 +4,10 @@ require	'candidate_field'
 
 class CandidateController < ApplicationController
 	def new
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
 		candidate = Candidate.find_by email: params[:email]
 		if candidate
 			render json: candidate

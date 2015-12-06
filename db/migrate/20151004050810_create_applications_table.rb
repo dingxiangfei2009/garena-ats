@@ -6,7 +6,7 @@ class CreateApplicationsTable < ActiveRecord::Migration
     	t.references :job, null: false, index: true
         t.string :status
     end
-    add_foreign_key :applications, :candidates
-   	add_foreign_key :applications, :jobs
+    add_foreign_key :applications, :candidates, on_delete: :cascade
+   	add_foreign_key :applications, :jobs, on_delete: :cascade
   end
 end
