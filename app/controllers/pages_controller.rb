@@ -68,4 +68,10 @@ class PagesController < ApplicationController
 			return
 		end
   end
+  def topics
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
+  end
 end

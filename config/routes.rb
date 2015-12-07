@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/test', :to => 'pages#test'
   get '/tests', :to => 'pages#tests'
   get '/register', :to => 'pages#register'
+  get '/topics', :to => 'pages#topics'
   get '/login', :to => 'pages#login'
   get '/available', :to => 'pages#available'
   scope '/question' do
@@ -56,6 +57,10 @@ Rails.application.routes.draw do
       get '/', to: 'evaluate#evaluate'
       post '/', to: 'evaluate#save'
     end
+  end
+  scope '/topics' do
+    get '/all', to: 'topics#all'
+    post '/new', to: 'topics#new'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
