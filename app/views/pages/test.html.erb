@@ -149,10 +149,19 @@
               <span ng-repeat='segment in question.segments'>
                 <span ng-switch on='segment.blank'>
                   <span ng-switch-when='true'>
-                    <input type='text' ng-model='answer[$parent.$parent.$index][($parent.$index + 1) / 2 - 1]'
-                      ng-change='attempted($parent.$parent.$index)'/>
+                    <span style="text-decoration: underline; white-space: pre;">
+                    </span>
                   </span>
                   <span ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
+                  </span>
+                </span>
+              </span>
+              <br><br>
+              <span ng-repeat='segment in question.segments'>
+                <span ng-switch on='segment.blank'>
+                  <span ng-switch-when='true'>
+                    <input type='text' ng-model='answer[$parent.$parent.$index][($parent.$index + 1) / 2 - 1]'
+                      ng-change='attempted($parent.$parent.$index)'/>
                   </span>
                 </span>
               </span>

@@ -116,10 +116,10 @@ class TestController < ApplicationController
 	end
 
 	def get
-		unless session[:user]
-			redirect_to '/auth/google'
-			return
-		end
+		# unless session[:user]
+		# 	redirect_to '/auth/google'
+		# 	return
+		# end
 		id = params[:id]
 		test = Test.find id
 		if !test.start_time then
@@ -148,10 +148,10 @@ class TestController < ApplicationController
 	end
 
 	def save
-		unless session[:user]
-			redirect_to '/auth/google'
-			return
-		end
+		# unless session[:user]
+		# 	redirect_to '/auth/google'
+		# 	return
+		# end
 		id = params[:id]
 		test = Test.where('date_add(start_time, interval duration second) >= utc_timestamp()').where(id: id).first
 		if test
