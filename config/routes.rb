@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get '/tests', :to => 'pages#tests'
   get '/register', :to => 'pages#register'
   get '/topics', :to => 'pages#topics'
+  get '/admin', :to => 'pages#admin'
   get '/login', :to => 'pages#login'
   get '/available', :to => 'pages#available'
   scope '/question' do
@@ -98,6 +99,10 @@ Rails.application.routes.draw do
         post '/:job_id', to: 'application_profile#new'
       end
     end
+  end
+  scope '/admin' do
+    get '/all', to: 'admin#all'
+    post '/new', to: 'admin#new'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
