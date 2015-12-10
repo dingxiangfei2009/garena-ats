@@ -70,7 +70,7 @@
     <h2 class='ui grey header item'>{{testName}}</h2>
 
     <h2 class='ui grey header item'>
-      <timer interval="1000"  countdown="duration">
+      <timer interval="1000"  end-time="end_time">
         {{mminutes}} : {{sseconds}}
       </timer>
     </h2>
@@ -96,11 +96,11 @@
         <div class="column">
           <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
           <h2 class="ui header">
-            Question {{$index + 1}}
+            {{$index + 1}}
           </h2>
-          <div class="ui divider"></div>
           <div class="ui blue label question-prompt">
             <i class="info icon"></i>
+            Hover to reveal more information
           </div>
           <div class="ui popup">
             <div class="header">Question information</div>
