@@ -13,7 +13,6 @@ class TestController < ApplicationController
 	# random_pick_questions
 	# select :count questions of :topic at :difficulty level
 	def random_pick_questions(var)
-		byebug
 		ids = []
 		count = Question.where({
 			:field_id => var[:topic],
@@ -116,10 +115,6 @@ class TestController < ApplicationController
 	end
 
 	def get
-		# unless session[:user]
-		# 	redirect_to '/auth/google'
-		# 	return
-		# end
 		id = params[:id]
 		test = Test.find id
 		if !test.start_time then
@@ -129,6 +124,7 @@ class TestController < ApplicationController
 		test_info = Hash.new
 		test_info[:info] = test
 		test_info[:questions] = []
+		test_info[:question_type_infos] = []
 		test.test_responses.each do |test_response|
 			question = test_response.question
 			question_info = Hash.new
@@ -148,10 +144,6 @@ class TestController < ApplicationController
 	end
 
 	def save
-		# unless session[:user]
-		# 	redirect_to '/auth/google'
-		# 	return
-		# end
 		id = params[:id]
 		test = Test.where('date_add(start_time, interval duration second) >= utc_timestamp()').where(id: id).first
 		if test

@@ -95,10 +95,26 @@
       <div class="row" id='testbox' ng-repeat='question in questions'>
         <div class="column">
           <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
-          <h2 class="ui header">Question {{$index + 1}}</h2>
+          <h2 class="ui header">
+            Question {{$index + 1}}
+          </h2>
           <div class="ui divider"></div>
+          <div class="ui label question-prompt">
+            <i class="info icon"></i>
+          </div>
+          <div class="ui popup">
+            <div class="header">Question information</div>
+              {{question_info[question.type]}}
+          </div>
+          <script>
+            requestAnimationFrame(() =>
+              $('.ui.label.question-prompt').popup({
+                lastResort: 'right center',
+                inline: true
+              }));
+          </script>
           <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
-            <!-- {{question.statement}} -->
+            {{question.statement}}
           </div>
           <div class="ui form" ng-switch on='question.type'>
             <div class="grouped fields" ng-switch-when='mas'>
