@@ -70,7 +70,7 @@
     <h2 class='ui grey header item'>{{testName}}</h2>
 
     <h2 class='ui grey header item'>
-      <timer interval="1000"  countdown="duration">
+      <timer interval="1000"  end-time="end_time">
         {{mminutes}} : {{sseconds}}
       </timer>
     </h2>
@@ -95,10 +95,27 @@
       <div class="row" id='testbox' ng-repeat='question in questions'>
         <div class="column">
           <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
-          <h2 class="ui header">Question {{$index + 1}}</h2>
-          <div class="ui divider"></div>
+          <h2 class="ui header">
+            {{$index + 1}}
+          </h2>
+          <div class="ui blue label question-prompt">
+            <i class="info icon"></i>
+            Hover to reveal more information
+          </div>
+          <div class="ui popup">
+            <div class="header">Question information</div>
+              {{question_info[question.type]}}
+          </div>
+          <script>
+            requestAnimationFrame(() =>
+              $('.ui.label.question-prompt').popup({
+                position: 'right center',
+                lastResort: 'right center',
+                inline: true
+              }));
+          </script>
           <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
-            <!-- {{question.statement}} -->
+            {{question.statement}}
           </div>
           <div class="ui form" ng-switch on='question.type'>
             <div class="grouped fields" ng-switch-when='mas'>
