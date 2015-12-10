@@ -75,6 +75,7 @@ function($scope, $http, $interval, $timeout, $sce) {
     $http.get(url) // TODO
       .success(function(result) {
         var data = angular.fromJson(result);
+        $scope.question_info = data.question_type_infos;
         $scope.testName = data.info.name;
         $scope.duration = data.info.duration;
         $timeout(() => $('timer')[0].start(), 0);

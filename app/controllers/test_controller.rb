@@ -124,7 +124,10 @@ class TestController < ApplicationController
 		test_info = Hash.new
 		test_info[:info] = test
 		test_info[:questions] = []
-		test_info[:question_type_infos] = []
+		test_info[:question_type_infos] = {}
+		QuestionType.all.each do |type|
+			test_info[:question_type_infos][type.name] = type.description
+		end
 		test.test_responses.each do |test_response|
 			question = test_response.question
 			question_info = Hash.new

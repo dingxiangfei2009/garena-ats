@@ -99,7 +99,7 @@
             Question {{$index + 1}}
           </h2>
           <div class="ui divider"></div>
-          <div class="ui label question-prompt">
+          <div class="ui blue label question-prompt">
             <i class="info icon"></i>
           </div>
           <div class="ui popup">
@@ -109,6 +109,7 @@
           <script>
             requestAnimationFrame(() =>
               $('.ui.label.question-prompt').popup({
+                position: 'right center',
                 lastResort: 'right center',
                 inline: true
               }));
