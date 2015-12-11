@@ -8,18 +8,20 @@ class TopicsController < ApplicationController
     topic.name = params[:name]
     topic.token = params[:token]
     topic.save
-    render :json => topic
+    render json: topic
   end
   def all
     unless session[:user]
       redirect_to '/auth/google'
       return
     end
-    topicArray = Array.new
-    Field.all.each do |field|
-      topic = {:name => field.name, :token => field.token, :questions => Question.where(field_id: field.id).count}
-      topicArray.push topic
+    fields = Field.all.map do |field|
+      {
+        name: field.name,
+        token: field.token,
+        questions: Question.where(field_id: field.id).count
+      }
     end
-    render json: topicArray
+    render json: fields
   end
 end

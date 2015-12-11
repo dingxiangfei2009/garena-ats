@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  get '/auth/google/callback', to: 'auth#auth'
-  get '/auth/redirect', to: 'auth#redirect'
-  get '/auth/fail', to: 'auth#fail'
+  scope '/auth' do
+    get '/google/callback', to: 'auth#auth'
+    get '/redirect', to: 'auth#redirect'
+    get '/fail', to: 'auth#fail'
+    get '/logout', to: 'auth#destroy'
+  end
 
   get '/home', :to => 'pages#home'
   get '/position', :to => 'pages#position'
@@ -66,6 +69,10 @@ Rails.application.routes.draw do
   scope '/admin' do
     get '/all', to: 'admin#all'
     post '/new', to: 'admin#new'
+  end
+  scope '/question_types' do
+    get '/', to: 'question_type#list'
+    post '/save', to: 'question_type#save'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

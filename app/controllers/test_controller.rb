@@ -64,17 +64,26 @@ class TestController < ApplicationController
 		test_parameter = JobTestParameter.find_by! job_id: job_id
 		options =
 			JSON.parse test_parameter.descriptor
-		question_set = []
+
+		# order questions by type
+		question_set_by_type = {}
 		options['topics'].each do |topic|
 			field = Field.find_by! token: topic['topic']
 			question_type = QuestionType.find_by! name: topic['type']
-			question_set +=
-				random_pick_questions ({
-					:count => topic['count'],
-					:topic => field.id,
-					:question_type => question_type.id,
-					:difficulty => topic['difficulty']
-				})
+			question_set_by_type[topic['type']] = [] unless
+				question_set_by_type[topic['type']]
+			question_set_by_type[topic['type']] +=
+				random_pick_questions(
+					count: topic['count'],
+					topic: field.id,
+					question_type: question_type.id,
+					difficulty: topic['difficulty']
+				)
+		end
+		byebug
+		question_set = []
+		question_set_by_type.each do |type, ids|
+			question_set += ids
 		end
 
 		test = Test.new
@@ -94,7 +103,7 @@ class TestController < ApplicationController
 			test_response.test_id = test.id
 			test_response.save
 		end
-		render :json => {:id => test.id}
+		render json: {id: test.id}
 	end
 
 	def render_question(question)
@@ -132,18 +141,18 @@ class TestController < ApplicationController
 			question = test_response.question
 			question_info = Hash.new
 			question_info[:config] = {
-				:id => test_response.id,
-				:answer => test_response.answer,
-				:updated_at => test_response.updated_at.rfc2822
+				id: test_response.id,
+				answer: test_response.answer,
+				updated_at: test_response.updated_at.rfc2822
 			}
 			question_info[:info] = {
-				:description => question.description,
-				:question_type => question.question_type.name,
-				:config => render_question(question)
+				description: question.description,
+				question_type: question.question_type.name,
+				config: render_question(question)
 			}
 			test_info[:questions] << question_info
 		end
-		render :json => test_info
+		render json: test_info
 	end
 
 	def save

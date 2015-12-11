@@ -154,7 +154,7 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
           question.questionText = CKEDITOR.instances['editor' + x].getData();
         }
 
-        var configuration = angular.toJson({          
+        var configuration = angular.toJson({
           answer: question.answer
         });
 
@@ -166,27 +166,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
           description: question.questionText,
           configuration: configuration
         };
-
-
-        // $http({
-        //   method: 'POST',
-        //   url: '/question',
-        //   data: dataToSend
-        // }).then(function successCallback(response) {
-        //     // this callback will be called asynchronously
-        //     // when the response is available
-        //     // $('.ui.positive.message').removeClass('hidden').addClass('visible');
-        //     $('.ui.modal')
-        //       .modal('show')
-        //     ;
-        //   }, function errorCallback(response) {
-        //     // called asynchronously if an error occurs
-        //     // or server returns response with an error status.
-        //     // $('.ui.positive.message').removeClass('hidden').addClass('visible');
-        //     $('.ui.modal')
-        //       .modal('show')
-        //     ;
-        //   });
 
           $.ajax({
             method: "POST",

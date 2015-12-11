@@ -31,6 +31,7 @@ class AuthController < ApplicationController
   end
 
   def destroy
-    session[:user] = nil
+    reset_session
+    redirect_to '/auth/google'
   end
 end

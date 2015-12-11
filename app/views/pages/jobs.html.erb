@@ -15,22 +15,19 @@
       </div>
     </div>
     <div class="ui divider"></div>
-    <!-- <div class="three column row"> -->
     <div class='row'>
       <div class="ui cards">
-        <!-- <div class='column' ng-repeat='job in jobs'> -->
-          <div class="ui card" ng-repeat='job in jobs'>
-            <div class="content">
-              <div class="header">{{job.title}}</div>
-            </div>
-            <div class="content">
-              <h4 class="ui sub header">{{job.description}}</h4>
-            </div>
-            <div class="extra content">
-              <a href="register"><button class="ui button">Apply</button></a>
-            </div>
+        <div class="ui card" ng-repeat='job in jobs'>
+          <div class="content">
+            <div class="header">{{job.title}}</div>
           </div>
-        <!-- </div> -->
+          <div class="content">
+            <h4 class="ui sub header">{{job.description}}</h4>
+          </div>
+          <div class="extra content">
+            <a href="/job/{{job.id}}/edit" class="ui button">Edit</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -72,7 +72,7 @@ function($scope, $http, $interval, $timeout, $sce) {
     $scope.loaded = false;
     // shared maps
     RESPONSE_ID_TO_IDX = []; IDX_TO_RESPONSE_ID = []; questions = [];
-    $http.get(url) // TODO
+    $http.get(url)
       .success(function(result) {
         var data = angular.fromJson(result);
         $scope.question_info = data.question_type_infos;

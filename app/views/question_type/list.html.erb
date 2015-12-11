@@ -1,0 +1,31 @@
+<%= hidden_field_tag :data, @data, id: :data %>
+
+<div class="pusher" ng-controller="QuestionTypeEditorController">
+  <div class="ui grid container">
+    <div class="one column row"></div>
+    <div class="one column row">
+      <h1>Edit Description for Question Types</h1>
+    </div>
+    <div class="ui divider"></div>
+    <div class="one column row">
+      <table class="ui very padded large table">
+        <thead>
+          <tr>
+            <td>Type</td>
+            <td>Description</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(name, description) in data">
+            <td>
+              {{canonical_name[name]}}
+            </td>
+            <td>
+              <input ng-bind="data[description]" ng-change="changed(name)">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
