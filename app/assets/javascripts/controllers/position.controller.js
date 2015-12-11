@@ -21,42 +21,15 @@ angular.module('app').controller('PositionController', ['$scope', '$http', funct
       }
     }]
   };
-  $scope.jobTopics = [
-    {
+  $scope.jobTopics = [{}];
 
-    }
-  ];
-
-  $scope.topics = [
-    {
-      name: 'Algorithm and Data Structures',
-      value: 'adt'
-    },
-    {
-      name: 'Android',
-      value: 'and'
-    },
-    {
-      name: 'iOS',
-      value: 'ios'
-    },
-    {
-      name: 'Networks',
-      value: 'net'
-    },
-    {
-      name: 'Operating Systems',
-      value: 'ops'
-    },
-    {
-      name: 'Security',
-      value: 'sec'
-    },
-    {
-      name: 'Web Development',
-      value: 'web'
-    }
-  ];
+  $http.get('/topics/all').success(data => {
+    debugger;
+    $scope.topics = data.map(topic => ({
+      name: topic.name,
+      value: topic.token
+    }))
+  });
 
   $scope.types = [
     {
