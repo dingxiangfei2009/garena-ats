@@ -1,4 +1,23 @@
 <%= hidden_field_tag :data, @data, id: :data %>
+<div class="ui basic modal" id="success">
+  <i class="close icon"></i>
+  <div class="header">
+    Success
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="green checkmark icon"></i>
+    </div>
+    <div class="description">
+      <p>Descriptions are successfully saved.</p>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui positive green basic inverted button">
+      Okay
+    </div>
+  </div>
+</div>
 
 <div class="pusher" ng-controller="QuestionTypeEditorController">
   <div class="ui grid container">
@@ -11,8 +30,8 @@
       <table class="ui very padded large table">
         <thead>
           <tr>
-            <td>Type</td>
-            <td>Description</td>
+            <th>Type</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
@@ -21,11 +40,19 @@
               {{canonical_name[name]}}
             </td>
             <td>
-              <input ng-bind="data[description]" ng-change="changed(name)">
+              <div class="ui form">
+                <div class="field">
+                  <textarea ng-model="data[name]" ng-change="setEdited(name)"></textarea>
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="ui divider"></div>
+    <div class="one column row">
+      <button class="ui primary button" ng-click="save()">Save</button>
     </div>
   </div>
 </div>

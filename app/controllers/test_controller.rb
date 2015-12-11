@@ -80,7 +80,7 @@ class TestController < ApplicationController
 					difficulty: topic['difficulty']
 				)
 		end
-		byebug
+
 		question_set = []
 		question_set_by_type.each do |type, ids|
 			question_set += ids

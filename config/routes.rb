@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   end
   scope '/question_types' do
     get '/', to: 'question_type#list'
-    post '/save', to: 'question_type#save'
+    post '/', to: 'question_type#save'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
