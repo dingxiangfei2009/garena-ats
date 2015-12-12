@@ -17,8 +17,12 @@
         <tbody>
           <tr ng-repeat="admin in data">
             <td>{{admin.id}}</td>
-            <td class="ui form"><input class="ui input" ng-model="admin.name"></td>
-            <td class="ui form"><input class="ui input" ng-model="admin.email"></td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="admin.name">
+            </td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="admin.email">
+            </td>
             <td>
               <button class="ui yellow button"
                 ng-click="update(old_data[$index].email, admin.email, admin.name)">
@@ -31,8 +35,12 @@
           </tr>
           <tr>
             <td><i class="green plus icon"></i></td>
-            <td class="ui form"><input class="ui input" ng-model="new_name"></td>
-            <td class="ui form"><input class="ui input" ng-model="new_email"></td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="new_name">
+            </td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="new_email">
+            </td>
             <td>
               <button class="ui green button" ng-click="add()">
                 Add a new admin

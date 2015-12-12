@@ -51,10 +51,18 @@ class JobController < ApplicationController
 		end
 		job = Job.find params[:id]
     job_test_parameter = job.job_test_parameter
+    job_test_parameter_descriptor = JSON.parse(job_test_parameter.descriptor)
+    field_tokens = job_test_parameter_descriptor['topics'].map do |topic|
+      topic['topic']
+    end
+    fields = {}
+    Field.where(token: field_tokens).each do |field|
+      fields[field.token] = field.name
+    end
 		render json: {
       info: job,
-      fields: job.fields,
-      test_parameter: job_test_parameter
+      fields: fields,
+      test_parameter: JSON.parse(job_test_parameter.descriptor)
     }
 	end
   def list
@@ -62,8 +70,46 @@ class JobController < ApplicationController
 			redirect_to '/auth/google'
 			return
 		end
-    render :json => Job.offset(params[:start] || 0).limit(@@LIMIT)
+    render json: Job.offset(params[:start] || 0).limit(@@LIMIT)
   end
   def edit
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
+    @id = params[:id]
+  end
+  def save
+		unless session[:user]
+			redirect_to '/auth/google'
+			return
+		end
+    job = Job.find params[:id]
+    job_test_info = JSON.parse params[:test_parameter]
+    job.title = params[:title]
+    job.experience = params[:experience]
+    job.description = params[:description]
+    job.save
+
+    old_fields = job.fields.map { |field| field.id }
+    new_fields = Field.where(
+      token: job_test_info['topics'].map { |topic|  topic['topic']})
+      .map { |field| field.id }
+    JobField.where(
+      field_id: old_fields - new_fields,
+      job_id: job.id
+    ).destroy_all
+    (new_fields - old_fields).map do |field|
+      job_field = JobField.new
+      job_field.job_id = job.id
+      job_field.field_id = field
+      job_field.save
+    end
+
+    job_test_parameter = job.job_test_parameter
+    job_test_parameter.descriptor = params[:test_parameter]
+    job_test_parameter.save
+
+    render json: {status: 'success'}
   end
 end
