@@ -49,11 +49,13 @@ class JobController < ApplicationController
 			redirect_to '/auth/google'
 			return
 		end
-		job = Job.find! params[:id]
-		ret = Hash.new
-		ret[:info] = job
-		ret[:fields] = job.fields
-		render :json => ret
+		job = Job.find params[:id]
+    job_test_parameter = job.job_test_parameter
+		render json: {
+      info: job,
+      fields: job.fields,
+      test_parameter: job_test_parameter
+    }
 	end
   def list
 		unless session[:user]
@@ -61,5 +63,7 @@ class JobController < ApplicationController
 			return
 		end
     render :json => Job.offset(params[:start] || 0).limit(@@LIMIT)
+  end
+  def edit
   end
 end

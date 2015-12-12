@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   scope '/job' do
     scope '/:id' do
       get '/', to: 'job#get'
+      get '/edit', to: 'job#edit'
+      post '/edit', to: 'job#save'
     end
     post '/', to: 'job#new'
     get '/', to: 'job#list'

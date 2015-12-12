@@ -1,4 +1,4 @@
 class JobField < ActiveRecord::Base
-	has_one :job
-	has_one :field
+	belongs_to :job
+	belongs_to :field
 end

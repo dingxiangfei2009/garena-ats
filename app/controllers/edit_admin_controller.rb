@@ -31,8 +31,7 @@ class EditAdminController < ApplicationController
       redirect_to '/auth/google'
       return
     end
-    admin = Admin.find params[:email]
-    admin.destroy if admin
+    Admin.delete params[:email] if Admin.exists? params[:email]
     render json: {status: 'success'}
   end
 
