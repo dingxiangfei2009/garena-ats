@@ -8,28 +8,27 @@ angular.module('app').controller('PositionController', ['$scope', '$http', funct
     testParameters: [{
       topic: {
         name: 'Select Topic',
-        value: 'def'
+        value: null
       },
       no: 1,
       type: {
         name: 'Select Type',
-        value: 'def'
+        value: null
       },
       diff: {
         name: 'Select Difficulty',
-        value: '0'
+        value: null
       }
     }]
   };
   $scope.jobTopics = [{}];
 
-  $http.get('/topics/all').success(data => {
-    debugger;
+  $http.get('/topics/all').success(data =>
     $scope.topics = data.map(topic => ({
       name: topic.name,
       value: topic.token
     }))
-  });
+  );
 
   $scope.types = [
     {
@@ -101,16 +100,16 @@ angular.module('app').controller('PositionController', ['$scope', '$http', funct
   };
 
   $scope.submit = function(){
-    $scope.job.skills = $('.ui.dropdown.multiple').dropdown('get value');
-    var testParams = [];
-    for (var x = 0; x < $scope.job.testParameters.length; x++) {
-      testParams.push({
-        topic: $scope.job.testParameters[x].topic.value,
-        type: $scope.job.testParameters[x].type.value,
-        difficulty: $scope.job.testParameters[x].diff.value,
-        count: $scope.job.testParameters[x].no
-      });
-    }
+    var testParams =
+      $scope.job.testParameters.filter(parameter =>
+        parameter.topic.value && parameter.type.value && parameter.diff.value &&
+        parameter.no
+      ).map(parameter => ({
+        topic: parameter.topic.value,
+        type: parameter.type.value,
+        difficulty: parameter.diff.value,
+        count: parameter.no
+      }));
     var dataToSend = {
       title: $scope.job.pos,
         description: $scope.job.desc,
