@@ -42,7 +42,6 @@ class PagesController < ApplicationController
 		end
   end
   def test
-		reset_session
   end
   def register
 		unless session[:user]

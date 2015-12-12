@@ -83,12 +83,20 @@ function($scope, $http, $interval, $timeout, $sce) {
           $('#timeout').modal('show');
           return;
         }
-        $scope.end_time = new Date(data.info.start_time).valueOf() + data.info.duration * 1000;
-        $timeout(() => {debugger;$('timer')[0].start()}, 0);
-        $scope.$on('timer-stopped', function() {
-          $('#timeout').modal('show');
-        });
+        $scope.end_time =
+          new Date(data.info.start_time).valueOf() + data.info.duration * 1000;
+        $timeout(() => $('timer')[0].start(), 0);
+        $scope.$on('timer-stopped', () =>
+          $('#timeout').modal('show')
+        );
+
+        var prev_question_type = null;
+        $scope.question_type_breaks = [];
         for (var x = 0, question; x < data.questions.length; x++) {
+          if (data.questions[x].info.question_type !== prev_question_type) {
+            $scope.question_type_breaks.push(x);
+            prev_question_type = data.questions[x].info.question_type;
+          }
           switch (data.questions[x].info.question_type) {
             case 'mas':
               question = new qmod.MCQQuestion(data.questions[x].info);

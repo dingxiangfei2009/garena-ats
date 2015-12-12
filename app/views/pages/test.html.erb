@@ -94,26 +94,17 @@
       <div class="two column row"></div>
       <div class="row" id='testbox' ng-repeat='question in questions'>
         <div class="column">
+          <div class="ui icon message"
+            ng-if="question_type_breaks.includes($index)">
+            <i class="blue info icon"></i>
+            <div class="content">
+              {{question_info[question.type]}}
+            </div>
+          </div>
           <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
           <h2 class="ui header">
             {{$index + 1}}
           </h2>
-          <div class="ui blue label question-prompt">
-            <i class="info icon"></i>
-            Hover to reveal more information
-          </div>
-          <div class="ui popup">
-            <div class="header">Question information</div>
-              {{question_info[question.type]}}
-          </div>
-          <script>
-            requestAnimationFrame(() =>
-              $('.ui.label.question-prompt').popup({
-                position: 'right center',
-                lastResort: 'right center',
-                inline: true
-              }));
-          </script>
           <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
             {{question.statement}}
           </div>

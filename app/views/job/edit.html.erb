@@ -1,5 +1,15 @@
 <%= hidden_field_tag :id, @id, id: :id %>
 
+<div class="ui basic modal" id="success">
+  <i class="close icon"></i>
+  <div class="header">
+    Changes Saved
+  </div>
+  <div class="actions">
+    <a href="/jobs" class="ui green button">View Jobs</a>
+  </div>
+</div>
+
 <div class="pusher" ng-controller="JobEditorController">
   <div class="ui grid container">
     <div class="one column row"></div>
