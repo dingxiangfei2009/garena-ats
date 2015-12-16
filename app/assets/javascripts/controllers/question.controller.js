@@ -26,36 +26,12 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
     };
     $scope.questions = [$scope.questionObject];
 
-    $scope.topics = [
-      {
-        name: 'Algorithm and Data Structures',
-        value: 'adt'
-      },
-      {
-        name: 'Android',
-        value: 'and'
-      },
-      {
-        name: 'iOS',
-        value: 'ios'
-      },
-      {
-        name: 'Networks',
-        value: 'net'
-      },
-      {
-        name: 'Operating Systems',
-        value: 'ops'
-      },
-      {
-        name: 'Security',
-        value: 'sec'
-      },
-      {
-        name: 'Web Development',
-        value: 'web'
-      }
-    ];
+    $http.get('/topics/all').success(data =>
+        $scope.topics = data.map(topic => ({
+            name: topic.name,
+            value: topic.token
+        }))
+    );
 
     $scope.types = [
       {
@@ -96,26 +72,22 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
         $scope.state = !$scope.state;
     };
     $scope.typeChange = function(type, index) {
-      // $scope.typeState[index] = type.value;
-      // $scope.questionType[index] = type.name;
       $scope.questions[index].type = type;
-    }
+    };
     $scope.difficultyChange = function(difficulty, index) {
       $scope.questions[index].difficulty = difficulty;
-    }
+    };
     $scope.topicChange = function(topic, index) {
       $scope.questions[index].topic = topic;
-    }
+    };
     $scope.markChange = function(mark, index) {
       $scope.questions[index].mark = mark;
-    }
+    };
     $scope.useRichText = function(index) {
       $('.richtext').hide();
       CKEDITOR.replace('editor' + index);
-    }
+    };
     $scope.addQuestion = function() {
-      // $scope.questionList.push($scope.questionList.length + 1);
-      // $scope.typeState.push('DEF');
       $scope.questions.push({
         topic: {
           name: 'Select Topic',
@@ -133,18 +105,10 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
         },
         answer: {}
       });
-    }
-    $scope.display = function(val) {
-    }
+    };
     $scope.remove = function(index) {
-      // $scope.questionList.splice(index, 1);
-      // $scope.question.splice(index, 1);
-      // $scope.answer.splice(index, 1);
-      // $scope.difficulty.splice(index, 1);
-      // $scope.typeState.splice(index, 1);
-      // $scope.questionType.splice(index, 1);
       $scope.questions.splice(index, 1);
-    }
+    };
     $scope.submit = function() {
       for(var x = 0; x < $scope.questions.length; x++){
         var question = $scope.questions[x];
@@ -177,6 +141,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
             $('.ui.modal').modal('show');
           });
       }
-    }
+    };
 
 }]);

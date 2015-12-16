@@ -30,9 +30,8 @@ module GarenaAts
     config.assets.enable = true
     config.active_record.raise_in_transactional_callbacks = true
     config.assets.paths << Rails.root.join('vendor', 'assets', 'components')
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/
     config.assets.precompile += ['jquery/dist/jquery.js']
-    config.assets.precompile += ['semantic/dist/*']
-    config.assets.precompile += %w( semantic/dist/semantic.css semantic/dist/semantic.js )
     config.active_record.schema_format = :ruby
   end
 end

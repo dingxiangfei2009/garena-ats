@@ -10,3 +10,4 @@ test:
 
 production:
   <<: *defaults
+  SECRET_KEY_BASE:

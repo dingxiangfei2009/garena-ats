@@ -12,7 +12,6 @@
  *
  *= require_tree .
  *= require_self
- *= require semantic/dist/semantic
- *= require_tree ../../../vendor/assets/components/semantic/dist
+ *= require semantic-ui
  *= require font-awesome/css/font-awesome
  */

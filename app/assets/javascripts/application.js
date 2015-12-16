@@ -15,8 +15,7 @@
 //= require ckeditor/init
 //= require angular/angular
 //= require angular-rails-templates
-//= require semantic/dist/semantic
-//= require_tree ../../../vendor/assets/components/semantic/dist
+//= require semantic-ui
 //= require ace-builds/src-min-noconflict/ace
 //= require ace-builds/src-min-noconflict/theme-twilight
 //= require angular-ui-ace/ui-ace

@@ -20,11 +20,14 @@ To set up, install the necessary softwares
   `rake db:migrate RAILS_ENV=production`  
   `rake db:populate RAILS_ENV=production`
 
-* Set up Google API access
+* Set up Google API access and Session Secret
   Use `/config/application.yml.sample` as a template to create
   `/config/application.yml.sample`. Open Google Developer Console and enable
   Contacts and Google+ APIs. Then generate access tokens and put them in the
   `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` fields in the `default` section.
+
+  Also in `/config/application.yml`, put down a secret string of at least 30
+  characters in the `SECRET_KEY_BASE` fields.
 
 * Add initial admin account
   Use mysql console to insert an initial admin Google email address into the table `admins`.
@@ -33,6 +36,8 @@ To set up, install the necessary softwares
   `insert into admins (email) values (?);`
 
 * Start Up, Log In and Add admins
+  Extra set up to get UI working:  
+  `RAILS_ENV=production rake assets:precompile`
   To start the server:  
   `rails s -e production`
 

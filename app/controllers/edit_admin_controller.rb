@@ -1,5 +1,9 @@
 class EditAdminController < ApplicationController
   def list
+    unless session[:user]
+      redirect_to '/auth/google'
+      return
+    end
   end
 
   def all
