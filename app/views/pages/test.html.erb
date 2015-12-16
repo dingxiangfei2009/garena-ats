@@ -173,23 +173,33 @@
           <div ng-switch-when='fib'>
             <span ng-repeat='segment in question.segments'>
               <span ng-switch on='segment.blank'>
-                <span ng-switch-when='true'>
-                  <span style="text-decoration: underline; white-space: pre;">
-                  </span>
+                <span ng-switch-when='true' class="ui label">
+                  {{($index + 1) / 2}}
                 </span>
                 <span ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
                 </span>
               </span>
             </span>
-            <br><br>
-            <span ng-repeat='segment in question.segments'>
-              <span ng-switch on='segment.blank'>
-                <span ng-switch-when='true'>
-                  <input type='text' ng-model='answer[$parent.$parent.$index][($parent.$index + 1) / 2 - 1]'
-                    ng-change='attempted($parent.$parent.$index)'/>
-                </span>
-              </span>
-            </span>
+            <table class="ui celled table">
+              <thead>
+                <tr>
+                  <th>Blank</th>
+                  <th>Answer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="segment in question.segments" ng-if="segment.blank">
+                  <td>
+                    <div class="ui label">{{($index + 1) / 2}}</div>
+                  </td>
+                  <td>
+                    <input type="text"
+                      ng-model="answer[$parent.$parent.$index][($parent.$index + 1) / 2 - 1]"
+                      ng-change="attempted($parent.$parent.$index)"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
