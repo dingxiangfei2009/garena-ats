@@ -9,4 +9,10 @@ angular.module('app').controller('JobsController', ['$scope', '$http', function(
     $scope.jobs = data;
   });
 
+  $scope.deleteJob = id =>
+    $.ajax({
+      url: `/job/${id}/delete`,
+      method: 'POST'
+    }).success(() => location.reload());
+
 }]);

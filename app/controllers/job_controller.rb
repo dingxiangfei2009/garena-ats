@@ -112,4 +112,8 @@ class JobController < ApplicationController
 
     render json: {status: 'success'}
   end
+  def destroy
+    Job.delete params[:id]
+    render json: {status: 'success'}
+  end
 end

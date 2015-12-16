@@ -25,7 +25,8 @@
             <h4 class="ui sub header">{{job.description}}</h4>
           </div>
           <div class="extra content">
-            <a href="/job/{{job.id}}/edit" class="ui button">Edit</a>
+            <a ng-href="/job/{{job.id}}/edit" class="ui button">Edit</a>
+            <a ng-click="deleteJob(job.id)" class="ui red button">Remove</a>
           </div>
         </div>
       </div>

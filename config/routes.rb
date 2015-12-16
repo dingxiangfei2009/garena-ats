@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       get '/', to: 'job#get'
       get '/edit', to: 'job#edit'
       post '/edit', to: 'job#save'
+      post '/delete', to: 'job#destroy'
     end
     post '/', to: 'job#new'
     get '/', to: 'job#list'
