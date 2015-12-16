@@ -75,19 +75,23 @@ function($scope, $http, $interval, $timeout, $sce) {
     $http.get(url)
       .success(function(result) {
         var data = angular.fromJson(result);
+        var start_time = new Date(data.info.start_time);
+        var duration = data.info.duration;
         $scope.question_info = data.question_type_infos;
         $scope.testName = data.info.name;
-        var countdown = new Date(data.info.start_time) - new Date + data.info.duration * 1000;
+        var countdown = start_time - new Date + duration * 1000;
         if (countdown < 0) {
           $('#timeout').modal('show');
           return;
         }
-        $scope.end_time =
-          new Date(data.info.start_time).valueOf() + data.info.duration * 1000;
+        $scope.end_time = start_time.valueOf() + duration * 1000;
         $timeout(() => $('#timer')[0].start(), 0);
         $scope.$on('timer-stopped', () =>
           $('#timeout').modal('show')
         );
+        $interval(() => $('#progress-bar').progress({
+          percent: (new Date - start_time) / duration / 10
+        }), 1000);
 
         var prev_question_type = null;
         $scope.question_type_breaks = [];

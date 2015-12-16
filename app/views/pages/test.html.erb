@@ -1,5 +1,6 @@
 <style>
   .ace_editor { height: 200px;}
+  a.active {font-weight: bold;}
 </style>
 <div>
   <div class="ui fullscreen modal" id="loader-modal" ng-controller="LoadTestController" ng-show="!loaded">
@@ -65,8 +66,8 @@
 </div>
 
 <div ng-controller="TestController" ng-show="loaded">
-  <div class="ui two column container grid" id='context'>
-    <div class="two column row">
+  <div class="ui one column container grid">
+    <div class="one column row">
       <div class="ui text menu">
         <div class="item">
           <img src="/img/garena.png" style="width: 50px; height: 50px">
@@ -75,9 +76,6 @@
           <h2 class="ui grey header item">{{testName}}</h2>
         </div>
         <div class="item">
-          <timer interval="1000" end-time="end_time" id="timer">
-            {{mminutes}} : {{sseconds}}
-          </timer>
         </div>
         <a class="item" id="question-list-menu-item">
           Questions
@@ -96,7 +94,21 @@
         </div>
       </div>
     </div>
-    <div class="one column row" id="testbox" ng-repeat="question in questions">
+    <div class="one column row">
+      <div class="ui indicating progress" id="progress-bar" style="width: 100%">
+        <div class="bar">
+          <div class="progress"></div>
+        </div>
+        <div class="label">
+          <timer interval="1000" end-time="end_time" id="timer">
+            {{mminutes}} : {{sseconds}}
+          </timer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui two column container grid">
+    <div class="one column row" ng-repeat="question in questions">
       <div class="column">
         <div class="ui icon message"
           ng-if="question_type_breaks.includes($index)">
