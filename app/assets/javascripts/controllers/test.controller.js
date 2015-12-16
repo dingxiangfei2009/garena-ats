@@ -78,14 +78,13 @@ function($scope, $http, $interval, $timeout, $sce) {
         $scope.question_info = data.question_type_infos;
         $scope.testName = data.info.name;
         var countdown = new Date(data.info.start_time) - new Date + data.info.duration * 1000;
-        debugger;
         if (countdown < 0) {
           $('#timeout').modal('show');
           return;
         }
         $scope.end_time =
           new Date(data.info.start_time).valueOf() + data.info.duration * 1000;
-        $timeout(() => $('timer')[0].start(), 0);
+        $timeout(() => $('#timer')[0].start(), 0);
         $scope.$on('timer-stopped', () =>
           $('#timeout').modal('show')
         );

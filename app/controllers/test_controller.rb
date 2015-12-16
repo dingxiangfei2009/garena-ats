@@ -13,30 +13,15 @@ class TestController < ApplicationController
 	# random_pick_questions
 	# select :count questions of :topic at :difficulty level
 	def random_pick_questions(var)
-		ids = []
-		count = Question.where({
-			:field_id => var[:topic],
-			:difficulty => var[:difficulty],
-			:question_type_id => var[:question_type],
-			:enabled => true
-			}).count
-		if count < var[:count] then
-			raise "no enought questions"
-		end
-		i = 0
-		while i < var[:count] do
-			question = Question.where({
-				:field_id => var[:topic],
-				:difficulty => var[:difficulty],
-				:question_type_id => var[:question_type],
-				:enabled => true
-				}).where.not(id: ids)
-				.offset(rand(count - i)).first
-			if question
-				ids << question.id
-				i += 1
-			end
-		end
+		ids = Question.where(
+			field_id: var[:topic],
+			difficulty: var[:difficulty],
+			question_type_id: var[:question_type],
+			enabled: true
+			).order('rand()')
+			.limit(var[:count])
+			.map { |question| question.id }
+		raise "no enough questions" if ids.length < var[:count]
 		ids
 	end
 

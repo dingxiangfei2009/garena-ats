@@ -65,132 +65,138 @@
 </div>
 
 <div ng-controller="TestController" ng-show="loaded">
-  <div class='ui left visible sidebar inverted vertical menu'>
-
-    <h2 class='ui grey header item'>{{testName}}</h2>
-
-    <h2 class='ui grey header item'>
-      <timer interval="1000"  end-time="end_time">
-        {{mminutes}} : {{sseconds}}
-      </timer>
-    </h2>
-
-    <div class="item">
-      <b>Questions</b>
-      <div class="menu">
-        <a
-          class="item"
-          ng-repeat="question in questions"
-          ng-class="{'active': !attempt[$index]}"
-          ng-href="#question-{{$index}}">
-          {{$index + 1}}
+  <div class="ui two column container grid" id='context'>
+    <div class="two column row">
+      <div class="ui text menu">
+        <div class="item">
+          <img src="/img/garena.png" style="width: 50px; height: 50px">
+        </div>
+        <div class="item">
+          <h2 class="ui grey header item">{{testName}}</h2>
+        </div>
+        <div class="item">
+          <timer interval="1000" end-time="end_time" id="timer">
+            {{mminutes}} : {{sseconds}}
+          </timer>
+        </div>
+        <a class="item" id="question-list-menu-item">
+          Questions
+          <i class="dropdown icon"></i>
         </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="pusher">
-    <div class="ui two column container grid" id='context'>
-      <div class="two column row"></div>
-      <div class="row" id='testbox' ng-repeat='question in questions'>
-        <div class="column">
-          <div class="ui icon message"
-            ng-if="question_type_breaks.includes($index)">
-            <i class="blue info icon"></i>
-            <div class="content">
-              {{question_info[question.type]}}
-            </div>
-          </div>
-          <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
-          <h2 class="ui header">
-            {{$index + 1}}
-          </h2>
-          <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
-            {{question.statement}}
-          </div>
-          <div class="ui form" ng-switch on='question.type'>
-            <div class="grouped fields" ng-switch-when='mas'>
-              <div class="field" ng-repeat='ans in question.answers'>
-                <div class="ui checkbox">
-                  <input type="checkbox" name="answers[{{$parent.$index}}]" ng-change='attempted($parent.$index)'
-          ng-model='answer[$parent.$index][$index]'>
-                  <label>{{$index + 1}}: {{ans.description}}</label>
-                </div>
-              </div>
-              <script type='text/javascript'>
-                requestAnimationFrame(function () {
-                  $('.ui.checkbox').checkbox();
-                });
-              </script>
-            </div>
-            <div ng-switch-when='sbt'>
-              <div class='twelve wide field'>
-                <textarea
-                  name='reference-answer'
-                  name="answers[{{$index}}]"
-                  placeholder=''
-                  ng-change='attempted($index)'
-                  ng-model='answer[$index]'>
-                </textarea>
-              </div>
-            </div>
-            <div ng-switch-when='sbc'>
-              <div class="field">
-                <select
-                  class="ui dropdown"
-                  ng-model="answer[$index].language"
-                  ng-change="switch_language($index)">
-                  <option value="javascript">JavaScript</option>
-                  <option value="cxx">C++</option>
-                  <option value="ruby">Ruby</option>
-                </select>
-              </div>
-              <div class="field">
-                <div
-                  ui-ace="createAceOption($index)"
-                  ng-change="attempted($index)"
-                  ng-model="answer[$index].code">
-                </div>
-              </div>
-            </div>
-            <div ng-switch-when='fib'>
-              <span ng-repeat='segment in question.segments'>
-                <span ng-switch on='segment.blank'>
-                  <span ng-switch-when='true'>
-                    <span style="text-decoration: underline; white-space: pre;">
-                    </span>
-                  </span>
-                  <span ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
-                  </span>
-                </span>
-              </span>
-              <br><br>
-              <span ng-repeat='segment in question.segments'>
-                <span ng-switch on='segment.blank'>
-                  <span ng-switch-when='true'>
-                    <input type='text' ng-model='answer[$parent.$parent.$index][($parent.$index + 1) / 2 - 1]'
-                      ng-change='attempted($parent.$parent.$index)'/>
-                  </span>
-                </span>
-              </span>
+        <div class="ui flowing basic popup" id="question-list-menu">
+          <div class="ui grid">
+            <div class="one wide grid"
+              ng-repeat="question in questions">
+              <a ng-class="{'active': !attempt[$index]}"
+                ng-href="#question-{{$index}}">
+                {{$index + 1}}
+              </a>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="ui divider"></div>
-      <div class="two column row">
-        <button class="ui labeled icon primary button" ng-click="submit_answer()">
-          <i class="write icon"></i>
-          Submit your answers
-        </button>
+    </div>
+    <div class="one column row" id="testbox" ng-repeat="question in questions">
+      <div class="column">
+        <div class="ui icon message"
+          ng-if="question_type_breaks.includes($index)">
+          <i class="blue info icon"></i>
+          <div class="content">
+            {{question_info[question.type]}}
+          </div>
+        </div>
+        <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
+        <h2 class="ui header">
+          {{$index + 1}}
+        </h2>
+        <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
+          {{question.statement}}
+        </div>
+        <div class="ui form" ng-switch on='question.type'>
+          <div class="grouped fields" ng-switch-when='mas'>
+            <div class="field" ng-repeat='ans in question.answers'>
+              <div class="ui checkbox">
+                <input type="checkbox" name="answers[{{$parent.$index}}]"
+                  ng-change="attempted($parent.$index)"
+                  ng-model="answer[$parent.$index][$index]">
+                <label>{{$index + 1}}: {{ans.description}}</label>
+              </div>
+            </div>
+            <script type='text/javascript'>
+              requestAnimationFrame(function () {
+                $('.ui.checkbox').checkbox();
+              });
+            </script>
+          </div>
+          <div ng-switch-when='sbt'>
+            <div class='twelve wide field'>
+              <textarea
+                name='reference-answer'
+                name="answers[{{$index}}]"
+                placeholder=''
+                ng-change='attempted($index)'
+                ng-model='answer[$index]'>
+              </textarea>
+            </div>
+          </div>
+          <div ng-switch-when='sbc'>
+            <div class="field">
+              <select
+                class="ui dropdown"
+                ng-model="answer[$index].language"
+                ng-change="switch_language($index)">
+                <option value="javascript">JavaScript</option>
+                <option value="cxx">C++</option>
+                <option value="ruby">Ruby</option>
+              </select>
+            </div>
+            <div class="field">
+              <div
+                ui-ace="createAceOption($index)"
+                ng-change="attempted($index)"
+                ng-model="answer[$index].code">
+              </div>
+            </div>
+          </div>
+          <div ng-switch-when='fib'>
+            <span ng-repeat='segment in question.segments'>
+              <span ng-switch on='segment.blank'>
+                <span ng-switch-when='true'>
+                  <span style="text-decoration: underline; white-space: pre;">
+                  </span>
+                </span>
+                <span ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
+                </span>
+              </span>
+            </span>
+            <br><br>
+            <span ng-repeat='segment in question.segments'>
+              <span ng-switch on='segment.blank'>
+                <span ng-switch-when='true'>
+                  <input type='text' ng-model='answer[$parent.$parent.$index][($parent.$index + 1) / 2 - 1]'
+                    ng-change='attempted($parent.$parent.$index)'/>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="ui divider"></div>
+    <div class="two column row">
+      <button class="ui labeled icon primary button" ng-click="submit_answer()">
+        <i class="write icon"></i>
+        Submit your answers
+      </button>
     </div>
   </div>
 
   <script type='text/javascript'>
-    $('.ui.sticky').sticky({
-      context: '#context'
+    $('#question-list-menu-item').popup({
+      position: 'bottom right',
+      on: 'click',
+      hoverable: true
     });
   </script>
   <div class="ui basic modal" id="confirm-not-complete">
