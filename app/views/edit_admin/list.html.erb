@@ -1,0 +1,55 @@
+<div class="pusher" ng-controller="EditAdminController">
+  <div class="ui grid container">
+    <div class="one column row"></div>
+    <div class="one column row">
+      <h1 class="ui header">Manage Admin Access</h1>
+    </div>
+    <div class="one column row">
+      <table class="ui very large padded table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="admin in data">
+            <td>{{admin.id}}</td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="admin.name">
+            </td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="admin.email">
+            </td>
+            <td>
+              <button class="ui yellow button"
+                ng-click="update(old_data[$index].email, admin.email, admin.name)">
+                  Update
+              </button>
+              <button
+                class="ui red button"
+                ng-click="destroy(old_data[$index].email)">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="green plus icon"></i></td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="new_name">
+            </td>
+            <td class="ui form">
+              <input type="text" class="ui input" ng-model="new_email">
+            </td>
+            <td>
+              <button class="ui green button" ng-click="add()">
+                Add a new admin
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="one column row"></div>
+  </div>
+</div>

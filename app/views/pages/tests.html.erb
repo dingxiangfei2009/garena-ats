@@ -1,0 +1,127 @@
+<div class='pusher' ng-controller='TestsController'>
+  <div class='ui container grid'>
+    <div class='one column row'>
+    </div>
+    <div class='two column centered row'>
+      <div class="left floated eight wide column">
+        <div class="eight wide field">
+          <div class="ui fluid icon input">
+            <input type="text" placeholder="Filter by position, candidate name..." ng-model='searchText'>
+            <i class="search icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="right floated seven wide column">
+        <button class="ui right floated labeled icon green button">
+          <i class="plus icon"></i>
+          Invite Candidate
+        </button>
+      </div>
+    </div>
+    <div class='one column centered row'>
+      <div class='column'>
+        <table class="ui very padded large table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Position</th>
+              <th>Candidate Name</th>
+              <th>Completed</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="test in tests | filter:searchText | orderBy:'-mark/totalMark'">
+              <td>{{test.id}}</td>
+              <td>{{test.title}}</td>
+              <td>{{test.candidateName}}</td>
+              <td ng-switch on='test.applicationStatus'>
+                <div ng-switch-when='pending evaluation'>
+                  <a href='evaluate/{{test.id}}'>
+                    <button class="ui yellow button">
+                      <i class="checkmark box icon"></i>
+                      Evaluate
+                    </button>
+                  </a>
+                </div>
+                <div ng-switch-when='evaluated'>
+                  <a href='test/{{test.id}}/report'>
+                    <button class="ui blue button">
+                      <i class="bar chart icon"></i>
+                      View Report
+                    </button>
+                  </a>
+                </div>
+                <div ng-switch-when='null'>
+                  Not Completed
+                </div>
+              </td>
+              <td>{{test.mark}}/{{test.totalMark}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="ui small modal invite">
+    <i class="close icon"></i>
+    <div class="header">
+      Create New Test
+    </div>
+    <div class="content">
+      <form class='ui form' style='width: 100%;'>
+        <div class='eight wide field'>
+          <label>Position</label>
+          <div class='ui selection dropdown'>
+            <i class='dropdown icon'></i>
+            <div class='default text'>Select Position</div>
+            <div class='menu'>
+                <div ng-repeat="pos in positions" class='item' data-value='{{pos.value}}'
+                  ng-click='setNewPosition(pos)'>
+                  {{pos.name}}
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class='eight wide field'>
+          <label>Enter Test Duration (in minutes)</label>
+          <div class='twelve wide field'>
+            <input class='' type='number' min='0' placeholder='' ng-model='newCandidate.duration'>
+            </input>
+          </div>
+        </div>
+        <div class='eight wide field'>
+          <label>Candidate Name</label>
+          <div class='twelve wide field'>
+            <input type='text' name='candidate-name' placeholder='' ng-model='newCandidate.name'>
+          </div>
+        </div>
+        <div class='eight wide field'>
+          <label>Candidate Email</label>
+          <div class='twelve wide field'>
+            <input type='text' name='candidate-email' placeholder='' ng-model='newCandidate.email'>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">Cancel</div>
+      <div class="ui positive right labeled icon button" ng-click='submit()'>
+        Invite Candidate
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="ui small modal error">
+    <i class="close icon"></i>
+    <div class="header">
+      Error
+    </div>
+    <div class="content">
+      We could not create a test, because there aren't enough questions that fit the parameters :(
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">Ok</div>
+    </div>
+  </div>
+</div>

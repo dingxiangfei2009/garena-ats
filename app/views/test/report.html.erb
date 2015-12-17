@@ -1,0 +1,275 @@
+<div class="test-report-main" ng-non-bindable>
+  <template vis-element="question_template.mas">
+    <div class="grouped fields">
+      <template vis-iterate="choice, choice_index in choices">
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" vis-value="user_answers[choice_index]" disabled>
+            <label>
+              {{choice_index + 1}}: {{choice.description}}
+              <template vis-condition="choice.correct">
+                <div class="ui left pointing green label">Correct Option</div>
+              </template>
+            </label>
+          </div>
+        </div>
+        <script>
+          requestAnimationFrame(() => $('.ui.checkbox').checkbox());
+        </script>
+      </template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbt">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(answer)"></template>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(suggested_answer)"></template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbc">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ answer.language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="codeArea" style="height:20em"></div>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="answerArea" style="height:20em"></div>
+    </div>
+  </template>
+  <template vis-element="question_template.fib">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <template vis-iterate="segment, segment_index in question.segments">
+        <template vis-condition="segment.blank">
+          <consequent>
+            <em>{{answer[(segment_index + 1) / 2 - 1]}}</em>
+          </consequent>
+          <alternative>
+            {{segment.content}}
+          </alternative>
+        </template>
+      </template>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <template vis-iterate="segment, segment_index in question.segments">
+        <template vis-condition="segment.blank">
+          <consequent>
+            <em>{{suggested_answer[(segment_index + 1) / 2 - 1]}}</em>
+          </consequent>
+          <alternative>
+            {{segment.content}}
+          </alternative>
+        </template>
+      </template>
+    </div>
+  </template>
+  <template vis-element="bar_chart">
+    <relative-layout data-bind-init="
+      bar_height = (\ graph_height, value => graph_height^ * value^ / max);
+      bar_y = (\ graph_height, value => graph_height - bar_height^(graph_height^, value^));
+      void();
+      ">
+      <!-- graph area -->
+      <relative-layout data-bind-x="settings.yAxis.width">
+        <template data-iterate="item, item_index in values">
+          <relative-layout data-bind-x="(item_index + .5) * settings.width / values.length">
+            <template data-iterate="value in item.values">
+              <shape
+                type="rect"
+                data-bind-style="
+                *.interpolate(${settings.width / values.length * settings.bar_width},
+                  ${bar_y(settings.height, value.value)},
+                  ${bar_height(settings.height, value.value)})
+                .duration(200)
+                .functor((\ _, width, y, height => {
+                  x: -width / 2,
+                  width: width,
+                  y: y,
+                  height: height,
+                  fillColor: *.util.hsl(...value.color)
+                }))
+                .transition"
+                data-bind-event="(\ e => e.type eq 'click' and onclick(e, item, item_index))"></shape>
+              <text
+                font="Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif"
+                anchor="middle"
+                data-bind-y="bar_y(settings.height, value.value) - 5"
+                data-bind-event="(\ e => e.type eq 'click' and onclick(e, item, item_index))">
+                  {{value.name}}
+              </text>
+            </template>
+          </relative-layout>
+        </template>
+      </relative-layout>
+      <!-- xAxis -->
+      <relative-layout data-bind-x="settings.yAxis.width" data-bind-y="settings.height">
+        <shape type="line" data-bind-style="{
+          startX: 0,
+          startY: 0,
+          endX: settings.width,
+          endY: 0,
+          color: 'black'
+        }"></shape>
+        <template data-iterate="item, item_index in values">
+          <text
+            font="Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif"
+            anchor="middle"
+            data-bind-x="
+            *.interpolate(${(item_index + .5) * settings.width / values.length})
+            .duration(500)
+            .functor((\ _, x => x))
+            .transition"
+            data-bind-y="$element.textSize">
+              {{break_text(item.name)}}
+          </text>
+        </template>
+      </relative-layout>
+      <!-- yAxis -->
+      <relative-layout data-bind-x="settings.yAxis.width">
+        <shape type="line" data-bind-style="{
+          startX: 0,
+          startY: 0,
+          endX: 0,
+          endY: settings.height
+        }"></shape>
+      </relative-layout>
+    </relative-layout>
+  </template>
+</div>
+
+
+
+<div class="test-report-main" ng-non-bindable>
+  <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info'%>  
+  <!-- main content -->
+  <div class="ui two column grid container">
+    <div class="two column row">&nbsp;</div>
+    <div class="row">
+      <div class="centered four wide column">
+        <h1 class="ui icon header">
+          <i class="bar chart icon"></i>
+          <div class="content">
+            Report
+          </div>
+        </h1>
+      </div>
+      <div class="four wide column">
+        <p>Candidate: <b>{{test.application.candidate.name}}</b></p>
+        <p>Email: <a href="mailto: {{test.application.candidate.email}}">{{test.application.candidate.email}}</a></p>
+        <p>Applying for: {{test.application.job.title}}</p>
+      </div>
+    </div>
+    <div class="ui divider"></div>
+    
+    <div class="row" id="main-content">
+      <div class="twelve wide column">
+        <style>
+          .fadeOut {
+            opacity: 0;
+            transition: opacity 0.2s;
+          }
+        </style>
+        <template vis-iterate="question, question_index in test.questions">
+          <template vis-condition="selector[question_index]" vis-animate="animate_options">
+            <h2 class="ui header">Question {{question_index + 1}}</h2>
+            <div class="ui divider"></div>
+            <div class="ui divided grid">
+              <div class="row">
+                <div class="twelve wide column">
+                  <div class="ui raised segment">
+                    <template vis-inject="injectHTML(question.info.description)"></template>
+                  </div>
+                  <div class="ui label">
+                    Topic
+                    <div class="detail">{{question.info.topic}}</div>
+                  </div>
+                  <div class="ui teal label">
+                    Mark
+                    <div class="detail">{{question.info.mark}}</div>
+                  </div>
+                  <div class="ui orange label">
+                    Percentile
+                    <div class="detail">{{*.math.floor(question.statistics.percentile * 10000)/100}}%</div>
+                  </div>
+                  <div class="ui form">
+                    <template vis-condition="question.info.type === 'mas'">
+                      <template
+                        vis-inject="question_template.mas"
+                        vis-argument="question_controllers[question_index]"></template>
+                    </template>
+                    <template vis-condition="question.info.type === 'sbt'">
+                      <template
+                        vis-inject="question_template.sbt"
+                        vis-argument="question_controllers[question_index]"></template>
+                    </template>
+                    <template vis-condition="question.info.type === 'sbc'">
+                      <template
+                        vis-inject="question_template.sbc"
+                        vis-argument="question_controllers[question_index]"></template>
+                    </template>
+                    <template vis-condition="question.info.type === 'fib'">
+                      <template
+                        vis-inject="question_template.fib"
+                        vis-argument="question_controllers[question_index]"></template>
+                    </template>
+                  </div>
+                </div>
+                <div class="one wide column">
+                  <div class="ui statistic">
+                    <div class="value">
+                      {{question.config.mark or 0}}
+                    </div>
+                    <div class="label">Mark Awarded</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </template>
+      </div>
+      <div class="two wide column">
+        <div class="ui sticky" id="graph-control">
+          <svg vis-element="bar_graph_area" width="300" height="300" style="margin-top: 50px"></svg>
+          <div class="ui form">
+            <div class="grouped fields">
+              <button class="ui button" vis-action="select_all">Select All</button>
+              <template vis-iterate="selector_switch, index in selector">
+                <div class="ui field">
+                  <div class="ui toggle checkbox">
+                    <input type="checkbox" vis-value="selector_switch">
+                    <label>Q {{index + 1}}</label>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        setTimeout(() => $('#graph-control').sticky({
+          context: '#main-content'
+        }), 1000);
+      </script>
+    </div>
+  </div>
+</div>

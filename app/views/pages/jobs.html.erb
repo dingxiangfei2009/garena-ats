@@ -1,0 +1,37 @@
+<div class="pusher" ng-controller='JobsController'>
+  <div class="ui container grid">
+    <div class="one column row">
+    </div>
+    <div class="two column row">
+      <div class="column">
+        <h1 class="ui header">Job Positions</h1>
+      </div>
+      <div class="right floated right aligned column">
+        <a href="position">
+          <button class="ui primary button">
+            Add New Job Position
+          </button>
+        </a>
+      </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class='row'>
+      <div class="ui cards">
+        <div class="ui card" ng-repeat='job in jobs'>
+          <div class="content">
+            <div class="header">{{job.title}}</div>
+          </div>
+          <div class="content">
+            <h4 class="ui sub header">{{job.description}}</h4>
+          </div>
+          <div class="extra content">
+            <a ng-href="/job/{{job.id}}/edit" class="ui button">Edit</a>
+            <a ng-click="deleteJob(job.id)" class="ui red button">Remove</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+</script>

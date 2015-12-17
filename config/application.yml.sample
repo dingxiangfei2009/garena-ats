@@ -1,0 +1,13 @@
+defaults: &defaults
+  GOOGLE_CLIENT_ID:
+  GOOGLE_CLIENT_SECRET:
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  SECRET_KEY_BASE:

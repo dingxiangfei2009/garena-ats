@@ -1,0 +1,145 @@
+<%= hidden_field_tag :id, @id, id: :id %>
+
+<div class="ui basic modal" id="success">
+  <i class="close icon"></i>
+  <div class="header">
+    Changes Saved
+  </div>
+  <div class="actions">
+    <a href="/jobs" class="ui green button">View Jobs</a>
+  </div>
+</div>
+
+<div class="pusher" ng-controller="JobEditorController">
+  <div class="ui grid container">
+    <div class="one column row"></div>
+    <div class="one column row">
+      <h1 class="ui header">Edit Job Description</h1>
+    </div>
+    <div class="ui divider"></div>
+    <div class="one column row">
+      <form class="ui form" style="width: 100%">
+        <div class="fluid field">
+          <div class="eight wide field">
+            <label>Position</label>
+            <div class="field">
+              <input type="text" placeholder="Position Title" ng-model="job.pos">
+            </div>
+            <div class="sixteen wide field">
+              <label>Description</label>
+              <textarea placeholder="Enter job description here" ng-model="job.desc"></textarea>
+            </div>
+          </div>
+          <div class="sixteen wide field">
+            <label>Experience level</label>
+            <div class="eight wide field">
+              <div class="ui selection dropdown">
+                <i class="dropdown icon"></i>
+                <div class="text">{{job.exp.name}}</div>
+                <div class="menu">
+                  <div class="item" ng-repeat="exp in experiences" data-value="{{exp.value}}" ng-click="expChange(exp)">
+                    {{exp.name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <label>Test Parameters</label>
+          <div class="twelve wide field">
+            <table class="ui very padded table">
+              <thead>
+                <tr>
+                  <th>Topic</th>
+                  <th>Number of Questions</th>
+                  <th>Question Type</th>
+                  <th>Difficulty</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="testParameter in job.testParameters">
+                  <td>
+                    <div class="ui selection dropdown">
+                      <i class="dropdown icon"></i>
+                      <div class="text">{{testParameter.topic.name}}</div>
+                      <div class="menu">
+                        <div class="item"
+                          ng-repeat="topic in topics"
+                          data-value="{{topic.value}}"
+                          ng-click="topicChange(topic, $parent.$index)">
+                          {{topic.name}}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="number" min="1"
+                      placeholder="Number of Questions"
+                      ng-model="testParameter.no">
+                  </td>
+                  <td>
+                    <div class="ui selection dropdown">
+                      <i class="dropdown icon"></i>
+                      <div class="text">{{testParameter.type.name}}</div>
+                      <div class="menu">
+                        <div class="item"
+                          ng-repeat="type in types"
+                          data-value="{{type.value}}"
+                          ng-click="typeChange(type, $parent.$index)">
+                          {{type.name}}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="ui selection dropdown">
+                      <i class="dropdown icon"></i>
+                      <div class="text">{{testParameter.diff.name}}</div>
+                      <div class="menu">
+                        <div class="item"
+                          ng-repeat="diff in difficulties"
+                          data-value="{{diff.value}}"
+                          ng-click="diffChange(diff, $parent.$index)">
+                          {{diff.name}}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                    <button class="ui red button"
+                      ng-click="job.testParameters.splice($index,1)">
+                      Remove
+                    </button>
+                  </td>
+                  <script type="text/javascript">
+                    $('.ui.dropdown').dropdown();
+                  </script>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th colspan="5">
+                    <div class="ui right floated green labeled icon button"
+                      ng-click="addTopic()">
+                      <i class="plus icon"></i>
+                      Add Topic
+                    </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="one column row">
+      <button class="ui primary button" ng-click="save()">
+        Save
+      </button>
+    </div>
+  </div>
+</div>

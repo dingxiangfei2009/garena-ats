@@ -1,0 +1,153 @@
+<div class='pusher' ng-controller='QuestionController'>
+  <div class='ui container grid'>
+    <div class='one column row'>
+    </div>
+    <div class='one column row'>
+      <div class='column'>
+        <h1 class='ui header'>Add Questions to Test Bank</h1>
+      </div>
+    </div>
+    <div class='ui divider'></div>
+    <div class='one column row'>
+      <form class='ui form' style='width: 100%;' ng-repeat="question in questions">
+        <div class='fluid field'>
+          <div class='eight wide field'>
+            <label>Topic</label>
+            <div class='ui selection dropdown'>
+              <i class='dropdown icon'></i>
+              <div class='default text'>{{question.topic.name}}</div>
+              <div class='menu'>
+                  <div ng-repeat="topic in topics" class='item' data-value='{{topic.value}}'
+                  ng-click='topicChange(topic, $parent.$index)'>
+                    {{topic.name}}
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class='eight wide field'>
+            <label>Question Type</label>
+            <div class='ui selection dropdown'>
+              <i class='dropdown icon'></i>
+              <div class='default text'>{{question.type.name}}</div>
+              <div class='menu'>
+                  <div ng-repeat="type in types" class='item'
+                  ng-click='typeChange(type, $parent.$index)' value='{{type.value}}'>
+                    {{type.name}}
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class = "two column row">
+            <div class='six wide field'>
+              <label>Difficulty Level</label>
+              <div class='ui selection dropdown'>
+                <i class='dropdown icon'></i>
+                <div class='default text'>{{question.difficulty.name}}</div>
+                <div class='menu'>
+                    <div ng-repeat="diff in difficulties" class='item'
+                    ng-click='difficultyChange(diff, $parent.$index)' value='{{diff.value}}'>
+                      {{diff.name}}
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class='six wide field'>
+              <label>Marks for this Question</label>
+              <input class='' type='number' min='1' ng-model='question.mark'></input>
+            </div>
+          </div>
+          <div class="two column row">
+            <div class="twelve wide field">
+              <label>Question</label>
+              <textarea id='editor{{$index}}' ng-model='question.questionText'>
+              </textarea>
+              <script>
+                // window.onload = function() {
+                  // CKEDITOR.replaceAll('ckeditors');
+                // }
+
+              </script>
+            </div>
+          </div>
+          <div class="two column row">
+            <label>&nbsp;</label>
+            <div class="twelve wide field">
+              <button class='ui basic button richtext' ng-click='useRichText($index)'>
+                Rich Text
+              </button>
+            </div>
+          </div>
+          <div class='answers'ng-switch on='question.type.value'>
+            <div ng-switch-when='mas'>
+              <multiple-answer data='question.answer'
+              ng-init="question.answer = [{description: '', correct: false}, {description: '', correct: false},
+              {description: '', correct: false}, {description: '', correct: false}]" display='display'></multiple-answer>
+            </div>
+            <div ng-switch-when='sbt'>
+              <subjective-text data='question.answer' ng-init="question.answer = {description: ''}"></subjective-text>
+            </div>
+            <div ng-switch-when='sbc'>
+              <subjective-code data='question.answer' ng-init="question.answer = {description: ''}"></subjective-code>
+            </div>
+            <div ng-switch-when="fib">
+              <fill-in-blank data="question.answer" ng-init="question.answer = {}"></fill-in-blank>
+            </div>
+          </div>
+        </div>
+        <div class='one column row'>
+          <br>
+        </div>
+        <button class='ui red button' ng-click='remove($index)'>
+          Remove Question
+        </button>
+        <script type='text/javascript'>
+          $('.ui.dropdown')
+            .dropdown()
+          ;
+        </script>
+        <div class='ui divider'></div>
+      </form>
+      <button type='button' class='ui icon button' ng-click="addQuestion()">
+        <i class='plus icon'></i>
+      </button>
+
+      <button class='ui primary button' ng-click='submit()'>
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="ui modal" ng-controller='QuestionController'>
+  <i class="close icon"></i>
+  <div class="header">
+    Questions Added Successfully!
+  </div>
+  <div class="actions">
+    <a href="/question">
+      <div class="ui positive yellow button">
+        Add More Questions
+      </div>
+    </a>
+    <a href="/questions">
+      <div class="ui blue button" href='questions'>
+        View All Questions
+      </div>
+    </a>
+  </div>
+</div>
+
+<script type='text/javascript'>
+
+$('.ui.dropdown')
+  .dropdown()
+;
+$('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+</script>

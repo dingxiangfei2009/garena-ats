@@ -1,0 +1,31 @@
+{
+  "name": "garena-ats",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/assets/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-css-only": "*",
+    "textAngular": "*",
+    "ace-builds": "*",
+    "angular-ui-ace": "*",
+    "semantic": "*",
+    "semantic-ui": "*",
+    "humanize-duration": "*",
+    "momentjs": "*",
+    "angular-timer": "*",
+    "requirejs": "*",
+    "domReady": "*"
+  }
+}

@@ -1,0 +1,58 @@
+<%= hidden_field_tag :data, @data, id: :data %>
+<div class="ui basic modal" id="success">
+  <i class="close icon"></i>
+  <div class="header">
+    Success
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="green checkmark icon"></i>
+    </div>
+    <div class="description">
+      <p>Descriptions are successfully saved.</p>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui positive green basic inverted button">
+      Okay
+    </div>
+  </div>
+</div>
+
+<div class="pusher" ng-controller="QuestionTypeEditorController">
+  <div class="ui grid container">
+    <div class="one column row"></div>
+    <div class="one column row">
+      <h1>Edit Description for Question Types</h1>
+    </div>
+    <div class="ui divider"></div>
+    <div class="one column row">
+      <table class="ui very large padded table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(name, description) in data">
+            <td>
+              {{canonical_name[name]}}
+            </td>
+            <td>
+              <div class="ui form">
+                <div class="field">
+                  <textarea ng-model="data[name]" ng-change="setEdited(name)"></textarea>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ui divider"></div>
+    <div class="one column row">
+      <button class="ui primary button" ng-click="save()">Save</button>
+    </div>
+  </div>
+</div>

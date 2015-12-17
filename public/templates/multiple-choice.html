@@ -1,0 +1,23 @@
+<div>
+  <div class='inline one fields' ng-repeat='answer in data'>
+    <label>Option {{$index + 1}}</label>
+    <div class='ten wide field'>
+      <textarea rows='2' class='six wide field' placeholder=''></textarea>
+      <div class='ui slider checkbox'>
+        <input type='radio' name='ans' checked='checked'>
+      </div>
+      <button class='ui red button' ng-click='data.splice($index, 1)'>
+        Remove
+      </button>
+      <button class='ui green button' ng-if='$index == (data.length - 1)' ng-click="data.push({value: '', isCorrect: false})">
+        Add Option
+      </button>
+    </div>
+    <script type='text/javascript'>
+
+      $('.ui.slider.checkbox')
+        .checkbox()
+      ;
+    </script>
+  </div>  
+</div>

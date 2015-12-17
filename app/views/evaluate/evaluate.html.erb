@@ -1,0 +1,192 @@
+<div class="evaluator-main" ng-non-bindable>
+  <%= hidden_field_tag :test_id, @id, 'vis-element' => 'test_id_field' %>
+  <%= hidden_field_tag :test_info, @test_info, 'vis-element' => 'test_info_field' %>
+  <!-- definitions -->
+  <template vis-element="question_template.mas">
+    <div class="grouped fields">
+      <template vis-iterate="choice, choice_index in choices">
+        <div class="field">
+          <div class="ui checkbox">
+            <input type="checkbox" vis-value="user_answers[choice_index]" disabled>
+            <label>
+              {{choice_index + 1}}: {{choice.description}}
+              <template vis-condition="choice.correct">
+                <div class="ui left pointing green label">Correct Option</div>
+              </template>
+            </label>
+          </div>
+        </div>
+        <script>
+          requestAnimationFrame(() => $('.ui.checkbox').checkbox());
+        </script>
+      </template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbt">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(answer)"></template>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <template vis-inject="injectHTML(suggested_answer)"></template>
+    </div>
+  </template>
+  <template vis-element="question_template.sbc">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ answer.language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="codeArea" style="height:20em"></div>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <div class="ui label">
+        Language
+        <div class="detail">
+          {{ language }}
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div vis-element="answerArea" style="height:20em"></div>
+    </div>
+  </template>
+  <template vis-element="question_template.fib">
+    <h4 class="ui dividing header">Candidate Answer</h4>
+    <div class="field">
+      <template vis-iterate="segment, segment_index in question.segments">
+        <template vis-condition="segment.blank">
+          <consequent>
+            <em>{{answer[(segment_index + 1) / 2 - 1]}}</em>
+          </consequent>
+          <alternative>
+            {{segment.content}}
+          </alternative>
+        </template>
+      </template>
+    </div>
+    <h4 class="ui dividing header">Suggested Answer</h4>
+    <div class="field">
+      <template vis-iterate="segment, segment_index in question.segments">
+        <template vis-condition="segment.blank">
+          <consequent>
+            <em>{{suggested_answer[(segment_index + 1) / 2 - 1]}}</em>
+          </consequent>
+          <alternative>
+            {{segment.content}}
+          </alternative>
+        </template>
+      </template>
+    </div>
+  </template>
+
+  <!-- page -->
+  <div class="ui two column grid container">
+    <div class="two column centered row">
+      <h1 class="ui icon header">
+        <i class="write icon"></i>
+        <div class="content">
+          Evaluation
+          <div class="sub header">
+          </div>
+        </div>
+      </h1>
+    </div>
+    <div class="ui divider"></div>
+
+    <!-- main content -->
+    <div class="row">
+      <div class="nine wide column">
+        <div id="question-container">
+          <template vis-iterate="question, question_index in test.questions">
+            <h2 class="ui header">Question {{question_index + 1}}</h2>
+            <div class="ui divider"></div>
+            <div class="ui raised segment">
+              <template vis-inject="injectHTML(question.info.description)"></template>
+            </div>
+            <div class="ui label">
+              Mark
+              <div class="detail">{{question.info.mark}}</div>
+            </div>
+            <div class="ui form">
+              <template vis-condition="question.info.type === 'mas'">
+                <template
+                  vis-inject="question_template.mas"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <template vis-condition="question.info.type === 'sbt'">
+                <template
+                  vis-inject="question_template.sbt"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <template vis-condition="question.info.type === 'sbc'">
+                <template
+                  vis-inject="question_template.sbc"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <template vis-condition="question.info.type === 'fib'">
+                <template
+                  vis-inject="question_template.fib"
+                  vis-argument="question_controllers[question_index]"></template>
+              </template>
+              <div class="ui right labeled left icon input">
+                <i class="write icon"></i>
+                <input
+                  type="text"
+                  vis-value="mark[question_index]"
+                  placeholder="Mark"
+                  vis-value-type="number">
+                <a class="ui tag label">Enter Mark</a>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div class="two wide column">
+          <div class="ui right dividing rail">
+            <div class="ui sticky">
+              <div style="margin-top: 30px;">
+                <p>Your are evaluating Test {{ id }}</p>
+                <p>Candidate: {{ application.candidate.name }}, Email: {{ application.candidate.email }} </p>
+                <p>Applying for {{ application.job.title }} </p>
+                <div class="ui primary button" vis-action="(\=> submit_marks())" style="margin-top:20px;">
+                  Save Marks
+                </div>
+              </div>
+            </div>
+          </div>
+          <script>
+            setTimeout(() => $('.ui.sticky').sticky(), 5000);
+          </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ui basic modal" id="success">
+  <i class="close icon"></i>
+  <div class="header">
+    Update Successful
+  </div>
+  <div class="image content">
+    <div class="image">
+      <i class="green checkmark icon"></i>
+    </div>
+    <div class="description">
+      <p>Marking is successfully updated</p>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui positive green basic inverted button">
+      Okay
+    </div>
+  </div>
+</div>

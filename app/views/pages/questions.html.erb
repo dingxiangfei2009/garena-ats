@@ -1,0 +1,75 @@
+<div class='pusher' ng-controller='QuestionsController'>
+  <div class='ui container grid'>
+    <div class='one column row'>
+    </div>
+    <div class='two column centered row'>
+      <div class="left floated eight wide column">
+        <div class="eight wide field">
+          <div class="ui fluid icon input">
+            <input type="text" placeholder="Filter by topic, content..." ng-model='searchText'>
+            <i class="search icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="right floated seven wide column">
+        <a href='question'>
+          <button class="ui right floated labeled icon green button">
+            <i class="plus icon"></i>
+            Add New Question
+          </button>
+        </a>
+      </div>
+    </div>
+    <div class='two column centered row'>
+      <div class="ui cards">
+        <div class="card" ng-repeat='questionTopic in questionsByTopic'>
+          <div class="content">
+            <div class="header">{{questionTopic.topicToken}}</div>
+            <div class="description">
+              {{questionTopic.questions.length}} questions
+            </div>
+          </div>
+          <div class="ui bottom attached button">
+            <i class="add icon"></i>
+            View Questions
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='one column centered row'>
+      <div class='column'>
+        <table class="ui very padded large table">
+          <thead>
+            <tr>
+              <th>Topic</th>
+              <th>Difficulty</th>
+              <th>Type</th>
+              <th>Question</th>
+              <th>Enable/Disable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="question in questions | filter:searchText">
+              <td>{{question.topic}}</td>
+              <td>{{question.difficulty}}</td>
+              <td>{{question.type}}</td>
+              <td ng-bind-html="question.description"></td>
+              <td ng-switch on='question.enabled'>
+                <div ng-switch-when='true'>
+                  <button class="ui red button" ng-click='disable(question, $index)'>
+                    Disable
+                  </button>
+                </div>
+                <div ng-switch-when='false'>
+                  <button class="ui green button" ng-click='enable(question, $index)'>
+                    Enable
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<div class='pusher' ng-controller='TopicsController'>
+  <div class='ui container grid'>
+    <div class='one column row'>
+    </div>
+    <div class='two column centered row'>
+      <div class="left floated eight wide column">
+        <div class="eight wide field">
+          <div class="ui fluid icon input">
+            <input type="text" placeholder="Find a topic..." ng-model='searchText'>
+            <i class="search icon"></i>
+          </div>
+        </div>
+      </div>
+      <div class="right floated seven wide column">
+        <button class="ui right floated labeled icon green button">
+          <i class="plus icon"></i>
+          Create Topic
+        </button>
+      </div>
+    </div>
+    <div class='one column centered row'>
+      <div class='column'>
+        <table class="ui very padded large table">
+          <thead>
+            <tr>
+              <th>Topic Name</th>
+              <th>Token</th>
+              <th>Number of Questions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="topic in topics | filter:searchText ">
+              <td>{{topic.name}}</td>
+              <td>{{topic.token}}</td>
+              <td>{{topic.questions}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="ui small modal create">
+    <i class="close icon"></i>
+    <div class="header">
+      Create New Topic
+    </div>
+    <div class="content">
+      <form class='ui form' style='width: 100%;'>
+        <div class='eight wide field'>
+          <label>Topic Name</label>
+          <div class='twelve wide field'>
+            <input type='text' name='topic-name' placeholder='' ng-model='newTopic.name'>
+          </div>
+        </div>
+        <div class='eight wide field'>
+          <label>Topic Token (3 lowercase letters)</label>
+          <div class='twelve wide field'>
+            <input type='text' name='topic-token' placeholder='' ng-model='newTopic.token'>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">Cancel</div>
+      <div class="ui positive right labeled icon button" ng-click='submit()'>
+        Create Topic
+        <i class="checkmark icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="ui small modal error">
+    <i class="close icon"></i>
+    <div class="header">
+      Error
+    </div>
+    <div class="content">
+      Sorry, we could not create a topic. Please ensure the topic token is unique.
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">Ok</div>
+    </div>
+  </div>
+</div>

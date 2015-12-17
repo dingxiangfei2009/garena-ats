@@ -1,0 +1,25 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  username:garena_ats
+  password:Ohtheish7geiyaeGahye
+  host: 10.65.5.1
+  port: 6606
+
+
+development:
+  <<: *default
+  database: garena_ats_development
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: garena_ats_test
+
+production:
+  <<: *default
+  database: garena_ats
