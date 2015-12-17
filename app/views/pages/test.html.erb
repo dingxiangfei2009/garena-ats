@@ -121,7 +121,9 @@
         <h2 class="ui header">
           {{$index + 1}}
         </h2>
-        <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
+        <div class="ui raised segment"
+          ng-if="question.type !== 'fib'"
+          ng-bind-html="trustAsHtml(question.statement)">
           {{question.statement}}
         </div>
         <div class="ui form" ng-switch on='question.type'>
@@ -173,10 +175,12 @@
           <div ng-switch-when='fib'>
             <span ng-repeat='segment in question.segments'>
               <span ng-switch on='segment.blank'>
-                <span ng-switch-when='true' class="ui label">
-                  {{($index + 1) / 2}}
+                <span ng-switch-when="true" class="ui label"
+                  style="text-decoration: underline">
+                  &emsp;&emsp;&emsp;{{($index + 1) / 2}}&emsp;&emsp;&emsp;
                 </span>
-                <span ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
+                <span ng-switch-when="false"
+                  ng-bind-html="trustAsHtml(segment.content)">
                 </span>
               </span>
             </span>
