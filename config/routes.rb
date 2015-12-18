@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   get '/tests', :to => 'pages#tests'
   get '/register', :to => 'pages#register'
   get '/topics', :to => 'pages#topics'
-  get '/admin', :to => 'pages#admin'
   get '/login', :to => 'pages#login'
   get '/available', :to => 'pages#available'
   scope '/question' do
