@@ -1,35 +1,22 @@
 angular.module('app').controller('TopicsController', ["$scope", "$http", function($scope, $http) {
   $scope.searchText = '';
 
-  $scope.newTopic = {
-    name: '',
-    token: ''
-  };
-
-  $scope.topics = [];
-
-  $http({
-    method: "GET",
-    url: "/topics/all"
-  })
-  .success(function(data) {
-    for (var x = 0; x < data.length; x++) {
-      $scope.topics.push({
-        name: data[x].name,
-        token: data[x].token,
-        questions: data[x].questions
-      });
-    }
-  });
-
+  function pull() {
+    $http({
+      method: "GET",
+      url: "/topics/all"
+    })
+    .success(function(data) {
+      $scope.topics = data.map(topic => ({
+        name: topic.name,
+        token: topic.token,
+        questions: topic.questions
+      }));
+    });
+  }
+  pull();
 
   $scope.submit = function () {
-    // $scope.tests.push({
-    //   title: $scope.newCandidate.pos.name,
-    //   candidateName: $scope.newCandidate.name,
-    //   applicationStatus: null,
-    //   mark: 0
-    // });
     $.ajax({
       method: "POST",
       url: "/topics/new",
@@ -38,22 +25,48 @@ angular.module('app').controller('TopicsController', ["$scope", "$http", functio
         token: $scope.newTopic.token
       }
     })
-    .success(function(data){
-      location.reload();
-    })
+    .success(pull)
     .error(function(data) {
       console.log(data);
       $('.ui.modal.error').modal('show');
     });
-    ;
   };
 
-  setTimeout(function(){
-    $('.ui.modal.create')
-      .modal('attach events', '.green.button', 'show')
-    ;
-  }, 0);
-
-
+  var editing_token;
+  $scope.save_edit = function(){
+    $.ajax({
+      method: 'POST',
+      url: '/topics/update',
+      data: {
+        token: editing_token,
+        new_token: $scope.editTopic.token,
+        name: $scope.editTopic.name
+      }
+    }).success(pull);
+  };
+  $scope.start_edit = function(topic){
+    editing_token = topic.token;
+    $scope.editTopic = {
+      name: topic.name,
+      token: topic.token
+    };
+    $('.ui.modal.edit').modal('show');
+  };
+  $scope.start_new = function() {
+    $scope.newTopic = {
+      name: '',
+      token: ''
+    };
+    $('.ui.modal.create').modal('show');
+  };
+  $scope.remove = function(token){
+    $.ajax({
+      method: 'POST',
+      url: '/topics/destroy',
+      data: {
+        token: token
+      }
+    }).success(pull);
+  };
 
 }]);

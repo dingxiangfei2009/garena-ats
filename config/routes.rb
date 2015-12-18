@@ -68,6 +68,8 @@ Rails.application.routes.draw do
   scope '/topics' do
     get '/all', to: 'topics#all'
     post '/new', to: 'topics#new'
+    post '/update', to: 'topics#update'
+    post '/destroy', to: 'topics#destroy'
   end
   scope '/admins' do
     get '/', to: 'edit_admin#list'
