@@ -10,4 +10,4 @@ test:
 
 production:
   <<: *defaults
-  SECRET_KEY_BASE:rooshach1equaph9aekaoxaexeec8U
+  SECRET_KEY_BASE: eequ8zah8pitaigi8ANg9ooto3eex5ahf8Riephoh7aChoo6ooCoZioshiex
