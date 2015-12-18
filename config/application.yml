@@ -1,0 +1,13 @@
+defaults: &defaults
+  GOOGLE_CLIENT_ID: 583053264833-a2aatjqkh7jfvpvp8q9vi1gm4gpa0o6m.apps.googleusercontent.com
+  GOOGLE_CLIENT_SECRET: Wwh8-qra2czTIDDt-wy1_LBO
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
+  SECRET_KEY_BASE:rooshach1equaph9aekaoxaexeec8U
