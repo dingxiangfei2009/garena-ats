@@ -117,6 +117,9 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
         if (editor) {
           question.questionText = CKEDITOR.instances['editor' + x].getData();
         }
+        if (question.type.value === 'fib') {
+          question.questionText = question.answer.statement;
+        }
 
         var configuration = angular.toJson({
           answer: question.answer

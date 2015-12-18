@@ -56,20 +56,12 @@
               <input class='' type='number' min='1' ng-model='question.mark'></input>
             </div>
           </div>
-          <div class="two column row">
+          <div class="two column row" ng-if="question.type.value !== 'fib'">
             <div class="twelve wide field">
               <label>Question</label>
               <textarea id='editor{{$index}}' ng-model='question.questionText'>
               </textarea>
-              <script>
-                // window.onload = function() {
-                  // CKEDITOR.replaceAll('ckeditors');
-                // }
-
-              </script>
             </div>
-          </div>
-          <div class="two column row">
             <label>&nbsp;</label>
             <div class="twelve wide field">
               <button class='ui basic button richtext' ng-click='useRichText($index)'>
