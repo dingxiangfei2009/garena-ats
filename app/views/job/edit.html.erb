@@ -49,9 +49,9 @@
             <table class="ui very padded table">
               <thead>
                 <tr>
+                  <th>Question Type</th>
                   <th>Topic</th>
                   <th>Number of Questions</th>
-                  <th>Question Type</th>
                   <th>Difficulty</th>
                   <th></th>
                   <th></th>
@@ -59,6 +59,20 @@
               </thead>
               <tbody>
                 <tr ng-repeat="testParameter in job.testParameters">
+                  <td>
+                    <div class="ui selection dropdown">
+                      <i class="dropdown icon"></i>
+                      <div class="text">{{testParameter.type.name}}</div>
+                      <div class="menu">
+                        <div class="item"
+                          ng-repeat="type in types"
+                          data-value="{{type.value}}"
+                          ng-click="typeChange(type, $parent.$index)">
+                          {{type.name}}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
                   <td>
                     <div class="ui selection dropdown">
                       <i class="dropdown icon"></i>
@@ -77,20 +91,6 @@
                     <input type="number" min="1"
                       placeholder="Number of Questions"
                       ng-model="testParameter.no">
-                  </td>
-                  <td>
-                    <div class="ui selection dropdown">
-                      <i class="dropdown icon"></i>
-                      <div class="text">{{testParameter.type.name}}</div>
-                      <div class="menu">
-                        <div class="item"
-                          ng-repeat="type in types"
-                          data-value="{{type.value}}"
-                          ng-click="typeChange(type, $parent.$index)">
-                          {{type.name}}
-                        </div>
-                      </div>
-                    </div>
                   </td>
                   <td>
                     <div class="ui selection dropdown">
