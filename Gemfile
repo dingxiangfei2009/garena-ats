@@ -37,6 +37,8 @@ gem 'byebug'
 
 gem 'omniauth-google-oauth2'
 
+gem 'ejs'
+
 # Semantic UI assets
 
 # gem 'less-rails-semantic_ui', '~> x.x.x'
