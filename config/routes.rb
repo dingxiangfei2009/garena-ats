@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     get '/logout', to: 'auth#destroy'
   end
 
+  root 'pages#home'
+
   get '/home', :to => 'pages#home'
   get '/position', :to => 'pages#position'
   get '/jobs', :to => 'pages#jobs'

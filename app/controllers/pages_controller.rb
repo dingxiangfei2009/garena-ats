@@ -1,9 +1,5 @@
 class PagesController < ApplicationController
   def home
-		unless session[:user]
-			redirect_to '/auth/google'
-			return
-		end
   end
   def jobs
 		unless session[:user]
