@@ -50,6 +50,8 @@ gem 'angular-rails-templates'
 
 gem 'sprockets'
 
+gem 'ckeditor'
+
 # Semantic UI assets
 
 # gem 'less-rails-semantic_ui', '~> x.x.x'
