@@ -81,4 +81,6 @@ class PagesController < ApplicationController
   end
   def register
   end
+  def login
+  end
 end
