@@ -79,4 +79,6 @@ class PagesController < ApplicationController
   end
   def test
   end
+  def register
+  end
 end
