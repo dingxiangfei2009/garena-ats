@@ -83,4 +83,6 @@ class PagesController < ApplicationController
   end
   def login
   end
+  def tests
+  end
 end
