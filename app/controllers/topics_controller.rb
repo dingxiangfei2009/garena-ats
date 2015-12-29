@@ -24,4 +24,23 @@ class TopicsController < ApplicationController
     end
     render json: fields
   end
+  def update
+    unless session[:user]
+      redirect_to '/auth/google'
+      return
+    end
+    field = Field.where(token: params[:token]).first
+    field.token = params[:new_token]
+    field.name = params[:name]
+    field.save
+    render json: {status: 'success'}
+  end
+  def destroy
+    unless session[:user]
+      redirect_to '/auth/google'
+      return
+    end
+    Field.where(token: params[:token]).delete_all
+    render json: {status: 'success'}
+  end
 end

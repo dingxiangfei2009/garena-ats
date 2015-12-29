@@ -118,12 +118,37 @@
           </div>
         </div>
         <a class="anchor" ng-attr-id="{{ 'question-' + $index }}"></a>
-        <h2 class="ui header">
-          {{$index + 1}}
-        </h2>
-        <div class="ui raised segment" ng-bind-html="trustAsHtml(question.statement)">
-          {{question.statement}}
-        </div>
+        <table border="0" style="width: 100%">
+          <tr>
+            <td style="width: 4em">
+              <h2 class="ui header">
+                {{$index + 1}}
+              </h2>
+            </td>
+            <td>
+              <div class="ui raised segment"
+                ng-if="question.type !== 'fib'"
+                ng-bind-html="trustAsHtml(question.statement)">
+                {{question.statement}}
+              </div>
+              <div class="ui raised segment"
+                ng-if="question.type === 'fib'">
+                <span ng-repeat='segment in question.segments'>
+                  <span ng-switch on='segment.blank'>
+                    <span ng-switch-when="true" class="ui label"
+                      style="text-decoration: underline">
+                      &emsp;&emsp;&emsp;{{($index + 1) / 2}}&emsp;&emsp;&emsp;
+                    </span>
+                    <span ng-switch-when="false"
+                      ng-bind-html="trustAsHtml(segment.content)">
+                    </span>
+                  </span>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </table>
+        <br>
         <div class="ui form" ng-switch on='question.type'>
           <div class="grouped fields" ng-switch-when='mas'>
             <div class="field" ng-repeat='ans in question.answers'>
@@ -171,19 +196,10 @@
             </div>
           </div>
           <div ng-switch-when='fib'>
-            <span ng-repeat='segment in question.segments'>
-              <span ng-switch on='segment.blank'>
-                <span ng-switch-when='true' class="ui label">
-                  {{($index + 1) / 2}}
-                </span>
-                <span ng-switch-when='false' ng-bind-html="trustAsHtml(segment.content)">
-                </span>
-              </span>
-            </span>
             <table class="ui celled table">
               <thead>
                 <tr>
-                  <th>Blank</th>
+                  <th style="width: 10%">Blank</th>
                   <th>Answer</th>
                 </tr>
               </thead>

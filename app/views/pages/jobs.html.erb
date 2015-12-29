@@ -1,3 +1,11 @@
+<style>
+.hide-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+</style>
+
 <div class="pusher" ng-controller='JobsController'>
   <div class="ui container grid">
     <div class="one column row">
@@ -8,7 +16,8 @@
       </div>
       <div class="right floated right aligned column">
         <a href="position">
-          <button class="ui primary button">
+          <button class="ui left labeled icon green button">
+            <i class="plus icon"></i>
             Add New Job Position
           </button>
         </a>
@@ -21,8 +30,8 @@
           <div class="content">
             <div class="header">{{job.title}}</div>
           </div>
-          <div class="content">
-            <h4 class="ui sub header">{{job.description}}</h4>
+          <div class="content hide-overflow">
+            {{job.description}}
           </div>
           <div class="extra content">
             <a ng-href="/job/{{job.id}}/edit" class="ui button">Edit</a>

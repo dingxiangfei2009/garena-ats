@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     get '/logout', to: 'auth#destroy'
   end
 
+  root 'pages#home'
+
   get '/home', :to => 'pages#home'
   get '/position', :to => 'pages#position'
   get '/jobs', :to => 'pages#jobs'
@@ -16,7 +18,6 @@ Rails.application.routes.draw do
   get '/tests', :to => 'pages#tests'
   get '/register', :to => 'pages#register'
   get '/topics', :to => 'pages#topics'
-  get '/admin', :to => 'pages#admin'
   get '/login', :to => 'pages#login'
   get '/available', :to => 'pages#available'
   scope '/question' do
@@ -68,6 +69,8 @@ Rails.application.routes.draw do
   scope '/topics' do
     get '/all', to: 'topics#all'
     post '/new', to: 'topics#new'
+    post '/update', to: 'topics#update'
+    post '/destroy', to: 'topics#destroy'
   end
   scope '/admins' do
     get '/', to: 'edit_admin#list'

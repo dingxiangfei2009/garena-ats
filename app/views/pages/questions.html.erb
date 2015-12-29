@@ -1,3 +1,12 @@
+<style>
+.hide-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  width: 40em;
+}
+</style>
+
 <div class='pusher' ng-controller='QuestionsController'>
   <div class='ui container grid'>
     <div class='one column row'>
@@ -39,13 +48,20 @@
     <div class='one column centered row'>
       <div class='column'>
         <table class="ui very padded large table">
+          <colgroup>
+            <col span="1" style="width: 20em">
+            <col span="1" style="width: 5em">
+            <col span="1" style="width: 10em">
+            <col span="1" style="width: 40em">
+            <col span="1">
+          </colgroup>
           <thead>
             <tr>
               <th>Topic</th>
               <th>Difficulty</th>
               <th>Type</th>
               <th>Question</th>
-              <th>Enable/Disable</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -53,7 +69,10 @@
               <td>{{question.topic}}</td>
               <td>{{question.difficulty}}</td>
               <td>{{question.type}}</td>
-              <td ng-bind-html="question.description"></td>
+              <td>
+                <div class="hide-overflow" ng-bind-html="question.description">
+                </div>
+              </td>
               <td ng-switch on='question.enabled'>
                 <div ng-switch-when='true'>
                   <button class="ui red button" ng-click='disable(question, $index)'>

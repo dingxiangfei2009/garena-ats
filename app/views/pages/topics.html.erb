@@ -12,7 +12,8 @@
         </div>
       </div>
       <div class="right floated seven wide column">
-        <button class="ui right floated labeled icon green button">
+        <button class="ui right floated labeled icon green button"
+          ng-click="start_new()">
           <i class="plus icon"></i>
           Create Topic
         </button>
@@ -20,12 +21,19 @@
     </div>
     <div class='one column centered row'>
       <div class='column'>
-        <table class="ui very padded large table">
+        <table class="ui very large table">
+          <colgroup>
+            <col span="1" style="width: 20em">
+            <col span="1" style="width: 5em">
+            <col span="1" style="width: 4em">
+            <col span="1" style="width: 10em">
+          </colgroup>
           <thead>
             <tr>
               <th>Topic Name</th>
               <th>Token</th>
               <th>Number of Questions</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -33,9 +41,47 @@
               <td>{{topic.name}}</td>
               <td>{{topic.token}}</td>
               <td>{{topic.questions}}</td>
+              <td>
+                <button class="ui yellow button" ng-click="start_edit(topic)">
+                  Edit
+                </button>
+                <button class="ui red button" ng-click="remove(topic.token)">
+                  Remove
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+  <div class="ui small modal edit">
+    <i class="close icon"></i>
+    <div class="header">
+      Edit topic details
+    </div>
+    <div class="content">
+      <form class="ui form" style="width:100%">
+        <div class="eight wide field">
+          <label>Topic name</label>
+          <div class="twelve wide field">
+            <input type="text" name="topic-name" ng-model="editTopic.name" required>
+          </div>
+        </div>
+        <div class="eight wide field">
+          <label>Topic Token</label>
+          <div class="twelve wide field">
+            <input type="text" name="topic-token" ng-model="editTopic.token" required>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="actions">
+      <div class="ui black deny button">Cancel</div>
+      <div class="ui positive right labeled icon button"
+        ng-click="save_edit()">
+        Save
+        <i class="checkmark icon"></i>
       </div>
     </div>
   </div>
@@ -53,9 +99,10 @@
           </div>
         </div>
         <div class='eight wide field'>
-          <label>Topic Token (3 lowercase letters)</label>
+          <label>Topic Token</label>
           <div class='twelve wide field'>
-            <input type='text' name='topic-token' placeholder='' ng-model='newTopic.token'>
+            <input type='text' name='topic-token' placeholder=''
+              ng-model='newTopic.token' required>
           </div>
         </div>
       </form>
@@ -74,7 +121,8 @@
       Error
     </div>
     <div class="content">
-      Sorry, we could not create a topic. Please ensure the topic token is unique.
+      Sorry, we could not create a topic.
+      Please ensure a topic token that is unique.
     </div>
     <div class="actions">
       <div class="ui black deny button">Ok</div>

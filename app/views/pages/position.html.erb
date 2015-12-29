@@ -17,7 +17,7 @@
               <input type="text" name="position-name" placeholder="Position Title" ng-model='job.pos'>
             </div>
             <div class='sixteen wide field'>
-              <label>Description</label>
+              <label>Description and Requirements</label>
               <textarea placeholder="Enter job description here" ng-model='job.desc'></textarea>
             </div>
           </div>
@@ -41,15 +41,27 @@
             <table class="ui very padded table">
               <thead>
                 <tr>
+                  <th>Question Type</th>
                   <th>Topic</th>
                   <th>Number of Questions</th>
-                  <th>Question Type</th>
                   <th>Difficulty</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat='testParameter in job.testParameters'>
+                  <td>
+                    <div class='ui selection dropdown'>
+                      <i class='dropdown icon'></i>
+                      <div class='default text'>{{testParameter.type.name}}</div>
+                      <div class='menu'>
+                          <div ng-repeat="type in types" class='item' data-value='{{type.value}}'
+                          ng-click='typeChange(type, $parent.$index)'>
+                            {{type.name}}
+                          </div>
+                      </div>
+                    </div>
+                  </td>
                   <td>
                     <div class='ui selection dropdown'>
                       <i class='dropdown icon'></i>
@@ -66,18 +78,6 @@
                     <input class='' type='number' min='1' placeholder='Number of Questions'
                     ng-model='testParameter.no'>
                   </input>
-                  </td>
-                  <td>
-                    <div class='ui selection dropdown'>
-                      <i class='dropdown icon'></i>
-                      <div class='default text'>{{testParameter.type.name}}</div>
-                      <div class='menu'>
-                          <div ng-repeat="type in types" class='item' data-value='{{type.value}}'
-                          ng-click='typeChange(type, $parent.$index)'>
-                            {{type.name}}
-                          </div>
-                      </div>
-                    </div>
                   </td>
                   <td>
                     <div class='ui selection dropdown'>
