@@ -75,4 +75,6 @@ class PagesController < ApplicationController
 			return
 		end
   end
+  def question
+  end
 end
