@@ -44,6 +44,8 @@ gem 'ejs'
 # gem 'less-rails-semantic_ui', '~> x.x.x'
 # gem 'autoprefixer-rails', '~> x.x.x'
 
+gem 'json'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
