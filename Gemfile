@@ -46,6 +46,15 @@ gem 'ejs'
 
 gem 'json'
 
+gem 'angular-rails-templates'
+
+gem 'sprockets'
+
+# Semantic UI assets
+
+# gem 'less-rails-semantic_ui', '~> x.x.x'
+# gem 'autoprefixer-rails', '~> x.x.x'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
