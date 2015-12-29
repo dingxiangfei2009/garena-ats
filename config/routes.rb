@@ -83,6 +83,13 @@ Rails.application.routes.draw do
     get '/', to: 'question_type#list'
     post '/', to: 'question_type#save'
   end
+  scope '/test' do
+    scope '/:id' do
+      get '/', :to => 'test#get'
+      post '/', :to => 'test#save'
+    end
+    post '/', :to => 'test#new'
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
