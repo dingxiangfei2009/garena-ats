@@ -1,4 +1,4 @@
-=== Instruction
+### Instruction
 To set up, install the necessary softwares
 * MySQL(Mariadb), Ruby, Gems, Bundler, Node.js and Bower
 
