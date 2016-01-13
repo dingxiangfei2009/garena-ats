@@ -1,6 +1,6 @@
 !function() {
 /* global angular */
-var app = angular.module('app', ['templates', 'ui.ace', 'timer']);
+var app = angular.module('app', ['ui.ace', 'timer']);
 
 app.directive('multipleChoice', function() {
   return {

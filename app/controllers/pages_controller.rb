@@ -77,14 +77,4 @@ class PagesController < ApplicationController
 			return
 		end
   end
-  def question
-  end
-  def test
-  end
-  def register
-  end
-  def login
-  end
-  def tests
-  end
 end

@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require ckeditor/init
 //= require angular/angular
-//= require angular-rails-templates
 //= require semantic-ui
 //= require ace-builds/src-min-noconflict/ace
 //= require ace-builds/src-min-noconflict/theme-twilight

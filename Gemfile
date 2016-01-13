@@ -27,8 +27,6 @@ gem 'semantic-ui-sass', github: 'doabit/semantic-ui-sass'
 
 gem 'json'
 
-gem 'angular-rails-templates'
-
 gem 'sprockets'
 
 gem 'ckeditor'
@@ -43,18 +41,6 @@ gem 'ejs'
 
 # gem 'less-rails-semantic_ui', '~> x.x.x'
 # gem 'autoprefixer-rails', '~> x.x.x'
-
-gem 'json'
-
-gem 'angular-rails-templates'
-
-gem 'sprockets'
-
-gem 'ckeditor'
-
-gem 'byebug'
-
-gem 'omniauth-google-oauth2'
 
 # Semantic UI assets
 

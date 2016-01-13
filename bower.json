@@ -25,6 +25,7 @@
     "humanize-duration": "*",
     "momentjs": "*",
     "angular-timer": "*",
-    "requirejs": "*"
+    "requirejs": "*",
+    "angular": "*"
   }
 }

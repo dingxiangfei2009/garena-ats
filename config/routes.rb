@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get '/question', :to => 'pages#question'
   get '/questions', :to => 'pages#questions'
   get '/test', :to => 'pages#test'
-  get '/tests', :to => 'pages#tests'
+  get '/tests', to: 'pages#tests'
   get '/register', :to => 'pages#register'
   get '/topics', :to => 'pages#topics'
   get '/login', :to => 'pages#login'
