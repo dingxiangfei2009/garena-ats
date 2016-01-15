@@ -122,7 +122,6 @@ angular.module('app').controller('PositionController', ['$scope', '$http', funct
       data: dataToSend
     })
     .success(function(data) {
-      console.log(data);
       $('.ui.modal').modal('show');
     });
   };

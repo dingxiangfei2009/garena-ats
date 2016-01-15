@@ -140,7 +140,6 @@ angular.module('app').controller('QuestionController', ['$scope', '$http', funct
             data: dataToSend
           })
           .success(function(data) {
-            console.log(data);
             $('.ui.modal').modal('show');
           });
       }

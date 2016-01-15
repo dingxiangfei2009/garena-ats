@@ -27,7 +27,6 @@ angular.module('app').controller('TopicsController', ["$scope", "$http", functio
     })
     .success(pull)
     .error(function(data) {
-      console.log(data);
       $('.ui.modal.error').modal('show');
     });
   };

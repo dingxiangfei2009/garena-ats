@@ -32,7 +32,6 @@ angular.module('app').controller('QuestionsController', ['$scope', '$http', '$sc
     });
 
   }).error(function(data) {
-    console.log(JSON.stringify(data));
   });
 
   $scope.disable = function(question, index) {

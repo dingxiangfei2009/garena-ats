@@ -85,7 +85,6 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
           location.reload();
         })
         .error(function(data) {
-          console.log(data);
           $('.ui.modal.error').modal('show');
         });
       });

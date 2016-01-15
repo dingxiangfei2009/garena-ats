@@ -139,7 +139,6 @@ function($scope, $http, $interval, $timeout, $sce) {
       });
   }
   function collateAnswer() {
-    console.log($scope.answer);
     return questions.map(function(question, i) {
       return {
         id: IDX_TO_RESPONSE_ID[i],

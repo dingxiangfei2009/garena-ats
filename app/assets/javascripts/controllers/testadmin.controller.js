@@ -35,7 +35,6 @@ angular.module('app').controller('TestAdminController', ["$scope", "$http", func
       location.reload();
     })
     .error(function(data) {
-      console.log(data);
       $('.ui.modal.error').modal('show');
     });
     ;
