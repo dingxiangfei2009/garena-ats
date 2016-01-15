@@ -1,8 +1,16 @@
 <style>
-.hide-overflow {
-  white-space: nowrap;
+.hide-overflow .text {
   overflow: hidden;
-  text-overflow:ellipsis;
+  height: 5em;
+}
+.hide-overflow:after {
+  content: '';
+  display: block;
+  height: 1em;
+  width: 100%;
+  position: relative;
+  bottom: 1em;
+  background: linear-gradient(to top, #fff 30%, rgba(0,0,0,0));
 }
 </style>
 
@@ -30,8 +38,10 @@
           <div class="content">
             <div class="header">{{job.title}}</div>
           </div>
-          <div class="content hide-overflow">
-            {{job.description}}
+          <div class="content">
+            <div class="hide-overflow">
+              <div class="text">{{job.description}}</div>
+            </div>
           </div>
           <div class="extra content">
             <a ng-href="/job/{{job.id}}/edit" class="ui button">Edit</a>
