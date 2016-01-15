@@ -13,9 +13,9 @@
 /log/*
 !/log/.keep
 /tmp
-Gemfile.lock
 /public/semantic/
 /vendor/
+!/vendor/assets/components/vis/vis-compat.js
 /public/assets
 /public/index.html
 /public/semantic.json
