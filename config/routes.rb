@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       post '/enable', to: 'question#enable'
       post '/disable', to: 'question#disable'
       get '/report', to: 'question#statistics'
+      get '/edit', to: 'question#edit'
     end
     post '/', to: 'question#new'
   end

@@ -15,3 +15,7 @@
  *= require semantic-ui
  *= require font-awesome/css/font-awesome
  */
+
+body {
+  background: #000;
+}

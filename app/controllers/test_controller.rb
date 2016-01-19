@@ -14,10 +14,10 @@ class TestController < ApplicationController
 	# select :count questions of :topic at :difficulty level
 	def random_pick_questions(var)
 		ids = Question.where(
-			field_id: var[:topic],
-			difficulty: var[:difficulty],
-			question_type_id: var[:question_type],
-			enabled: true
+				field_id: var[:topic],
+				difficulty: var[:difficulty],
+				question_type_id: var[:question_type],
+				enabled: true
 			).order('rand()')
 			.limit(var[:count])
 			.map { |question| question.id }
@@ -109,10 +109,6 @@ class TestController < ApplicationController
 	end
 
 	def get
-		# unless session[:user]
-		# 	redirect_to '/auth/google'
-		# 	return
-		# end
 		id = params[:id]
 		test = Test.find id
 		if !test.start_time then
@@ -145,12 +141,10 @@ class TestController < ApplicationController
 	end
 
 	def save
-		# unless session[:user]
-		# 	redirect_to '/auth/google'
-		# 	return
-		# end
 		id = params[:id]
-		test = Test.where('date_add(start_time, interval duration second) >= utc_timestamp()').where(id: id).first
+		test = Test.where(
+				'date_add(start_time, interval duration second) >= utc_timestamp()'
+			).where(id: id).first
 		if test
 			responses = JSON.parse params[:answer]
 			responses.each do |response|

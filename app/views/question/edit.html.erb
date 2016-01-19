@@ -1,0 +1,131 @@
+<%= hidden_field_tag :question_id, @id, id: :id %>
+<%= hidden_field_tag :question_config, @question, id: 'question-config' %>
+<div class='pusher' ng-controller="QuestionEditController">
+  <div class='ui container grid'>
+    <div class='one column row'>
+    </div>
+    <div class='one column row'>
+      <div class='column'>
+        <h1 class='ui header'>Edit Question in Test Bank</h1>
+      </div>
+    </div>
+    <div class='ui divider'></div>
+    <div class='one column row'>
+      <div class="ui grid container">
+        <div class="one column row">
+          <form class="ui form" style="width:100%;">
+            <div class="fluid field">
+              <div class="eight wide field">
+                <label>Topic</label>
+                <span>{{question.topic.name}}</span>
+              </div>
+              <div class="eight wide field">
+                <label>Question Type</label>
+                <div class="ui selection dropdown">
+                  <i class="dropdown icon"></i>
+                  <div class="default text">{{question.type.name}}</div>
+                  <div class="menu">
+                    <div
+                      ng-repeat="type in types" class='item'
+                      value="{{type.value}}"
+                      ng-click="typeChange(type)">
+                      {{type.name}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class = "two column row">
+                <div class="six wide field">
+                  <label>Difficulty Level</label>
+                  <div class="ui selection dropdown">
+                    <i class="dropdown icon"></i>
+                    <div class="default text">{{question.difficulty.name}}</div>
+                    <div class="menu">
+                      <div class="item" ng-repeat="diff in difficulties"
+                        value="{{diff.value}}"
+                        ng-click="difficultyChange(diff)">
+                        {{diff.name}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="six wide field">
+                  <label>Marks for this Question</label>
+                  <input type="number" min="1" ng-model="question.mark">
+                </div>
+              </div>
+              <div class="two column row" ng-if="question.type.value !== 'fib'">
+                <div class="twelve wide field">
+                  <label>Question</label>
+                  <textarea id="editor" ng-model="question.questionText">
+                  </textarea>
+                </div>
+                <label>&nbsp;</label>
+                <div class="twelve wide field">
+                  <button class="ui basic button richtext"
+                    ng-click="useRichText()">
+                    Rich Text
+                  </button>
+                </div>
+              </div>
+              <div class="answers" ng-switch on="question.type.value">
+                <div ng-switch-when='mas'>
+                  <multiple-answer
+                    data="question.answer"
+                    ng-init="
+                      question.answer = [
+                        {description: '', correct: false},
+                        {description: '', correct: false},
+                        {description: '', correct: false},
+                        {description: '', correct: false}]"
+                    display="display"></multiple-answer>
+                </div>
+                <div ng-switch-when="sbt">
+                  <subjective-text
+                    data="question.answer"
+                    ng-init="question.answer = {description: ''}"></subjective-text>
+                </div>
+                <div ng-switch-when="sbc">
+                  <subjective-code
+                    data="question.answer"
+                    ng-init="question.answer = {description: ''}"></subjective-code>
+                </div>
+                <div ng-switch-when="fib">
+                  <fill-in-blank
+                    data="question.answer"
+                    ng-init="question.answer = {}"></fill-in-blank>
+                </div>
+              </div>
+            </div>
+            <div class="one column row">
+              &nbsp;
+            </div>
+            <script>
+              $('.ui.dropdown').dropdown();
+            </script>
+            <div class='ui divider'></div>
+          </form>
+
+          <button class="ui primary button" ng-click="submit()">
+            Submit
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui modal">
+  <i class="close icon"></i>
+  <div class="header">
+    Questions Updated Successfully
+  </div>
+  <div class="actions">
+    <a href="/questions">
+      <div class="ui blue button" href='questions'>
+        View All Questions
+      </div>
+    </a>
+  </div>
+</div>
