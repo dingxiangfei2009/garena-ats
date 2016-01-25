@@ -47,13 +47,13 @@
     </div>
     <div class='one column centered row'>
       <div class='column'>
-        <table class="ui very padded large table">
+        <table class="ui large table">
           <colgroup>
-            <col span="1" style="width: 20em">
-            <col span="1" style="width: 5em">
-            <col span="1" style="width: 10em">
-            <col span="1" style="width: 40em">
             <col span="1">
+            <col span="1">
+            <col span="1">
+            <col span="1">
+            <col span="2">
           </colgroup>
           <thead>
             <tr>
@@ -61,7 +61,7 @@
               <th>Difficulty</th>
               <th>Type</th>
               <th>Question</th>
-              <th></th>
+              <th colspan="2"></th>
             </tr>
           </thead>
           <tbody>
@@ -72,6 +72,12 @@
               <td>
                 <div class="hide-overflow" ng-bind-html="question.description">
                 </div>
+              </td>
+              <td>
+                <a class="ui yellow button"
+                  ng-href="/question/{{question.id}}/edit">
+                  Edit
+                </a>
               </td>
               <td ng-switch on='question.enabled'>
                 <div ng-switch-when='true'>

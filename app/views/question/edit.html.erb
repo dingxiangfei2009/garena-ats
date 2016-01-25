@@ -1,5 +1,5 @@
 <%= hidden_field_tag :question_id, @id, id: :id %>
-<%= hidden_field_tag :question_config, @question, id: 'question-config' %>
+<%= hidden_field_tag :question_config, @question_config, id: 'question-config' %>
 <div class='pusher' ng-controller="QuestionEditController">
   <div class='ui container grid'>
     <div class='one column row'>
@@ -72,28 +72,19 @@
                 <div ng-switch-when='mas'>
                   <multiple-answer
                     data="question.answer"
-                    ng-init="
-                      question.answer = [
-                        {description: '', correct: false},
-                        {description: '', correct: false},
-                        {description: '', correct: false},
-                        {description: '', correct: false}]"
                     display="display"></multiple-answer>
                 </div>
                 <div ng-switch-when="sbt">
                   <subjective-text
-                    data="question.answer"
-                    ng-init="question.answer = {description: ''}"></subjective-text>
+                    data="question.answer"></subjective-text>
                 </div>
                 <div ng-switch-when="sbc">
                   <subjective-code
-                    data="question.answer"
-                    ng-init="question.answer = {description: ''}"></subjective-code>
+                    data="question.answer"></subjective-code>
                 </div>
                 <div ng-switch-when="fib">
                   <fill-in-blank
-                    data="question.answer"
-                    ng-init="question.answer = {}"></fill-in-blank>
+                    data="question.answer"></fill-in-blank>
                 </div>
               </div>
             </div>

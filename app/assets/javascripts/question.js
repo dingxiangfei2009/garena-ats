@@ -43,6 +43,7 @@ angular.module('app').controller('QuestionEditController',
         questionText: config.description,
         answer: JSON.parse(config.configuration).answer
       };
+      // $('.ui.checkbox').checkbox();
     });
 
     $scope.types = [
@@ -85,6 +86,24 @@ angular.module('app').controller('QuestionEditController',
     };
     $scope.typeChange = function(type) {
       $scope.question.type = type;
+      switch (type.value) {
+      case 'mas':
+        $scope.question.answer = [
+          {description: '', correct: false},
+          {description: '', correct: false},
+          {description: '', correct: false},
+          {description: '', correct: false}
+        ];
+        break;
+      case 'sbt':
+        $scope.question.answer = {description: ''};
+        break;
+      case 'sbc':
+        $scope.question.answer = {description: ''};
+        break;
+      case 'fib':
+        $scope.question.answer = {};
+      }
     };
     $scope.difficultyChange = function(difficulty) {
       $scope.question.difficulty = difficulty;
@@ -106,6 +125,7 @@ angular.module('app').controller('QuestionEditController',
       var editor = CKEDITOR.instances['editor'];
       if (editor)
         question.questionText = editor.getData();
+      var question = $scope.question;
       if (question.type.value === 'fib')
         question.questionText = question.answer.statement;
       var dataToSend = {
@@ -119,7 +139,7 @@ angular.module('app').controller('QuestionEditController',
 
       $.ajax({
         method: "POST",
-        url: "/question",
+        url: `/question/${$scope.question_id}`,
         data: dataToSend
       })
       .success(function(data) {

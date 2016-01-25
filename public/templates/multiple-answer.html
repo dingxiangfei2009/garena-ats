@@ -16,13 +16,14 @@
             rows='2'
             class='field'
             placeholder=''
-            ng-model='data[$index].description'></textarea>
+            ng-model='ans.description'></textarea>
         </td>
         <td>
-          <div class='ui checkbox'
-            ng-click='data[$index].correct = !data[$index].correct'
-            ng-model='data[$index].correct'>
-            <input type='checkbox'>
+          <div class='ui checkbox'>
+            <!-- ng-click='ans.correct = !ans.correct' -->
+            <input type='checkbox'
+              ng-model='ans.correct'>
+            <label>&nbsp;</label>
           </div>
         </td>
         <td>
@@ -30,12 +31,6 @@
             Remove
           </button>
         </td>
-        <script type='text/javascript'>
-
-          $('.ui.checkbox')
-            .checkbox()
-          ;
-        </script>
       </tr>
     </tbody>
     <!--tfoot>

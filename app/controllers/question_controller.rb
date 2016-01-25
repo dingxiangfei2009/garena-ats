@@ -14,7 +14,8 @@ class QuestionController < ApplicationController
 			mark: question.mark,
 			difficulty: question.difficulty,
 			topic: question.field.token,
-			configuration: question.configuration
+			configuration: question.config,
+			type: question.question_type.name
 		)
 	end
 	def save
