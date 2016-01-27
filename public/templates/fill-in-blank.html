@@ -1,22 +1,18 @@
 <div>
 	<div class='grouped fields'>
 		<div class='twelve wide field'>
-			<label>Enter the sentence with blanks here. A blank is represented by
+			<label>
+				Enter the sentence with blanks here. A blank is represented by
 				<code ng-non-bindable>{{blank}}</code>
 			</label>
-			<textarea ng-model="statement" ng-change="watch_content()"></textarea>
+			<textarea ng-model="data.statement" ng-change="watch_content()"></textarea>
 		</div>
-		<div ng-repeat="blank in blanks track by $index" class="twelve wide field">
+		<div ng-repeat="blank in data.blanks track by $index" class="twelve wide field">
 			<div class="ui labeled input">
 				<div class="ui basic label">... {{front_back[$index][0]}}</div>
-				<input type="text" ng-model="blanks[$index]" ng-change="update_blank($index)">
+				<input type="text" ng-model="data.blanks[$index]" ng-change="update_blank($index)">
 				<div class="ui basic label">{{front_back[$index][1]}} ...</div>
 			</div>
 		</div>
-	</div>
-	<div class="field">
-		<!-- <button class="ui basic button btn-richtext" ng-click="useRichText()">
-			Rich Text
-		</button> -->
 	</div>
 </div>

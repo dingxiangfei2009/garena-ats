@@ -43,7 +43,6 @@ angular.module('app').controller('QuestionEditController',
         questionText: config.description,
         answer: JSON.parse(config.configuration).answer
       };
-      // $('.ui.checkbox').checkbox();
     });
 
     $scope.types = [

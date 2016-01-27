@@ -82,7 +82,11 @@
               <subjective-code data='question.answer' ng-init="question.answer = {description: ''}"></subjective-code>
             </div>
             <div ng-switch-when="fib">
-              <fill-in-blank data="question.answer" ng-init="question.answer = {}"></fill-in-blank>
+              <fill-in-blank data="question.answer" ng-init="
+              question.answer = {
+                blanks: [],
+                statement: ''
+              }"></fill-in-blank>
             </div>
           </div>
         </div>

@@ -20,7 +20,6 @@
         </td>
         <td>
           <div class='ui checkbox'>
-            <!-- ng-click='ans.correct = !ans.correct' -->
             <input type='checkbox'
               ng-model='ans.correct'>
             <label>&nbsp;</label>
@@ -33,17 +32,17 @@
         </td>
       </tr>
     </tbody>
-    <!--tfoot>
+    <tfoot>
       <tr>
-        <td colspan="3">
-        </td>
-        <td>
+        <th colspan="3">
+        </th>
+        <th>
           <button class="ui green button"
             ng-click="data.push({description: '', correct: false})">
             Add Option
           </button>
-        </td>
+        </th>
       </tr>
-    </tfoot-->
+    </tfoot>
   </table>
 </div>
