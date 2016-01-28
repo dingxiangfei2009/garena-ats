@@ -8,7 +8,8 @@ To set up, install the necessary softwares
 
 * Set up extra software from Bundler and Bower
 
-  `bundle install`  
+  `bundle install`
+  `npm install`  
   `bower install`
 
 * Set up database
@@ -37,6 +38,7 @@ To set up, install the necessary softwares
 
 * Start Up, Log In and Add admins
   Extra set up to get UI working:  
+  `gulp`
   `RAILS_ENV=production rake assets:precompile`
   To start the server:  
   `rails s -e production`

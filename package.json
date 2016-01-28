@@ -1,0 +1,19 @@
+{
+  "name": "garena-ats",
+  "version": "1.0.0",
+  "description": "To set up, install the necessary softwares * MySQL(Mariadb), Ruby, Gems, Bundler, Node.js and Bower",
+  "author": "Ding Xiang Fei, Anand. Supervised by Garena, Inc.",
+  "dependencies": {
+    "gulp": "*",
+    "gulp-concat": "*",
+    "gulp-rename": "*",
+    "gulp-uglify": "*",
+    "run-sequence": "*",
+    "bower": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/dingxiangfei/garena-ats.git"
+  },
+  "license": "PRIVATE, GARENA"
+}

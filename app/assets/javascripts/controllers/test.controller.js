@@ -1,7 +1,3 @@
-ace.config.set('modePath', '/assets/ace-builds/src-min/');
-ace.config.set('themePath', '/assets/ace-builds/src-min/');
-ace.config.set('workerPath', '/assets/ace-builds/src-min/');
-
 angular.module('app').controller('LoadTestController', ['$scope', '$rootScope',
 function($scope, $rootScope){
   $scope.load = function(test_id) {

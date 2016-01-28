@@ -15,9 +15,7 @@
 //= require ckeditor/init
 //= require angular/angular
 //= require semantic-ui
-//= require ace-builds/src-min-noconflict/ace
-//= require ace-builds/src-min-noconflict/theme-twilight
-//= require angular-ui-ace/ui-ace
+//= require ace
 //= require momentjs/min/moment.min.js
 //= require momentjs/min/locales.min.js
 //= require humanize-duration/humanize-duration.js
