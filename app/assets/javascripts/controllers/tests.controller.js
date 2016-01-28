@@ -52,12 +52,6 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
   };
 
   $scope.submit = function () {
-    // $scope.tests.push({
-    //   title: $scope.newCandidate.pos.name,
-    //   candidateName: $scope.newCandidate.name,
-    //   applicationStatus: null,
-    //   mark: 0
-    // });
     $.ajax({
       method: "POST",
       url: "/applicants",

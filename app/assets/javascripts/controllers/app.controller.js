@@ -37,13 +37,41 @@ app.directive('subjectiveText', function() {
 });
 
 app.directive('subjectiveCode', function() {
+  var ace_language_modes = new Map([
+    ['javascript', 'javascript'],
+    ['ruby', 'ruby'],
+    ['cxx', 'c++'],
+    ['python', 'python']
+  ]);
   return {
       restrict: 'AE',
       replace: 'true',
       scope: {
         data: '='
       },
-      templateUrl: '/templates/subjective-code.html'
+      templateUrl: '/templates/subjective-code.html',
+      link: function(scope, element) {
+        debugger;
+        if (!scope.data.suggested_answer)
+          scope.data.suggested_answer = {
+            language: 'cxx',
+            code: ''
+          };
+        else {
+          if (!scope.data.suggested_answer.language)
+            scope.data.suggested_answer.language = 'cxx';
+          if (!scope.data.suggested_answer.code && scope.data.value)
+            scope.data.suggested_answer.code = scope.data.value;
+        }
+        // HACK: What the *** is wrong with people in ui-ace? If they have a fix
+        // for editor-in-directive issue, why they are not applying the patch?
+        var editor = ace.edit(
+          angular.element('div[ui-ace]', element)[0]
+        );
+        scope.change_language = () =>
+          editor.getSession().setMode(
+            `ace/mode/${ace_language_modes.get(scope.data.language)}`);
+      }
   };
 });
 

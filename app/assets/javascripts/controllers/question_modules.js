@@ -96,6 +96,7 @@ function SBCQuestion(question) {
   this.stub = config.stub;
   this.suggested_answer = config.suggested_answer;
 }
+SBCQuestion.languages = ace_language_modes;
 Object.assign(SBCQuestion.prototype, {
   getQuestion() {
     return {
@@ -140,7 +141,8 @@ function SBCQuestionController(question, editable) {
     set codeArea(element) {
       var editor = self.candidate_answer_editor = ace.edit(element.element);
       editor.setTheme('ace/theme/twilight');
-      editor.getSession().setMode('ace/mode/' + ace_language_modes.get(answer.language));
+      editor.getSession().setMode(
+        'ace/mode/' + ace_language_modes.get(answer.language));
       editor.setValue(answer.code);
       editor.setReadOnly(!Boolean(editable));
     },
