@@ -51,7 +51,6 @@ app.directive('subjectiveCode', function() {
       },
       templateUrl: '/templates/subjective-code.html',
       link: function(scope, element) {
-        debugger;
         if (!scope.data.suggested_answer)
           scope.data.suggested_answer = {
             language: 'cxx',
@@ -68,9 +67,12 @@ app.directive('subjectiveCode', function() {
         var editor = ace.edit(
           angular.element('div[ui-ace]', element)[0]
         );
-        scope.change_language = () =>
+        function change_language() {
           editor.getSession().setMode(
             `ace/mode/${ace_language_modes.get(scope.data.language)}`);
+        }
+        scope.change_language = change_language;
+        change_language();
       }
   };
 });
