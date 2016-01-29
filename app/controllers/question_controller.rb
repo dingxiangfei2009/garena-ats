@@ -98,11 +98,17 @@ class QuestionController < ApplicationController
       .select(:id, :description, :enabled, :mark, :difficulty,
           'fields.name as field_name',
           'fields.token as field_token',
-			'question_types.name as question_type_name')
+					'question_types.name as question_type_name')
     if params[:disabled] == 'true' or params[:disabled] == '1'
       query = query.where(enabled: false)
 		elsif params[:disabled] == 'false' or params[:disabled] == '0'
       query = query.where(enabled: true)
+		end
+
+		if params[:keyword] and params[:keyword].length > 0
+			query = query.where(
+				'questions.description like :search or fields.name like :search',
+				search: "%#{params[:keyword]}%")
 		end
 
 		if params[:topic]
@@ -118,7 +124,13 @@ class QuestionController < ApplicationController
 			type = QuestionType.find_by! name: params[:type]
 			query = query.where(question_type_id: type.id)
 		end
-    render json: query.offset(params[:offset] || 0).limit(@@LIMIT)
+
+		count = query.count(:id)
+    render json: {
+			questions: query.offset(params[:offset] || 0).limit(@@LIMIT),
+			count: count,
+			offset: params[:offset] || 0
+		}
 	end
 
 end

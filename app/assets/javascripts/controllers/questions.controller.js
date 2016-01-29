@@ -1,38 +1,51 @@
-angular.module('app').controller('QuestionsController', ['$scope', '$http', '$sce', function($scope, $http, $sce) {
-  $scope.searchText = '';
+angular.module('app').controller('QuestionsController',
+['$scope', '$http', '$sce', '$timeout',
+function($scope, $http, $sce, $timeout) {
+'use strict';
+
+  $scope.searchText = $scope.keyword = '';
 
   $scope.questionsByTopic = [];
   $scope.topics = [];
   $scope.difficulties = ["Easy", "Medium", "Difficult"];
-  $scope.types = [];
+  $scope.question_types = {
+    mas: "Multiple Answer",
+    sbt: "Subjective Text",
+    sbc: "Subjective Code",
+    fib: "Fill in the Blanks"
+  };
 
-  $scope.types["mas"] = "Multiple Answer";
-  $scope.types["sbt"] = "Subjective Text";
-  $scope.types["sbc"] = "Subjective Code";
-  $scope.types["fib"] = "Fill in the Blanks";
 
   $scope.questions = [];
 
-  $.ajax({
-    method: "POST",
-    url: "/question/query"
-  }).success(function(data) {
+  $http.get('/topics/all').success(data => $scope.topics = data);
 
-    $scope.$apply(function(){
-      for (var x = 0; x < data.length; x++) {
-        $scope.questions.push({
-          id: data[x].id,
-          topic: data[x].field_name,
-          difficulty: $scope.difficulties[data[x].difficulty - 1],
-          type: $scope.types[data[x].question_type_name],
-          description: $sce.trustAsHtml(data[x].description),
-          enabled: data[x].enabled
+  function query(options) {
+    $.ajax({
+      method: "POST",
+      url: "/question/query",
+      data: options
+    }).success(function(data) {
+      $scope.$apply(function(){
+        $scope.questions.length = 0;
+        $scope.searching = false;
+        data.questions.forEach(function(question) {
+          $scope.questions.push({
+            id: question.id,
+            topic: question.field_name,
+            difficulty: $scope.difficulties[question.difficulty - 1],
+            type: $scope.question_types[question.question_type_name],
+            description: $sce.trustAsHtml(question.description),
+            enabled: question.enabled
+          });
         });
-      }
+      });
+    }).error(function(error) {
+      $scope.$apply(() => void ($scope.searching = false));
+      console.error(error);
     });
-
-  }).error(function(data) {
-  });
+  }
+  query(false);
 
   $scope.disable = function(question, index) {
     $.ajax({
@@ -55,5 +68,40 @@ angular.module('app').controller('QuestionsController', ['$scope', '$http', '$sc
       });
     });
   }
+
+  $scope.is_showing_enabled = true;
+  $scope.show_enabled = function() {
+    $scope.is_showing_enabled = true;
+    search();
+  };
+  $scope.show_disabled = function() {
+    $scope.is_showing_enabled = false;
+    search();
+  };
+
+  var search_timeout;
+  $scope.prepare_search = function () {
+    $timeout.cancel(search_timeout);
+    search_timeout = $timeout(search, 400);
+  };
+  function search() {
+    $scope.searching = true;
+    query({
+      disabled: !$scope.is_showing_enabled,
+      keyword: $scope.keyword,
+      topic: $scope.selected_topic,
+      type: $scope.selected_question_type
+    });
+  }
+
+  $scope.select_topic = function(token) {
+    $scope.selected_topic = token;
+    search();
+  };
+
+  $scope.select_question_type = function(type) {
+    $scope.selected_question_type = type;
+    search();
+  };
 
 }]);

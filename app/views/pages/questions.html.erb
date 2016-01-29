@@ -11,38 +11,78 @@
   <div class='ui container grid'>
     <div class='one column row'>
     </div>
-    <div class='two column centered row'>
-      <div class="left floated eight wide column">
-        <div class="eight wide field">
-          <div class="ui fluid icon input">
-            <input type="text" placeholder="Filter by topic, content..." ng-model='searchText'>
-            <i class="search icon"></i>
+    <div class="one column row">
+      <div class="column">
+        <h1>All Questions</h1>
+      </div>
+    </div>
+    <div class='three column row'>
+      <div class="left floated five wide column">
+        <div class="ui dropdown labeled icon fluid button" id="search-option-dropdown">
+          <i class="filter icon"></i>
+          <span class="text">
+            Filter
+          </span>
+          <div class="menu">
+            <div class="header">
+              <i class="asterisk"></i>
+              Features
+            </div>
+            <div class="item"
+              ng-if="is_showing_enabled"
+              ng-click="show_disabled()">
+              Show disabled questions
+            </div>
+            <div class="item"
+              ng-if="!is_showing_enabled"
+              ng-click="show_enabled()">
+              Show enabled questions
+            </div>
+            <div class="ui icon input" ng-class="{loading: searching}">
+              <i class="search icon"></i>
+              <input type="text" placeholder="Search Keywords..."
+              ng-model="keyword"
+              ng-change="prepare_search()">
+            </div>
+            <div class="divider"></div>
+            <div class="header">
+              <i class="tag icon"></i>
+              Topics
+            </div>
+            <div class="scrolling menu">
+              <div class="item" ng-click="select_topic()">
+                All
+              </div>
+              <div class="item"
+                ng-repeat="topic in topics"
+                ng-click="select_topic(topic.token)">
+                {{topic.name}}
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="header">
+              Question Types
+            </div>
+            <div class="scrolling menu">
+              <div class="item" ng-click="select_question_type()">
+                All
+              </div>
+              <div class="item"
+                ng-repeat="(type, name) in question_types"
+                ng-click="select_question_type(type)">
+                {{name}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="right floated seven wide column">
+      <div class="right floated five wide column">
         <a href='question'>
-          <button class="ui right floated labeled icon green button">
+          <button type="button" class="ui labeled icon green button">
             <i class="plus icon"></i>
             Add New Question
           </button>
         </a>
-      </div>
-    </div>
-    <div class='two column centered row'>
-      <div class="ui cards">
-        <div class="card" ng-repeat='questionTopic in questionsByTopic'>
-          <div class="content">
-            <div class="header">{{questionTopic.topicToken}}</div>
-            <div class="description">
-              {{questionTopic.questions.length}} questions
-            </div>
-          </div>
-          <div class="ui bottom attached button">
-            <i class="add icon"></i>
-            View Questions
-          </div>
-        </div>
       </div>
     </div>
     <div class='one column centered row'>
@@ -56,6 +96,22 @@
             <col span="2">
           </colgroup>
           <thead>
+            <tr>
+              <th>
+              </th>
+              <th colspan="4">
+                <div class="five wide field">
+                  <div class="ui fluid icon input">
+                    <input type="text"
+                      placeholder="Filter by topic, content in this table..."
+                      ng-model='searchText'>
+                    <i class="search icon"></i>
+                  </div>
+                </div>
+              </th>
+              <th>
+              </th>
+            </tr>
             <tr>
               <th>Topic</th>
               <th>Difficulty</th>
@@ -72,9 +128,11 @@
               <td>
                 <div class="hide-overflow" ng-bind-html="question.description">
                 </div>
+                <div class="ui popup" ng-bind-html="question.description">
+                </div>
               </td>
               <td>
-                <a class="ui yellow button"
+                <a class="ui button"
                   ng-href="/question/{{question.id}}/edit">
                   Edit
                 </a>
@@ -98,3 +156,18 @@
     </div>
   </div>
 </div>
+<script>
+$(function () {
+  function debug() {
+    debugger;
+    return true;
+  }
+  $('#search-option-dropdown').dropdown();
+  var observer = new MutationObserver(mutations =>
+    mutations.forEach(record =>
+      record.type === 'childList' &&
+      Array.prototype.forEach.call(record.addedNodes, node =>
+        $('.ui.popup', node).prev().popup())));
+  observer.observe(document.body, {childList: true, subtree: true});
+});
+</script>
