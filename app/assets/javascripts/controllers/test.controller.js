@@ -1,13 +1,22 @@
 angular.module('app').controller('LoadTestController', ['$scope', '$rootScope',
 function($scope, $rootScope){
+  $scope.loaded = $scope.loading_failed = false;
   $scope.load = function(test_id) {
     $rootScope.$broadcast('load-test', test_id);
   };
+  $scope.$on('load-test-success', function(event) {
+    $scope.loaded = true;
+    $('#loader-modal').modal('hide');
+  });
+  $scope.$on('load-test-failure', function(event) {
+    $scope.loading_failed = true;
+  });
 }]);
 
 angular.module('app').controller('TestController',
-['$scope', '$http', '$interval', '$timeout', '$sce',
-function($scope, $http, $interval, $timeout, $sce) {
+['$scope', '$http', '$interval', '$timeout', '$sce', '$rootScope',
+function($scope, $http, $interval, $timeout, $sce, $rootScope) {
+  $('#timeout').modal({closable: false});
   var qmod;
   require(['qmod'], _ => qmod = _);
   $scope.$on('load-test', function(event, test_id) {
@@ -74,6 +83,7 @@ function($scope, $http, $interval, $timeout, $sce) {
     RESPONSE_ID_TO_IDX = []; IDX_TO_RESPONSE_ID = []; questions = [];
     $http.get(url)
       .success(function(result) {
+        $rootScope.$broadcast('load-test-success');
         var data = angular.fromJson(result);
         var start_time = new Date(data.info.start_time);
         var duration = data.info.duration;
@@ -132,7 +142,8 @@ function($scope, $http, $interval, $timeout, $sce) {
         }
         start_autosave(data);
         $scope.loaded = true;
-      });
+      })
+      .error(error => $rootScope.$broadcast('load-test-failure'));
   }
   function collateAnswer() {
     return questions.map(function(question, i) {

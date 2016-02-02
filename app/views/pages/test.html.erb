@@ -3,26 +3,30 @@
   a.active {font-weight: bold;}
 </style>
 <div>
-  <div class="ui fullscreen modal" id="loader-modal" ng-controller="LoadTestController" ng-show="!loaded">
-    <div class="header">
+  <div class="ui fullscreen modal" id="loader-modal"
+    ng-controller="LoadTestController" ng-show="!loaded">
+    <div class="header" style="text-align: center;">
       Enter your Test ID
     </div>
     <div class="content">
       <div class="description">
         <div class="ui container">
-          <div class="ui header">
-            To start your test, first enter the Test ID issued to you.
-          </div>
-          <h2 style="text-align: center">Your Test ID is</h2>
-          <div style="text-align: center">
-            <div class="ui input">
-              <input type="text" placeholder="Test ID, eg. 235" ng-model="test_id">
+          <form class="ui form" style="width: 50em; margin: 0 auto">
+            <div class="field" style="text-align: center">
+              <input type="text" placeholder="Test ID, eg. 235"
+                ng-model="test_id"
+                style="text-align: center">
+              <div class="ui pointing red basic label"
+                ng-show="loading_failed">
+                Please verify that you have entered the correct ID, or
+                signal the invigilators for assistance.
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
-    <div class="actions">
+    <div class="actions" style="text-align: center;">
       <div class="ui positive button" ng-click="load(test_id)">Start the Test</div>
     </div>
   </div>
@@ -55,13 +59,21 @@
       </div>
     </div>
     <div class="actions">
-      <div class="ui positive green basic inverted button">
+      <a class="ui positive green basic inverted button" href="/test">
         Okay
-      </div>
+      </a>
     </div>
   </div>
   <script>
-    requestAnimationFrame(() => $('#loader-modal').modal('show'));
+    requestAnimationFrame(() => $('#loader-modal').modal({
+      closable: false,
+      onDeny() {
+        return false;
+      },
+      onApprove() {
+        return false;
+      }
+    }).modal('show'));
   </script>
 </div>
 
