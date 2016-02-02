@@ -50,7 +50,9 @@
               Topics
             </div>
             <div class="scrolling menu">
-              <div class="item" ng-click="select_topic()">
+              <div class="item"
+                style="font-style: italic"
+                ng-click="select_topic()">
                 All
               </div>
               <div class="item"
@@ -61,10 +63,13 @@
             </div>
             <div class="divider"></div>
             <div class="header">
+              <i class="bookmark icon"></i>
               Question Types
             </div>
             <div class="scrolling menu">
-              <div class="item" ng-click="select_question_type()">
+              <div class="item"
+                style="font-style: italic"
+                ng-click="select_question_type()">
                 All
               </div>
               <div class="item"
@@ -78,7 +83,7 @@
       </div>
       <div class="right floated five wide column">
         <a href='question'>
-          <button type="button" class="ui labeled icon green button">
+          <button type="button" class="ui right floated labeled icon green button">
             <i class="plus icon"></i>
             Add New Question
           </button>
@@ -98,8 +103,19 @@
           <thead>
             <tr>
               <th>
+                <div class="ui icon secondary menu">
+                  <div class="item" ng-click="head()">
+                    <i class="angle double left icon"></i>
+                  </div>
+                  <div class="item" ng-click="prev()">
+                    <i class="angle left icon"></i>
+                  </div>
+                </div>
               </th>
-              <th colspan="4">
+              <th colspan="2" style="font-style: italic">
+                Skipped first {{offset}}
+              </th>
+              <th>
                 <div class="five wide field">
                   <div class="ui fluid icon input">
                     <input type="text"
@@ -109,7 +125,18 @@
                   </div>
                 </div>
               </th>
+              <th style="font-style: italic">
+                Total {{total}}
+              </th>
               <th>
+                <div class="ui icon secondary menu">
+                  <div class="item" ng-click="next()">
+                    <i class="angle right icon"></i>
+                  </div>
+                  <div class="item" ng-click="tail()">
+                    <i class="angle double right icon"></i>
+                  </div>
+                </div>
               </th>
             </tr>
             <tr>
@@ -121,6 +148,11 @@
             </tr>
           </thead>
           <tbody>
+            <tr ng-if="!page_length">
+              <td colspan="6" style="text-align: center; font-style: italic">
+                No more results
+              </td>
+            </tr>
             <tr ng-repeat="question in questions | filter:searchText">
               <td>{{question.topic}}</td>
               <td>{{question.difficulty}}</td>
@@ -137,17 +169,17 @@
                   Edit
                 </a>
               </td>
-              <td ng-switch on='question.enabled'>
-                <div ng-switch-when='true'>
-                  <button class="ui red button" ng-click='disable(question, $index)'>
-                    Disable
-                  </button>
-                </div>
-                <div ng-switch-when='false'>
-                  <button class="ui green button" ng-click='enable(question, $index)'>
-                    Enable
-                  </button>
-                </div>
+              <td>
+                <button class="ui red button"
+                  ng-if="question.enabled"
+                  ng-click='disable(question, $index)'>
+                  Disable
+                </button>
+                <button class="ui green button"
+                  ng-if="!question.enabled"
+                  ng-click='enable(question, $index)'>
+                  Enable
+                </button>
               </td>
             </tr>
           </tbody>

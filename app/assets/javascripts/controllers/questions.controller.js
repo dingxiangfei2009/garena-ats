@@ -29,6 +29,11 @@ function($scope, $http, $sce, $timeout) {
       $scope.$apply(function(){
         $scope.questions.length = 0;
         $scope.searching = false;
+        $scope.total = Number(data.count);
+        $scope.offset = Number(data.offset);
+        if (!($scope.offset < $scope.total))
+          $scope.offset = Math.max(0, $scope.total - 1);
+        $scope.page_length = data.questions.length;
         data.questions.forEach(function(question) {
           $scope.questions.push({
             id: question.id,
@@ -45,7 +50,7 @@ function($scope, $http, $sce, $timeout) {
       console.error(error);
     });
   }
-  query(false);
+  query();
 
   $scope.disable = function(question, index) {
     $.ajax({
@@ -84,13 +89,16 @@ function($scope, $http, $sce, $timeout) {
     $timeout.cancel(search_timeout);
     search_timeout = $timeout(search, 400);
   };
-  function search() {
+  function search(is_offset) {
     $scope.searching = true;
     query({
       disabled: !$scope.is_showing_enabled,
       keyword: $scope.keyword,
       topic: $scope.selected_topic,
-      type: $scope.selected_question_type
+      type: $scope.selected_question_type,
+      offset: is_offset ?
+        Math.min($scope.total, Math.max(0, $scope.offset)) || 0 :
+        0
     });
   }
 
@@ -103,5 +111,25 @@ function($scope, $http, $sce, $timeout) {
     $scope.selected_question_type = type;
     search();
   };
+
+  $scope.next = function() {
+    $scope.offset = Math.min(
+      $scope.page_length - 1,
+      $scope.offset + $scope.page_length);
+    search(true);
+  };
+  $scope.prev = function() {
+    $scope.offset = Math.max(0, $scope.offset - $scope.page_length);
+    search(true);
+  };
+  $scope.head = function() {
+    $scope.offset = 0;
+    search(true);
+  };
+  $scope.tail = function() {
+    $scope.offset = $scope.total - 1;
+    search(true);
+  };
+  $scope.offset = 0;
 
 }]);
