@@ -1,4 +1,6 @@
-angular.module('app').controller('TestsController', ["$scope", "$http", function($scope, $http) {
+angular.module('app').controller('TestsController',
+["$scope", "$http", '$timeout',
+function($scope, $http, $timeout) {
   $scope.searchText = '';
 
   $scope.newCandidate = {
@@ -25,27 +27,56 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
     }
   });
 
-  $http({
-    method: "GET",
-    url: "/test/query"
-  })
-  .success(function(data) {
-    for (var x = 0; x < data.length; x++) {
-      $scope.tests.push({
-        id: data[x].id,
-        jobId: data[x].job_id,
-        title: data[x].job_title,
-        applicationId: data[x].application_id,
-        applicationStatus: data[x].application_status,
-        candidateId: data[x].candidate_id,
-        candidateName: data[x].candidate_name,
-        candidateEmail: data[x].candidate_email,
-        mark: data[x].mark,
-        totalMark: data[x].total_mark,
+  function query(options) {
+    $.ajax({
+      method: 'POST',
+      url: '/test/query',
+      data: options
+    })
+    .success(function(data) {
+      $scope.$apply(function() {
+        $scope.searching = false;
+        $scope.tests.length = 0;
+        $scope.total = Number(data.count);
+        $scope.offset = Number(data.offset);
+        if (!($scope.offset < $scope.total))
+          $scope.offset = Math.max(0, $scope.total);
+        $scope.page_length = data.tests.length;
+        data.tests.forEach(function(test) {
+          $scope.tests.push({
+            id: test.id,
+            jobId: test.job_id,
+            title: test.job_title,
+            applicationId: test.application_id,
+            applicationStatus: test.application_status,
+            candidateId: test.candidate_id,
+            candidateName: test.candidate_name,
+            candidateEmail: test.candidate_email,
+            mark: test.mark,
+            totalMark: test.total_mark,
+          });
+        });
       });
-    }
-  });
+    });
+  }
+  query();
 
+  function search(is_offset) {
+    $scope.searching = true;
+    query({
+      job: $scope.position,
+      candidate: $scope.applicant,
+      offset: is_offset ?
+        Math.min($scope.total, Math.max(0, $scope.offset)) || 0 :
+        0
+    });
+  }
+
+  var search_timeout;
+  $scope.prepare_search = function () {
+    $timeout.cancel(search_timeout);
+    search_timeout = $timeout(search, 400);
+  };
 
   $scope.setNewPosition = function (pos) {
     $scope.newCandidate.pos = pos;
@@ -82,9 +113,28 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
           $('.ui.modal.error').modal('show');
         });
       });
-    })
-    ;
+    });
   };
+
+  $scope.next = function() {
+    $scope.offset = Math.min(
+      $scope.page_length - 1,
+      $scope.offset + $scope.page_length);
+    search(true);
+  };
+  $scope.prev = function() {
+    $scope.offset = Math.max(0, $scope.offset - $scope.page_length);
+    search(true);
+  };
+  $scope.head = function() {
+    $scope.offset = 0;
+    search(true);
+  };
+  $scope.tail = function() {
+    $scope.offset = $scope.total - 1;
+    search(true);
+  };
+  $scope.offset = 0;
 
   setTimeout(function(){
     $('.ui.modal.invite')
@@ -92,10 +142,6 @@ angular.module('app').controller('TestsController', ["$scope", "$http", function
     ;
   }, 0);
 
-  $('.ui.selection.dropdown')
-    .dropdown()
-  ;
-
-
+  $('.ui.selection.dropdown').dropdown();
 
 }]);

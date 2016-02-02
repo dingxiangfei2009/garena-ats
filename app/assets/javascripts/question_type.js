@@ -4,7 +4,6 @@ angular.module('app').controller('QuestionTypeEditorController', [
 '$scope','$http',
 function($scope, $http) {
 'use strict';
-debugger;
 var data = JSON.parse($('#data').val());
 $scope.data = data;
 $scope.canonical_name = {

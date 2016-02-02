@@ -1,13 +1,44 @@
 <div class='pusher' ng-controller='TestsController'>
   <div class='ui container grid'>
+    <div class="row"></div>
     <div class='one column row'>
+      <div class="column">
+        <h1>Tests</h1>
+      </div>
     </div>
-    <div class='two column centered row' id="control-bar">
+    <div class='two column row' id="control-bar">
       <div class="left floated eight wide column">
-        <div class="eight wide field">
-          <div class="ui fluid icon input">
-            <input type="text" placeholder="Filter by position, candidate name..." ng-model='searchText'>
-            <i class="search icon"></i>
+        <div class="ui dropdown labeled icon fluid button"
+          id="search-option-dropdown">
+          <i class="filter icon"></i>
+          <span class="text">
+            Filter
+          </span>
+          <div class="menu">
+            <div class="header">
+              <i class="suitcase icon"></i>
+              Positions
+            </div>
+            <div class="ui icon input" ng-class="{loading: searching}">
+              <i class="search icon"></i>
+              <input type="text" placeholder="Search Positions..."
+                ng-model="position"
+                ng-change="prepare_search()">
+            </div>
+            <div class="divider"></div>
+            <div class="header">
+              <i class="users icon"></i>
+              Name or Email
+            </div>
+            <div class="ui icon input" ng-class="{loading: searching}">
+              <i class="search icon"></i>
+              <input type="text" placeholder="Search Names or Emails..."
+                ng-model="applicant"
+                ng-change="prepare_search()">
+            </div>
+            <div class="item">
+              Filter
+            </div>
           </div>
         </div>
       </div>
@@ -23,6 +54,44 @@
         <table class="ui padded large table">
           <thead>
             <tr>
+              <th>
+                <div class="ui icon secondary menu">
+                  <div class="item" ng-click="head()">
+                    <i class="angle double left icon"></i>
+                  </div>
+                  <div class="item" ng-click="prev()">
+                    <i class="angle left icon"></i>
+                  </div>
+                </div>
+              </th>
+              <th style="font-style: italic">
+                Skipped first {{offset}}
+              </th>
+              <th>
+                <div class="eight wide field">
+                  <div class="ui fluid icon input">
+                    <input type="text"
+                      placeholder="Filter this table..."
+                      ng-model="searchText">
+                    <i class="search icon"></i>
+                  </div>
+                </div>
+              </th>
+              <th style="font-style: italic">
+                Total {{total}}
+              </th>
+              <th>
+                <div class="ui icon secondary menu">
+                  <div class="item" ng-click="next()">
+                    <i class="angle right icon"></i>
+                  </div>
+                  <div class="item" ng-click="tail()">
+                    <i class="angle double right icon"></i>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            <tr>
               <th>ID</th>
               <th>Position</th>
               <th>Candidate Name</th>
@@ -31,6 +100,11 @@
             </tr>
           </thead>
           <tbody>
+            <tr ng-if="!page_length">
+              <td colspan="5" style="text-align: center; font-style: italic">
+                No more results
+              </td>
+            </tr>
             <tr ng-repeat="test in tests | filter:searchText | orderBy:'-mark/totalMark'">
               <td>{{test.id}}</td>
               <td>{{test.title}}</td>
@@ -125,3 +199,8 @@
     </div>
   </div>
 </div>
+<script>
+$(function() {
+  $('#search-option-dropdown').dropdown();
+});
+</script>

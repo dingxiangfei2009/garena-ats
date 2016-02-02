@@ -32,7 +32,7 @@ function($scope, $http, $sce, $timeout) {
         $scope.total = Number(data.count);
         $scope.offset = Number(data.offset);
         if (!($scope.offset < $scope.total))
-          $scope.offset = Math.max(0, $scope.total - 1);
+          $scope.offset = Math.max(0, $scope.total);
         $scope.page_length = data.questions.length;
         data.questions.forEach(function(question) {
           $scope.questions.push({
@@ -61,7 +61,7 @@ function($scope, $http, $sce, $timeout) {
         $scope.questions[index].enabled = false;
       });
     });
-  }
+  };
 
   $scope.enable = function(question, index) {
     $.ajax({
@@ -72,7 +72,7 @@ function($scope, $http, $sce, $timeout) {
         $scope.questions[index].enabled = true;
       });
     });
-  }
+  };
 
   $scope.is_showing_enabled = true;
   $scope.show_enabled = function() {

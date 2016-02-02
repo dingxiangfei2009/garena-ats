@@ -16,9 +16,10 @@
         <h1>All Questions</h1>
       </div>
     </div>
-    <div class='three column row'>
+    <div class='two column row'>
       <div class="left floated five wide column">
-        <div class="ui dropdown labeled icon fluid button" id="search-option-dropdown">
+        <div class="ui dropdown labeled icon fluid button"
+          id="search-option-dropdown">
           <i class="filter icon"></i>
           <span class="text">
             Filter
@@ -190,10 +191,6 @@
 </div>
 <script>
 $(function () {
-  function debug() {
-    debugger;
-    return true;
-  }
   $('#search-option-dropdown').dropdown();
   var observer = new MutationObserver(mutations =>
     mutations.forEach(record =>

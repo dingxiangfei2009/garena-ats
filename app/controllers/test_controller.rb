@@ -207,9 +207,17 @@ class TestController < ApplicationController
 				'candidates.id as candidate_id',
 				'candidates.name as candidate_name',
 				'candidates.email as candidate_email')
-		if (params[:job])
-			query = query.where(['jobs.title like ?', "%#{params[:job]}%"])
-		end
+		query = query.where([
+			'jobs.title like ?',
+			"%#{params[:job]}%"]) if
+				params[:job] and
+				params[:job].length > 0
+		query = query.where([
+			'candidates.name like ?',
+			"%#{params[:candidate]}%"]) if
+				params[:candidate] and
+				params[:candidate].length > 0
+		count = query.count(:id)
 		query = query.offset(params[:offset] || 0)
 		query = query.limit(@@LIMIT)
 		result = query.all.map do |test|
@@ -231,7 +239,11 @@ class TestController < ApplicationController
 				total_mark: total_mark
 			}
 		end
-		render json: result
+		render json: {
+			tests: result,
+			count: count,
+			offset: params[:offset] || 0
+		}
 	end
 
 	def statistics

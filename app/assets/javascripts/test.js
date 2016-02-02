@@ -61,10 +61,7 @@ function BarChartImpl() {
 	});
 	this.model.aggregate = this.aggregate.model;
 	this.shadow = new el.shadow.object(new Map([
-		['max', el.shadow.value(this.context, this.scope, 'aggregate.max * 1.1'), value => {
-			debugger;
-			return value;
-		}],
+		['max', el.shadow.value(this.context, this.scope, 'aggregate.max * 1.1')],
 		['values', el.shadow.value(this.context, this.scope, `
 			data.* >>= (\\item => @((item.values.sort(sort^).*), item))
 		`)]
