@@ -4,7 +4,7 @@ To set up, install the necessary softwares
 
   `sudo apt-get install ruby rubygems ruby-dev npm mariadb-server`  
   `sudo gem install bundle`  
-  `sudo npm install -g bower`
+  `sudo npm install -g bower gulp-cli`
 
 * Set up extra software from Bundler and Bower
 
