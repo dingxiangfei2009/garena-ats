@@ -7,7 +7,7 @@ class SBCQuestion
         @mark = question.mark
     end
     def render(question_config)
-        JSON.generate stub: @config['stub']
+        JSON.generate stub: @config['answer']['stub']
     end
     def mark(answer)
         nil

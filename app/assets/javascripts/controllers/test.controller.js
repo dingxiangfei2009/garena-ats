@@ -51,7 +51,7 @@ function($scope, $http, $interval, $timeout, $sce, $rootScope) {
   var ace_language_modes = new Map([
     ['javascript', 'javascript'],
     ['ruby', 'ruby'],
-    ['cxx', 'c++']
+    ['cxx', 'c_cpp']
   ]);
 
   $scope.switch_language = function(question_index, language) {

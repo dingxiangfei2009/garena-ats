@@ -3,17 +3,6 @@
       .ace_editor { height: 200px;}
   </style>
   <div class="twelve wide field">
-    <label>Language</label>
-    <select class="ui dropdown" ng-model="data.language"
-      ng-change="change_language()">
-      <option>Language</option>
-      <option value="javascript">Javascript</option>
-      <option value="ruby">Ruby</option>
-      <option value="python">Python</option>
-      <option value="cxx">C++</option>
-    </select>
-  </div>
-  <div class="twelve wide field">
     <label>Stub Code</label>
     <div ui-ace="{
       useWrapMode: true,
@@ -23,7 +12,7 @@
   </div>
   <div class="twelve wide field">
     <label>Language</label>
-    <select class="ui dropdown" ng-model="data.language"
+    <select class="ui dropdown" ng-model="data.suggested_answer.language"
       ng-change="change_language()">
       <option>Language</option>
       <option value="javascript">Javascript</option>
@@ -34,10 +23,10 @@
   </div>
   <div class='twelve wide field'>
     <label>Reference Code</label>
-    <div ui-ace="{
+    <div class="reference-answer" ui-ace="{
       useWrapMode: true,
       showGutter: true,
       theme: 'twilight'
-    }" ng-model='data.code'></div>
+    }" ng-model='data.suggested_answer.code'></div>
   </div>
 </div>

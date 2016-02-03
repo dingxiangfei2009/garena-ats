@@ -85,7 +85,7 @@ function MCQQuestionController(question) {
 var ace_language_modes = new Map([
   ['javascript', 'javascript'],
   ['ruby', 'ruby'],
-  ['cxx', 'c++']
+  ['cxx', 'c_cpp']
 ]);
 
 function SBCQuestion(question) {
