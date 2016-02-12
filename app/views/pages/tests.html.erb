@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class='two column row' id="control-bar">
-      <div class="left floated eight wide column">
+      <div class="left floated six wide column">
         <div class="ui dropdown labeled icon fluid button"
           id="search-option-dropdown">
           <i class="filter icon"></i>
@@ -18,6 +18,11 @@
             <div class="header">
               <i class="suitcase icon"></i>
               Positions
+              <a class="ui label"
+                ng-click="position = ''; prepare_search()">
+                {{position || 'All Positions'}}
+                <i class="close icon"></i>
+              </a>
             </div>
             <div class="ui icon input" ng-class="{loading: searching}">
               <i class="search icon"></i>
@@ -29,6 +34,11 @@
             <div class="header">
               <i class="users icon"></i>
               Name or Email
+              <a class="ui label"
+                ng-click="applicant = ''; prepare_search()">
+                {{applicant || 'All Applicants'}}
+                <i class="close icon"></i>
+              </a>
             </div>
             <div class="ui icon input" ng-class="{loading: searching}">
               <i class="search icon"></i>

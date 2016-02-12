@@ -5,7 +5,6 @@ function($scope, $http, $sce, $timeout) {
 
   $scope.searchText = $scope.keyword = '';
 
-  $scope.questionsByTopic = [];
   $scope.topics = [];
   $scope.difficulties = ["Easy", "Medium", "Difficult"];
   $scope.question_types = {
@@ -14,11 +13,13 @@ function($scope, $http, $sce, $timeout) {
     sbc: "Subjective Code",
     fib: "Fill in the Blanks"
   };
-
-
   $scope.questions = [];
 
-  $http.get('/topics/all').success(data => $scope.topics = data);
+  $http.get('/topics/all').success(function(data) {
+    $scope.topics = data;
+    $scope.topics_by_token = {};
+    data.forEach(topic => $scope.topics_by_token[topic.token] = topic.name);
+  });
 
   function query(options) {
     $.ajax({

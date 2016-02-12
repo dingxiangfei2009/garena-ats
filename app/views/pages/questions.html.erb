@@ -81,6 +81,39 @@
             </div>
           </div>
         </div>
+        <div class="ui fluid popup">
+          <div class="header">Current filter options</div>
+          <div class="ui secondary menu">
+            <div class="ui label" ng-if="is_showing_enabled">
+              Showing enabled questions
+            </div>
+            <div class="ui label" ng-if="!is_showing_enabled">
+              Show disabled questions
+            </div>
+            <a class="ui label" ng-if="keyword" ng-click="keyword = ''">
+              Keyword
+              <div class="detail">
+                {{keyword}}
+              </div>
+              <i class="close icon"></i>
+            </a>
+            <a class="ui label" ng-if="selected_question_type"
+              ng-click="select_question_type()">
+              Question type
+              <div class="detail">
+                {{question_types[selected_question_type]}}
+              </div>
+              <i class="close icon"></i>
+            </a>
+            <a class="ui label" ng-if="selected_topic" ng-click="select_topic()">
+              Topic
+              <div class="detail">
+                {{topics_by_token[selected_topic]}}
+              </div>
+              <i class="close icon"></i>
+            </a>
+          </div>
+        </div>
       </div>
       <div class="right floated five wide column">
         <a href='question'>
@@ -191,7 +224,13 @@
 </div>
 <script>
 $(function () {
-  $('#search-option-dropdown').dropdown();
+  $('#search-option-dropdown').dropdown().popup({
+    hoverable: true,
+    delay: {
+      show: 300,
+      hide: 300
+    }
+  });
   var observer = new MutationObserver(mutations =>
     mutations.forEach(record =>
       record.type === 'childList' &&
